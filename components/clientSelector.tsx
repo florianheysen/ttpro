@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export default function ClientSelector({selectedClient, setSelectedClient}: {selectedClient: any, setSelectedClient: any}) {
+export default function ClientSelector({order, handleChange}: {order: any, handleChange: any}) {
   const [open, setOpen] = React.useState(false)
   const [clients, setClients]: any = React.useState([])
 
@@ -54,7 +54,7 @@ export default function ClientSelector({selectedClient, setSelectedClient}: {sel
               aria-expanded={open}
               className="w-[250px] justify-between"
             >
-              {selectedClient.name ? selectedClient.name.toUpperCase() : "Choisir un client"}
+              {order?.client?.name ? order?.client?.name.toUpperCase() : "Choisir un client"}
               <CaretSortIcon />
             </Button>
           </PopoverTrigger>
@@ -65,19 +65,19 @@ export default function ClientSelector({selectedClient, setSelectedClient}: {sel
               <CommandGroup>
                 {clients.map((client: any) => (
                   <CommandItem
-                    key={client._id}
+                    key={client?._id}
                     onSelect={() => {
-                      setSelectedClient(client._id === selectedClient._id ? "" : client)
+                      handleChange('client', client?._id === order?.client?._id ? "" : client)
                       setOpen(false)
                     }}
                   >
                     <CheckIcon
                       className={cn(
                         "mr-2 h-4 w-4",
-                        selectedClient._id === client._id ? "opacity-100" : "opacity-0"
+                        order?.client?._id === client?._id ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    {client.name.toUpperCase()}
+                    {client?.name.toUpperCase()}
                   </CommandItem>
                 ))}
               </CommandGroup>
