@@ -21,6 +21,7 @@ import { CardStackPlusIcon } from "@radix-ui/react-icons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
@@ -28,7 +29,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function TableLoading<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -55,16 +56,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
     return (
         <div>
+            {/* 
             <div className="flex items-center justify-between py-4">
-                {/* <Input
-          placeholder="Chercher un client..."
-          value={(table.getColumn("clientName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("clientName")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
-            </div>
+                <Button variant="outline" asChild>
+                    <Link href="/orders/create">
+                        <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouvelle commande
+                    </Link>
+                </Button>
+            </div> */}
             <div className="rounded-md border h-[532px] overflow-y-scroll">
                 <Table>
                     <TableHeader>
@@ -86,10 +85,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                                <TableRow key={row.id}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            <Skeleton className="w-2/3 h-[32px] rounded" />
                                         </TableCell>
                                     ))}
                                 </TableRow>

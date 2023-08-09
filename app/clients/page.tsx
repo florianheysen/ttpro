@@ -15,7 +15,7 @@ export default async function DemoPage() {
   const data = await getData()
 
   return (
-    <Appshell title="Clients">
+    <Appshell>
       <DataTable columns={columns} data={data} />
     </Appshell>
   )

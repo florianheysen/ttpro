@@ -5,8 +5,10 @@ import { UserProfile } from "@clerk/nextjs";
 export default async function MePage() {
 
   return (
-    <Appshell title="Commandes">
-        <UserProfile />
+    <Appshell>
+        <section className="dark:invert">
+          <UserProfile />
+        </section>
     </Appshell>
   )
 }

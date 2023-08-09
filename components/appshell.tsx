@@ -5,16 +5,23 @@ import { ClerkLoaded, ClerkLoading, useUser, SignOutButton } from "@clerk/nextjs
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
 
+import { useTheme } from "next-themes"
+
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MixerHorizontalIcon, ExitIcon, CardStackIcon, PersonIcon, DashboardIcon, CalendarIcon, CrumpledPaperIcon } from "@radix-ui/react-icons"
+import { MixerHorizontalIcon, ExitIcon, CardStackIcon, PersonIcon, DashboardIcon, CalendarIcon, CrumpledPaperIcon, MoonIcon, SunIcon, AccessibilityIcon } from "@radix-ui/react-icons"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -105,6 +112,8 @@ const Appshell = ({
     }
   ]
 
+  const { setTheme, theme } = useTheme()
+
   return <div>
   {/* <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. --> */}
   <div className="relative z-40 md:hidden" role="dialog" aria-modal="true">
@@ -131,7 +140,7 @@ const Appshell = ({
           From: "translate-x-0"
           To: "-translate-x-full"
       --> */}
-      <div className="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4">
+      <div className="relative flex w-full max-w-xs flex-1 flex-col bg-white dark:bg-black pt-5 pb-4">
         {/* <!--
           Close button, show/hide based on off-canvas menu state.
 
@@ -146,8 +155,8 @@ const Appshell = ({
           <button type="button" className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
             <span className="sr-only">Close sidebar</span>
            {/*  <!-- Heroicon name: outline/x-mark --> */}
-            <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
@@ -177,14 +186,13 @@ const Appshell = ({
           </nav>
         </div>
       </div>
-
       <div className="w-14 flex-shrink-0" aria-hidden="true">
       </div>
     </div>
   </div>
 
   <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-    <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
+    <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:border-gray-800 pt-5">
       <div className="flex width-full justify-between items-center px-4">
         <ContextMenu>
           <ContextMenuTrigger>
@@ -215,8 +223,28 @@ const Appshell = ({
                 <DropdownMenuItem className="cursor-pointer" asChild>
                   <Link href="/me"><MixerHorizontalIcon className="mr-2" />  Gérer mon compte</Link>
                 </DropdownMenuItem>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                      <SunIcon className={`mr-2 + ${theme != "light" && "hidden"}`} />
+                      <MoonIcon className={`mr-2 + ${theme != "dark" && "hidden"}`} />
+                    Changer de thème
+                    </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("light")}>
+                      <SunIcon className="mr-2" /> Clair
+                    </DropdownMenuItem >
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("dark")}>
+                    <MoonIcon className="mr-2" /> Sombre
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("system")}>
+                    <AccessibilityIcon className="mr-2" /> Système
+                    </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
                 <SignOutButton>
-                  <DropdownMenuItem className="focus:bg-red-100 cursor-pointer"><ExitIcon className="mr-2" /> Déconnexion</DropdownMenuItem>
+                  <DropdownMenuItem className="focus:bg-red-100 dark:focus:bg-red-800 cursor-pointer"><ExitIcon className="mr-2" /> Déconnexion</DropdownMenuItem>
                 </SignOutButton>
               </DropdownMenuGroup>
             </DropdownMenuContent>

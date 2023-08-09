@@ -1,4 +1,3 @@
-import { Table } from "@tanstack/react-table"
 import {
   ChevronLeft,
   ChevronRight,
@@ -6,6 +5,7 @@ import {
   ChevronsRight,
 } from "lucide-react"
 
+import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -15,31 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface DataTablePaginationProps {
-  setPage: any
-  pageCount: any
-  page: number
-}
+export function DataTablePaginationLoading() {
 
-export function DataTablePagination({setPage, pageCount, page}: DataTablePaginationProps) {
-
-  function handlePrevious() {
-    setPage(
-      (p: any) => { 
-        if(p === 1) return p;
-        return p - 1;
-      }
-    )
-  }
-
-  function handleNext() {
-    setPage(
-      (p: any) => { 
-        if(p === pageCount) return p;
-        return p +1;
-      }
-    )
-  }
 
   return (
     <div className="flex items-center justify-between px-2">
@@ -65,15 +42,13 @@ export function DataTablePagination({setPage, pageCount, page}: DataTablePaginat
           </Select> */}
         </div>
         <div className="flex w-[120px] items-center justify-center text-sm font-medium">
-          Page {page} sur{" "}
-          {Math.ceil(pageCount)}
+            <Skeleton className="w-full h-[20px] rounded" />
         </div>
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            disabled={page === 1} 
-            onClick={() => {setPage(1)}}
+            disabled={true}
           >
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft className="h-4 w-4" />
@@ -81,8 +56,7 @@ export function DataTablePagination({setPage, pageCount, page}: DataTablePaginat
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            disabled={page === 1} 
-            onClick={handlePrevious}
+            disabled={true} 
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft className="h-4 w-4" />
@@ -90,8 +64,7 @@ export function DataTablePagination({setPage, pageCount, page}: DataTablePaginat
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            disabled={Math.ceil(pageCount) === page} 
-            onClick={handleNext}
+            disabled={true}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight className="h-4 w-4" />
@@ -99,8 +72,7 @@ export function DataTablePagination({setPage, pageCount, page}: DataTablePaginat
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            disabled={Math.ceil(pageCount) === page} 
-            onClick={() => {setPage(Math.ceil(pageCount))}}
+            disabled={true} 
           >
             <span className="sr-only">Go to last page</span>
             <ChevronsRight className="h-4 w-4" />

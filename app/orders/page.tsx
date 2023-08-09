@@ -1,23 +1,70 @@
-import Appshell  from "@/components/appshell";
+"use client";
 
-import { Order, columns } from "./columns"
-import { DataTable } from "./data-table"
+import Appshell from "@/components/appshell";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
+import { Toaster } from "sonner";
+import { DataTablePagination } from "@/components/ui/datatable-pagination";
+import { TableLoading } from "./table-loading";
+import { DataTablePaginationLoading } from "@/components/ui/datatable-pagination-loading";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { CardStackPlusIcon } from "@radix-ui/react-icons";
 
-async function getData(): Promise<Order[]> {
-  const res = await fetch('http://localhost:3000/api/orders')
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
-  }
-  return res.json()
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+function Orders() {
+    const [page, setPage] = useState(1);
+    const [pageCount, setPageCount] = useState(0);
+
+    const { data } = useSWR(`http://localhost:3000/api/orders?page=${page}`, fetcher);
+
+    useEffect(() => {
+        if (data) {
+            setPageCount(data.pagination.pageCount);
+        }
+    }, [data]);
+
+    const test = Array.from({ length: 10 }, (_, index) => index + 1);
+
+    if (!data)
+        return (
+            <Appshell>
+                <div className="flex justify-between pb-8">
+                    <h1 className="text-3xl font-semibold">Commandes</h1>
+                    <Button variant="outline" asChild>
+                        <Link href="/orders/create">
+                            <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouvelle commande
+                        </Link>
+                    </Button>
+                </div>
+                <TableLoading columns={columns} data={test} />
+                <div className="flex items-center justify-end space-x-2 py-4">
+                    <DataTablePaginationLoading />
+                </div>
+                <Toaster closeButton />
+            </Appshell>
+        );
+
+    return (
+        <Appshell>
+            <div className="flex justify-between">
+                <h1 className="text-3xl font-semibold">Commandes</h1>
+                <Button variant="outline" asChild>
+                    <Link href="/orders/create">
+                        <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouvelle commande
+                    </Link>
+                </Button>
+            </div>
+            <DataTable columns={columns} data={data.orders} />
+            <div className="flex items-center justify-end space-x-2 py-4">
+                <DataTablePagination page={page} setPage={setPage} pageCount={pageCount} />
+            </div>
+            <Toaster closeButton />
+        </Appshell>
+    );
 }
 
-export default async function DemoPage() {
-  const data = await getData()
-
-  return (
-    <Appshell title="Commandes">
-      <h1 className="text-3xl font-semibold">Commandes</h1>
-      <DataTable columns={columns} data={data} />
-    </Appshell>
-  )
-}
+export default Orders;

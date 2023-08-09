@@ -1,9 +1,4 @@
-"use client"
-
-import React, { useState, useEffect } from "react"
-
 import Appshell  from "@/components/appshell";
-import { setLocal } from "@/lib/utils";
 
 export const metadata = {
   title: 'Create Next App',

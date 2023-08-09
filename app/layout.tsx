@@ -1,7 +1,7 @@
 import './globals.css'
-import { Toaster } from "@/components/ui/toaster"
 
 import { ClerkProvider } from '@clerk/nextjs';
+import { ThemeProvider } from "@/components/themeProvider"
 import { frFR } from "@clerk/localizations";
 
 export default function RootLayout({
@@ -13,8 +13,9 @@ export default function RootLayout({
     <ClerkProvider localization={frFR}>
         <html lang="fr" className="h-full">
           <body className="h-full">
-            {children}
-            <Toaster />
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+            </ThemeProvider>
           </body>
         </html>
       </ClerkProvider>

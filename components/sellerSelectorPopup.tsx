@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -29,7 +30,7 @@ export function SellerSelectorPopup({ order, handleChange }: ISellerSelectorPopu
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button className='w-[250px] text-left' variant="outline">{order.seller === null ? 'Choisir un vendeur' : order.seller}</Button>
+        <Button className='text-left w-[185px]' variant="outline">{order.seller === null ? 'Choisir un vendeur' : order.seller}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -41,7 +42,7 @@ export function SellerSelectorPopup({ order, handleChange }: ISellerSelectorPopu
         { !sellers ? 'Chargement...' :
           <RadioGroup defaultValue={order.seller} onValueChange={(value) => handleChange("seller",value)}>
             {sellers.map((vendeur: any) => (
-                <div key={vendeur._id} className="flex items-center bg-gray-100 rounded pl-4">
+                <div key={vendeur._id} className="flex items-center bg-gray-100 dark:bg-slate-900 rounded pl-4">
                   <RadioGroupItem value={vendeur.name} id={vendeur._id} />
                   <Label className='w-full h-full px-4 py-4 cursor-pointer' htmlFor={vendeur._id}>{vendeur.name}</Label>
                 </div>
@@ -49,7 +50,8 @@ export function SellerSelectorPopup({ order, handleChange }: ISellerSelectorPopu
           </RadioGroup> 
         }
         <AlertDialogFooter>
-          <AlertDialogAction>Continuer</AlertDialogAction>
+          <AlertDialogCancel>Fermer</AlertDialogCancel>
+          <AlertDialogAction>Valider</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
