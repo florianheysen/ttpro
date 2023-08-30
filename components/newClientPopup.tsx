@@ -16,7 +16,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 
-function NewClientPopup({ handleChange }: { handleChange: any }) {
+import { toast } from "sonner";
+
+export function NewClientPopup({ handleChange }: { handleChange: any }) {
+    const [isPopupOpen, setPopupOpen] = React.useState(false);
+
     const [client, setClient] = React.useState({
         name: "",
         email_address: "",
@@ -29,18 +33,23 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
     });
 
     const createClient = async () => {
-        const res = await fetch("http://localhost:3000/api/createClient", {
-            method: "POST",
-            headers: {
-                Accept: "application.json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ client: client }),
-        });
+        if (client.name.trim() != "") {
+            const res = await fetch("http://localhost:3000/api/createClient", {
+                method: "POST",
+                headers: {
+                    Accept: "application.json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ client: client }),
+            });
 
-        const result = await res.json();
+            const result = await res.json();
 
-        handleChange("client", result);
+            handleChange("client", result);
+            setPopupOpen(false);
+        } else {
+            toast.error("Veuillez renseigner un nom");
+        }
     };
 
     const handleClientChange = (field: string, newValue: unknown) => {
@@ -51,25 +60,14 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
     };
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger>
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button variant="outline" className="h-9 w-9 p-0">
-                                <span className="sr-only">Nouveau client</span>
-                                <PlusIcon className="h-4 w-4" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>Nouveau client</p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </AlertDialogTrigger>
+        <AlertDialog open={isPopupOpen}>
+            <Button onClick={() => setPopupOpen(true)} variant="outline" className="h-9 w-9 p-0">
+                <span className="sr-only">Nouveau client</span>
+                <PlusIcon className="h-4 w-4" />
+            </Button>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Créer un nouveau client</AlertDialogTitle>
+                    <AlertDialogTitle>Nouveau client</AlertDialogTitle>
                     <AlertDialogDescription>
                         Créer une nouvelle fiche client et assigner directement à la prise de commande en cours.
                     </AlertDialogDescription>
@@ -81,13 +79,14 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
                                 <Label htmlFor="name">Nom complet</Label>
                                 <Input
                                     onChange={(e) => handleClientChange("name", e.target.value)}
+                                    autoFocus={true}
                                     type="text"
                                     id="name"
                                     placeholder="Jean Dupont"
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5 w-1/2">
-                                <Label htmlFor="name">Adresse e-mail</Label>
+                                <Label htmlFor="email">Adresse e-mail</Label>
                                 <Input
                                     onChange={(e) => handleClientChange("email_address", e.target.value)}
                                     type="email"
@@ -97,7 +96,7 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1.5 w-full">
-                            <Label htmlFor="name">Adresse postale</Label>
+                            <Label htmlFor="postal_address">Adresse postale</Label>
                             <Input
                                 onChange={(e) => handleClientChange("postal_address", e.target.value)}
                                 type="text"
@@ -107,7 +106,7 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
                         </div>
                         <div className="flex gap-6">
                             <div className="flex flex-col gap-1.5 w-1/2">
-                                <Label htmlFor="name">Ville</Label>
+                                <Label htmlFor="city">Ville</Label>
                                 <Input
                                     onChange={(e) => handleClientChange("city", e.target.value)}
                                     type="text"
@@ -116,18 +115,18 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5 w-1/2">
-                                <Label htmlFor="name">Code postal</Label>
+                                <Label htmlFor="postal_code">Code postal</Label>
                                 <Input
                                     onChange={(e) => handleClientChange("postal_code", e.target.value)}
-                                    type="email"
-                                    id="email"
+                                    type="text"
+                                    id="postal_code"
                                     placeholder="62530"
                                 />
                             </div>
                         </div>
                         <div className="flex gap-6">
                             <div className="flex flex-col gap-1.5 w-1/2">
-                                <Label htmlFor="name">Téléphone Portable</Label>
+                                <Label htmlFor="phone_port">Téléphone Portable</Label>
                                 <Input
                                     onChange={(e) => handleClientChange("phone_port", e.target.value)}
                                     type="text"
@@ -136,7 +135,7 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5 w-1/2">
-                                <Label htmlFor="name">Téléphone Fixe</Label>
+                                <Label htmlFor="phone_fixe">Téléphone Fixe</Label>
                                 <Input
                                     onChange={(e) => handleClientChange("phone_fixe", e.target.value)}
                                     type="email"
@@ -148,12 +147,10 @@ function NewClientPopup({ handleChange }: { handleChange: any }) {
                     </div>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
-                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                    <AlertDialogCancel onClick={() => setPopupOpen(false)}>Annuler</AlertDialogCancel>
                     <AlertDialogAction onClick={createClient}>Créer et assigner</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
     );
 }
-
-export default NewClientPopup;

@@ -1,9 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
 
-export async function GET(req : NextRequest){
-    const url = new URL(req.url)
-    const id: any = url.searchParams.get("id")
+export async function GET(req: NextRequest) {
+    const url = new URL(req.url);
+    const id: any = url.searchParams.get("id");
 
     try {
         const client = await clientPromise;
@@ -11,11 +12,11 @@ export async function GET(req : NextRequest){
 
         const order = await db
             .collection("orders")
-            .find({_id: id})
-            .sort( { created_at: -1 } )
-            .toArray()
- 
-            return NextResponse.json(order);
+            .find({ _id: new ObjectId(id) })
+            .sort({ created_at: -1 })
+            .toArray();
+
+        return NextResponse.json(order[0]);
     } catch (e) {
         console.error(e);
     }

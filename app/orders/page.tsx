@@ -12,8 +12,7 @@ import { DataTablePaginationLoading } from "@/components/ui/datatable-pagination
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CardStackPlusIcon } from "@radix-ui/react-icons";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { fetcher } from "@/lib/utils";
 
 function Orders() {
     const [page, setPage] = useState(1);

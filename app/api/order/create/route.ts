@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
 export async function POST(req: Request) {
-    const { client } = await req.json();
+    const { order } = await req.json();
 
     try {
         const mongo = await clientPromise;
         const db = mongo.db("TTPRO_LAMAREEBARLIN");
-        const result = await db.collection("clients").insertOne(client);
+        const result = await db.collection("orders").insertOne(order);
 
         const resClient = {
-            ...client,
+            ...order,
             _id: result.insertedId,
         };
 

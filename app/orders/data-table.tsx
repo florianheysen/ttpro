@@ -57,13 +57,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <div>
             <div className="flex items-center justify-between py-4">
                 {/* <Input
-          placeholder="Chercher un client..."
-          value={(table.getColumn("clientName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("clientName")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
+                placeholder="Chercher un client..."
+                value={(table.getColumn("clientName")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                  table.getColumn("clientName")?.setFilterValue(event.target.value)
+                }
+                className="max-w-sm"
+              /> */}
             </div>
             <div className="rounded-md border h-[532px] overflow-y-scroll">
                 <Table>
@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead className={`w-[${header.column.columnDef.size}px]`} key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(header.column.columnDef.header, header.getContext())}

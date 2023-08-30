@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon, CaretSortIcon } from "@radix-ui/react-icons";
+import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon } from "@radix-ui/react-icons";
 
 import moment from "moment";
 
@@ -57,32 +57,15 @@ function handleCopyID(id: string) {
 }
 
 export const columns: ColumnDef<any>[] = [
-    /* {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  }, */
     {
         accessorKey: "num",
         header: "Numéro",
+        size: 120,
     },
     {
         accessorKey: "clientName",
         header: "Client",
+        size: 250,
     },
     {
         accessorKey: "created_at",

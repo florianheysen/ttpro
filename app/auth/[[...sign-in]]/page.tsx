@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { SignIn, ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
-import { SymbolIcon } from '@radix-ui/react-icons';
+import { SymbolIcon } from "@radix-ui/react-icons";
 
 export default async function Home() {
     return (
@@ -12,12 +12,12 @@ export default async function Home() {
             </ClerkLoading>
             <ClerkLoaded>
                 <div>
-                    <Image src="/logo-full.svg" height={200} width={200} alt="Traiteur Pro" />
+                    {/* <Image src="/logo-full.svg" height={200} width={200} alt="Traiteur Pro" /> */}
                     <div className="-ml-14">
                         <SignIn afterSignInUrl="/" />
                     </div>
                 </div>
             </ClerkLoaded>
         </main>
-    )
-  }
+    );
+}

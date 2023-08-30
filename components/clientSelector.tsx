@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-export default function ClientSelector({ order, handleChange }: { order: any; handleChange: any }) {
+export function ClientSelector({ order, handleChange }: { order: any; handleChange: any }) {
     const [open, setOpen] = React.useState(false);
     const [clients, setClients]: any = React.useState([]);
 
