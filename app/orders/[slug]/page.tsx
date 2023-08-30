@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Toaster, toast } from "sonner";
-import { useRouter } from "next/navigation";
 import moment from "moment";
 import {
     setLocal,
@@ -237,8 +236,6 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                 break;
         }
     };
-
-    const router = useRouter();
 
     const handleSubmit = async () => {
         if (orderValidation(order) === true) {
