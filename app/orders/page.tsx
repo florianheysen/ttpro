@@ -18,7 +18,7 @@ function Orders() {
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
 
-    const { data } = useSWR(`http://localhost:3000/api/orders?page=${page}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders?page=${page}`, fetcher);
 
     useEffect(() => {
         if (data) {

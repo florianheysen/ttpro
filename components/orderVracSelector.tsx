@@ -17,7 +17,7 @@ export function OrderVracSelector({ order, handleChange }: { order: any; handleC
     const debouncedSearch = React.useRef(
         debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
             try {
-                const res = await fetch("http://localhost:3000/api/vrac", {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/vrac`, {
                     method: "POST",
                     headers: {
                         Accept: "application.json",

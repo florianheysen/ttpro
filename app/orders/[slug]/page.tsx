@@ -66,7 +66,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
     const [accompte, setAccompte] = React.useState<any>(0);
     const [client, setClient] = React.useState<boolean>(false);
     const [order, setOrder] = React.useState<any>(null);
-    const { data } = useSWR(`http://localhost:3000/api/order?id=${params.slug}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.slug}`, fetcher);
 
     React.useEffect(() => {
         if (data && data.meals) {
@@ -257,7 +257,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
             };
             delete finalOrder.client;
 
-            const res = await fetch(`http://localhost:3000/api/order/edit`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/order/edit`, {
                 method: "POST",
                 headers: {
                     Accept: "application.json",

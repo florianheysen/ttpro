@@ -92,7 +92,7 @@ export default function CreateOrder() {
             };
             delete finalOrder.client;
 
-            const res = await fetch("http://localhost:3000/api/order/create", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/order/create`, {
                 method: "POST",
                 headers: {
                     Accept: "application.json",
@@ -107,7 +107,7 @@ export default function CreateOrder() {
         }
     };
 
-    const { data: nextNum } = useSWR(`http://localhost:3000/api/orderNum`, fetcher);
+    const { data: nextNum } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orderNum`, fetcher);
 
     React.useEffect(() => {
         handleChange("num", nextNum);

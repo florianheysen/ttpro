@@ -4,7 +4,7 @@ import { Client, columns } from "./columns"
 import { DataTable } from "./data-table"
 
 async function getData(): Promise<Client[]> {
-  const res = await fetch('http://localhost:3000/api/clients')
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients`)
   if (!res.ok) {
     throw new Error('Failed to fetch data')
   }

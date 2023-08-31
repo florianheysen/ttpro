@@ -2,7 +2,6 @@
 
 import Appshell from "@/components/appshell";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Order } from "@/types";
 import { Page, Text, View, Document, PDFViewer, StyleSheet } from "@react-pdf/renderer";
 import moment from "moment";
 import React from "react";
@@ -17,7 +16,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
         setIsClient(true);
     }, []);
 
-    const { data } = useSWR(`http://localhost:3000/api/order?id=${params.slug}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.slug}`, fetcher);
 
     React.useEffect(() => {
         data && setOrder(data);

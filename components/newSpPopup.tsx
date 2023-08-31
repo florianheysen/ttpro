@@ -86,7 +86,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
 
     React.useEffect(() => {
         const getIngredientsSp = async () => {
-            const res = await fetch("http://localhost:3000/api/sp", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/sp`, {
                 method: "GET",
                 headers: {
                     Accept: "application.json",

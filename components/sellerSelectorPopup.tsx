@@ -24,7 +24,7 @@ interface ISellerSelectorPopupProps {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export function SellerSelectorPopup({ order, handleChange }: ISellerSelectorPopupProps) {
-    const { data: sellers } = useSWR("/api/sellers", fetcher);
+    const { data: sellers } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellers`, fetcher);
     const [isOpen, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {

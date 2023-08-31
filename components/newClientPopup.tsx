@@ -34,7 +34,7 @@ export function NewClientPopup({ handleChange }: { handleChange: any }) {
 
     const createClient = async () => {
         if (client.name.trim() != "") {
-            const res = await fetch("http://localhost:3000/api/createClient", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/createClient`, {
                 method: "POST",
                 headers: {
                     Accept: "application.json",
