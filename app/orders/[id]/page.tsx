@@ -32,49 +32,29 @@ import { EditSpPopup } from "@/components/editSpPopup";
 import { OrderDatePicker } from "@/components/orderDatePicker";
 
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 
-const orderValidation = (order: any) => {
-    if (order.seller === null) {
-        toast.error("Veuillez sélectionner un vendeur");
-    }
-    if (order.client === null) {
-        toast.error("Veuillez sélectionner un client");
-    }
-    if (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) {
-        toast.error("Veuillez sélectionner au moins un plat/vrac");
-    }
-    if (order.delivery_date === null) {
-        toast.error("Veuillez choisir une date de livraison");
-    }
-    if (order.delivery_date === moment(new Date()).format("YYYY-MM-DD")) {
-        toast.error("La livraison ne peux pas être le jour actuel");
-    }
-    if (
-        order.seller === null ||
-        order.client === null ||
-        (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) ||
-        order.delivery_date === null ||
-        order.delivery_date === moment(new Date()).format("YYYY-MM-DD")
-    ) {
-        return false;
-    } else {
-        return true;
-    }
-};
-
-export default function Pagee({ params }: { params: { slug: string } }) {
+export default function Page({ params }: { params: { id: string } }) {
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.id}`, fetcher);
     const [accompte, setAccompte] = React.useState<any>(0);
     const [client, setClient] = React.useState<boolean>(false);
     const [order, setOrder] = React.useState<any>(null);
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.slug}`, fetcher);
+
+    console.log(order);
+
+    const router = useRouter();
 
     React.useEffect(() => {
         if (data && data.meals) {
             const meals = data.meals;
+            const specialMeals = data.specialMeals;
+            const vrac = data.vrac;
             setOrder(
                 convertObj1ToObj2({
                     ...data,
                     meals,
+                    specialMeals,
+                    vrac,
                 })
             );
         }
@@ -84,13 +64,44 @@ export default function Pagee({ params }: { params: { slug: string } }) {
         setTimeout(() => {
             setClient(true);
         }, 200);
-    }, []);
+    }, [data, client]);
 
     React.useEffect(() => {
         setLocal("order", JSON.stringify(order));
     }, [order]);
 
-    if (order === null) return <>Loading...</>;
+    if (order === null)
+        return (
+            <div className="w-screen h-screen flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 2400" width="24" height="24">
+                    <g stroke-width="200" stroke-linecap="round" stroke="#000" fill="none">
+                        <path d="M1200 600V100" />
+                        <path opacity=".5" d="M1200 2300v-500" />
+                        <path opacity=".917" d="M900 680.4l-250-433" />
+                        <path opacity=".417" d="M1750 2152.6l-250-433" />
+                        <path opacity=".833" d="M680.4 900l-433-250" />
+                        <path opacity=".333" d="M2152.6 1750l-433-250" />
+                        <path opacity=".75" d="M600 1200H100" />
+                        <path opacity=".25" d="M2300 1200h-500" />
+                        <path opacity=".667" d="M680.4 1500l-433 250" />
+                        <path opacity=".167" d="M2152.6 650l-433 250" />
+                        <path opacity=".583" d="M900 1719.6l-250 433" />
+                        <path opacity=".083" d="M1750 247.4l-250 433" />
+                        <animateTransform
+                            attributeName="transform"
+                            attributeType="XML"
+                            type="rotate"
+                            keyTimes="0;0.08333;0.16667;0.25;0.33333;0.41667;0.5;0.58333;0.66667;0.75;0.83333;0.91667"
+                            values="0 1199 1199;30 1199 1199;60 1199 1199;90 1199 1199;120 1199 1199;150 1199 1199;180 1199 1199;210 1199 1199;240 1199 1199;270 1199 1199;300 1199 1199;330 1199 1199"
+                            dur="0.83333s"
+                            begin="0s"
+                            repeatCount="indefinite"
+                            calcMode="discrete"
+                        />
+                    </g>
+                </svg>
+            </div>
+        );
 
     const handleChange = (field: string, newValue: unknown) => {
         setOrder((prevState: any) => ({
@@ -268,42 +279,46 @@ export default function Pagee({ params }: { params: { slug: string } }) {
 
             const result = await res.json();
 
-            console.log(result);
-
-            /* router.push(`/orders/print/${result._id}`); */
+            if (result.acknowledged === true) {
+                router.push(`/orders/print/${params.id}`);
+            } else {
+                toast.error("Une erreur est survenue");
+            }
         }
     };
 
-    const mealPrice: number = order.meals.reduce(
+    const mealPrice: number = order.meals?.reduce(
         (total: number, obj: { price: number; qty: number }) => obj.price * obj.qty + total,
         0
     );
 
-    const spPrice: number = order.specialMeals.reduce(
+    const spPrice: number = order.specialMeals?.reduce(
         (total: number, obj: { finalPrice: number; qty: number }) => obj.finalPrice * obj.qty + total,
         0
     );
 
-    const vracPrice: number = order.vrac.reduce(
+    const vracPrice: number = order.vrac?.reduce(
         (total: number, obj: { price: number; qty: number }) => obj.price * obj.qty + total,
         0
     );
 
-    const totalPrice = mealPrice + spPrice + vracPrice;
+    const totalPrice = (mealPrice || 0) + (spPrice || 0) + (vracPrice || 0);
+
+    console.log(mealPrice, spPrice, vracPrice, totalPrice);
 
     return (
         <Appshell>
             <div className="flex align-middle justify-between">
                 <h1 className="text-3xl font-semibold">Commande {order.num}</h1>
                 <div className="flex gap-3 mb-4">
-                    <SellerSelectorPopup order={order} handleChange={handleChange} />
+                    <SellerSelectorPopup isDefaultOpen={false} order={order} handleChange={handleChange} />
                     <Button
                         className={order.consigne ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}
                         onClick={() => handleChange("consigne", !order.consigne)}
                     >
                         Consigne
                     </Button>
-                    <Button onClick={handleSubmit}>Créer la commande</Button>
+                    <Button onClick={handleSubmit}>Mettre à jour</Button>
                 </div>
             </div>
             <div className="flex flex-col gap-1 text-sm font-semibold py-4">
@@ -338,7 +353,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                     </div>
                     <div className="flex flex-col">
                         <span className="mb-1 ">Date de livraison</span>
-                        <OrderDatePicker handleChange={handleChange} />
+                        <OrderDatePicker order={order} handleChange={handleChange} />
                     </div>
                 </div>
                 <span className="mb-1 mt-8">Ajouter à la commande</span>
@@ -598,3 +613,32 @@ export default function Pagee({ params }: { params: { slug: string } }) {
         </Appshell>
     );
 }
+
+const orderValidation = (order: any) => {
+    if (order.seller === null) {
+        toast.error("Veuillez sélectionner un vendeur");
+    }
+    if (order.client === null) {
+        toast.error("Veuillez sélectionner un client");
+    }
+    if (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) {
+        toast.error("Veuillez sélectionner au moins un plat/vrac");
+    }
+    if (order.delivery_date === null) {
+        toast.error("Veuillez choisir une date de livraison");
+    }
+    if (order.delivery_date === moment(new Date()).format("YYYY-MM-DD")) {
+        toast.error("La livraison ne peux pas être le jour actuel");
+    }
+    if (
+        order.seller === null ||
+        order.client === null ||
+        (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) ||
+        order.delivery_date === null ||
+        order.delivery_date === moment(new Date()).format("YYYY-MM-DD")
+    ) {
+        return false;
+    } else {
+        return true;
+    }
+};

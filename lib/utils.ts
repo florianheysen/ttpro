@@ -30,7 +30,7 @@ export function stringIngredients(ingredients: any) {
     for (let i = 0; i < ingredients.length; i++) {
         const ingredient = ingredients[i];
         const nomIngredient = ingredient.name;
-        const quantite = `${ingredient.qty}${ingredient.unit.symbol}`;
+        const quantite = `${ingredient.qty}${ingredient.unit?.symbol}`;
 
         chaineIngredients += `${quantite} ${nomIngredient}`;
 
@@ -82,7 +82,7 @@ export function calculerTotalMayonnaise(data: any) {
 
 export function convertObj1ToObj2(obj1: any) {
     const client = {
-        _id: obj1.clientId.$oid,
+        _id: obj1.clientId.$oid || obj1._id,
         name: obj1.clientName,
         email_address: "",
         inserted_at: "",
@@ -94,7 +94,7 @@ export function convertObj1ToObj2(obj1: any) {
         phone_port: obj1.clientInfo.phone_port,
     };
 
-    const meals = obj1.meals.map((meal: any) => ({
+    const meals = obj1.meals?.map((meal: any) => ({
         mealId: meal.mealId,
         code: meal.code,
         name: meal.name,
@@ -104,16 +104,17 @@ export function convertObj1ToObj2(obj1: any) {
         comment: meal.comment,
     }));
 
-    const specialMeals = obj1.specialMeals.map((specialMeal: any) => ({
+    const specialMeals = obj1.specialMeals?.map((specialMeal: any) => ({
         code: specialMeal.code,
         id: specialMeal.id,
         personnes: specialMeal.personnes,
         finalPrice: specialMeal.finalPrice,
         qty: specialMeal.qty,
         selectedIngredients: specialMeal.selectedIngredients,
+        comment: specialMeal.comment,
     }));
 
-    const vrac = obj1.vrac.map((vracItem: any) => ({
+    const vrac = obj1.vrac?.map((vracItem: any) => ({
         _id: vracItem._id,
         code: vracItem.code,
         name: vracItem.name,
@@ -131,7 +132,7 @@ export function convertObj1ToObj2(obj1: any) {
         specialMeals,
         vrac,
         consigne: obj1.consigne,
-        accompte: obj1.accompte,
+        accompte: obj1.accompte || obj1.deposit,
         delivery_date: obj1.delivery_date,
         created_at: obj1.created_at,
     };

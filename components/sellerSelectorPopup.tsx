@@ -19,17 +19,18 @@ import { Button } from "@/components/ui/button";
 interface ISellerSelectorPopupProps {
     order: any;
     handleChange: any;
+    isDefaultOpen: boolean
 }
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export function SellerSelectorPopup({ order, handleChange }: ISellerSelectorPopupProps) {
+export function SellerSelectorPopup({ order, handleChange, isDefaultOpen }: ISellerSelectorPopupProps) {
     const { data: sellers } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellers`, fetcher);
     const [isOpen, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {
         const timeoutId = setTimeout(() => {
-            setIsOpen(true);
+            setIsOpen(isDefaultOpen);
         }, 200);
 
         return () => {

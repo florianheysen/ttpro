@@ -16,19 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 
-function genId() {
-    const caracteres = "abcdefghijklmnopqrstuvwxyz0123456789";
-    const caracteresLength = caracteres.length;
-    let chaine = "";
-
-    for (let i = 0; i < 24; i++) {
-        const randomIndex = Math.floor(Math.random() * caracteresLength);
-        chaine += caracteres[randomIndex];
-    }
-
-    return chaine;
-}
-
 export function EditSpPopup({ handleChange, order, initialData }: { handleChange: any; order: any; initialData: any }) {
     const [isPopupOpen, setPopupOpen] = React.useState(false);
     const [ingredients, setIngredients]: any = React.useState([]);
@@ -37,7 +24,7 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
     const [personnes, setPersonnes] = React.useState(initialData.personnes);
 
     const createPlateau = () => {
-        const finalIngredients = ingredients.filter((i: any) => i.qty !== "0");
+        const finalIngredients = ingredients.filter((i: any) => i.qty !== "0" && i.qty !== 0);
 
         let finalPrice = 0;
 
@@ -54,6 +41,7 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
             finalPrice,
             qty: initialData.qty,
             selectedIngredients: finalIngredients,
+            comment: initialData.comment,
         };
 
         const indexElement = order.specialMeals.findIndex((sp: any) => sp.id === initialData.id);

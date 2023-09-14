@@ -284,7 +284,7 @@ export default function CreateOrder() {
             <div className="flex align-middle justify-between">
                 <h1 className="text-3xl font-semibold">Nouvelle commande</h1>
                 <div className="flex gap-3 mb-4">
-                    <SellerSelectorPopup order={order} handleChange={handleChange} />
+                    <SellerSelectorPopup isDefaultOpen={true} order={order} handleChange={handleChange} />
                     <Button
                         className={order.consigne ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}
                         onClick={() => handleChange("consigne", !order.consigne)}
@@ -326,7 +326,7 @@ export default function CreateOrder() {
                     </div>
                     <div className="flex flex-col">
                         <span className="mb-1 ">Date de livraison</span>
-                        <OrderDatePicker handleChange={handleChange} />
+                        <OrderDatePicker order={order}  handleChange={handleChange} />
                     </div>
                 </div>
                 <span className="mb-1 mt-8">Ajouter à la commande</span>

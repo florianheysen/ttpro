@@ -16,6 +16,8 @@ export default function Pagee({ params }: { params: { slug: string } }) {
         setIsClient(true);
     }, []);
 
+    console.log(order);
+
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.slug}`, fetcher);
 
     React.useEffect(() => {
@@ -115,7 +117,6 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                 {order?.specialMeals.map((item: any) => (
                                     <React.Fragment key={item.id}>
                                         {/* <Text style={styles.miniHeadTable}>Plateau spécial</Text> */}
-                                        <Text style={styles.comment}>{item.comment}</Text>
                                         <View style={styles.row} wrap={false}>
                                             <React.Fragment key={item.id}>
                                                 <Text style={styles.row1}>
@@ -133,6 +134,9 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                                     <Text style={styles.bold}>
                                                         {Math.ceil(item?.finalPrice).toFixed(2)} EUR
                                                     </Text>
+                                                </Text>
+                                                <Text style={styles.row5} key={item.comment}>
+                                                    {item.comment}
                                                 </Text>
                                             </React.Fragment>
                                         </View>
@@ -156,6 +160,9 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                                     <Text style={styles.bold}>
                                                         {(item?.price * item?.qty).toFixed(2)} EUR
                                                     </Text>
+                                                </Text>
+                                                <Text style={styles.row4} key={item.comment}>
+                                                    {item.comment}
                                                 </Text>
                                             </React.Fragment>
                                         </View>
