@@ -77,22 +77,22 @@ const Appshell = ({
   const secondaryPages = [
     {
       name: "Plats chauds",
-      href: "/hot",
+      href: "/meal/hot",
       current: pathname.includes("/hot"),
     },
     {
       name: "Plats froids",
-      href: "/cold",
+      href: "/meal/cold",
       current: pathname.includes("/cold"),
     },
     {
       name: "Plateaux PL1 à PL5",
-      href: "/special",
+      href: "/meal/special",
       current: pathname.includes("/special"),
     },
     {
       name: "Huitres ouvertes",
-      href: "/oysters",
+      href: "/meal/oysters",
       current: pathname.includes("/oysters"),
     },
     {
