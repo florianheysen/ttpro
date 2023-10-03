@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 export async function GET(req : NextRequest){
     const url = new URL(req.url)
     const page: any = url.searchParams.get("page")
+    const category: any = url.searchParams.get("category")
 
     const ITEMS_PER_PAGE = 10;
 
@@ -11,13 +12,13 @@ export async function GET(req : NextRequest){
         const client = await clientPromise;
         const db = client.db("TTPRO_LAMAREEBARLIN");
 
-        const { n: count } = await db.command({count: "clients"})
+        const count = await db.collection("meals").countDocuments({ mealCategory: category});
         const pageCount = count / ITEMS_PER_PAGE
         const skip = (page - 1 ) * ITEMS_PER_PAGE 
 
-        const clients = await db
-            .collection("clients")
-            .find()
+        const meals = await db
+            .collection("meals")
+            .find({ mealCategory: category })
             .limit(ITEMS_PER_PAGE)
             .skip(skip)
             .sort( { name: 1 } )
@@ -28,7 +29,7 @@ export async function GET(req : NextRequest){
                     count,
                     pageCount,
                 },
-                clients
+                meals
             });
     } catch (e) {
         console.error(e);

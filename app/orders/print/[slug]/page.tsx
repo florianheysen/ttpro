@@ -143,7 +143,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                     </React.Fragment>
                                 ))}
 
-                                {order?.vrac.map((item: any) => (
+                                {order?.vrac?.map((item: any) => (
                                     <React.Fragment key={item.id}>
                                         {/* <Text style={styles.miniHeadTable}>Plateau spécial</Text> */}
                                         {/* <Text style={styles.comment}>{item.comment}</Text> */}

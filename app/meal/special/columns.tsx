@@ -5,10 +5,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { PersonIcon, CopyIcon } from "@radix-ui/react-icons";
-
+import { Pencil2Icon, CopyIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
+
+import { formatPrice } from "@/lib/utils"
 
 import {
     DropdownMenu,
@@ -25,25 +26,27 @@ function handleCopyID(id: string) {
 
 export const columns: ColumnDef<any>[] = [
     {
-        accessorKey: "name",
+        accessorKey: "mealCode",
+        header: "CODE",
+    },
+    {
+        accessorKey: "mealName",
         header: "NOM",
     },
     {
-        accessorKey: "city",
-        header: "VILLE",
-    },
-    {
-        accessorKey: "phone_fixe",
-        header: "TEL",
-    },
-    {
-        accessorKey: "phone_port",
-        header: "PORTABLE",
+        accessorKey: "mealPrice",
+        header: "PRIX",
+        cell: ({ row }) => {
+            const meal = row.original;
+            return (
+                <>{formatPrice(meal.mealPrice)}</>
+            );
+        },
     },
     {
         id: "actions",
         cell: ({ row }) => {
-            const client = row.original;
+            const meal = row.original;
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -53,13 +56,13 @@ export const columns: ColumnDef<any>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <Link href={`/clients/${client._id}`}>
+                        <Link href={`/meal/${meal._id}`}>
                             <DropdownMenuItem className="cursor-pointer">
-                                <PersonIcon className="mr-2" /> Modifier le client
+                                <Pencil2Icon className="mr-2" /> Modifier le plat
                             </DropdownMenuItem>
                         </Link>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(client._id)}>
+                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(meal._id)}>
                             <CopyIcon className="mr-2" /> Copier l&apos;identifiant
                         </DropdownMenuItem>
                     </DropdownMenuContent>
