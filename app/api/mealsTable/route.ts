@@ -21,7 +21,7 @@ export async function GET(req : NextRequest){
             .find({ mealCategory: category })
             .limit(ITEMS_PER_PAGE)
             .skip(skip)
-            .sort( { name: 1 } )
+            .sort( { mealCode: 1 } )
             .toArray()
 
             return NextResponse.json({

@@ -82,18 +82,18 @@ export function calculerTotalMayonnaise(data: any) {
 
 export function convertObj1ToObj2(obj1: any) {
     const client = {
-        _id: obj1.clientId.$oid || obj1._id,
+        _id: obj1.clientId?.$oid || obj1._id,
         name: obj1.clientName,
         email_address: "",
         inserted_at: "",
         updated_at: "",
         postal_address: "",
-        city: obj1.clientInfo.city,
-        postal_code: obj1.clientInfo.postal_code,
+        city: obj1.clientInfo?.city,
+        postal_code: obj1.clientInfo?.postal_code,
         phone_fixe: "",
-        phone_port: obj1.clientInfo.phone_port,
+        phone_port: obj1.clientInfo?.phone_port,
     };
-
+    
     const meals = obj1.meals?.map((meal: any) => ({
         mealId: meal.mealId,
         code: meal.code,
@@ -103,7 +103,7 @@ export function convertObj1ToObj2(obj1: any) {
         qty: meal.qty,
         comment: meal.comment,
     }));
-
+    
     const specialMeals = obj1.specialMeals?.map((specialMeal: any) => ({
         code: specialMeal.code,
         id: specialMeal.id,
@@ -113,7 +113,7 @@ export function convertObj1ToObj2(obj1: any) {
         selectedIngredients: specialMeal.selectedIngredients,
         comment: specialMeal.comment,
     }));
-
+    
     const vrac = obj1.vrac?.map((vracItem: any) => ({
         _id: vracItem._id,
         code: vracItem.code,

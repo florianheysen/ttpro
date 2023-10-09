@@ -34,7 +34,7 @@ function Orders() {
                 <div className="flex justify-between pb-8">
                     <h1 className="text-3xl font-semibold">Clients</h1>
                     <Button variant="outline" asChild>
-                        <Link href="/orders/create">
+                        <Link href="/clients/create">
                             <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouveau client
                         </Link>
                     </Button>
@@ -52,7 +52,7 @@ function Orders() {
             <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">Clients</h1>
                 <Button variant="outline" asChild>
-                    <Link href="/orders/create">
+                    <Link href="/clients/create">
                         <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouveau client
                     </Link>
                 </Button>

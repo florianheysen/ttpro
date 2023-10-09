@@ -11,12 +11,12 @@ export async function GET(req : NextRequest){
         const client = await clientPromise;
         const db = client.db("TTPRO_LAMAREEBARLIN");
 
-        const { n: count } = await db.command({count: "sellers"})
+        const { n: count } = await db.command({count: "units"})
         const pageCount = count / ITEMS_PER_PAGE
         const skip = (page - 1 ) * ITEMS_PER_PAGE 
 
-        const sellers = await db
-            .collection("sellers")
+        const units = await db
+            .collection("units")
             .find()
             .limit(ITEMS_PER_PAGE)
             .skip(skip)
@@ -28,7 +28,7 @@ export async function GET(req : NextRequest){
                     count,
                     pageCount,
                 },
-                sellers
+                units
             });
     } catch (e) {
         console.error(e);

@@ -40,21 +40,22 @@ export default function Page({ params }: { params: { id: string } }) {
     const [client, setClient] = React.useState<boolean>(false);
     const [order, setOrder] = React.useState<any>(null);
 
-    console.log(order);
+    console.log('data:', data);
+    console.log('order:', order);
 
     const router = useRouter();
 
     React.useEffect(() => {
-        if (data && data.meals) {
-            const meals = data.meals;
+        if (data) {
+            /* const meals = data.meals;
             const specialMeals = data.specialMeals;
-            const vrac = data.vrac;
+            const vrac = data.vrac; */
             setOrder(
                 convertObj1ToObj2({
                     ...data,
-                    meals,
+                    /* meals,
                     specialMeals,
-                    vrac,
+                    vrac, */
                 })
             );
         }
@@ -303,8 +304,6 @@ export default function Page({ params }: { params: { id: string } }) {
     );
 
     const totalPrice = (mealPrice || 0) + (spPrice || 0) + (vracPrice || 0);
-
-    console.log(mealPrice, spPrice, vracPrice, totalPrice);
 
     return (
         <Appshell>
