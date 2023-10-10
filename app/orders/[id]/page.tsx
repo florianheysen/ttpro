@@ -3,14 +3,7 @@
 import * as React from "react";
 import { Toaster, toast } from "sonner";
 import moment from "moment";
-import {
-    setLocal,
-    stringIngredients,
-    formatPrice,
-    fetcher,
-    calculerTotalMayonnaise,
-    convertObj1ToObj2,
-} from "@/lib/utils";
+import { setLocal, stringIngredients, formatPrice, fetcher, calculerTotalMayonnaise, convertOrder } from "@/lib/utils";
 import Appshell from "@/components/appshell";
 import useSWR from "swr";
 
@@ -35,29 +28,16 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { id: string } }) {
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.id}`, fetcher);
+    const { data, isValidating } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.id}`, fetcher);
     const [accompte, setAccompte] = React.useState<any>(0);
     const [client, setClient] = React.useState<boolean>(false);
     const [order, setOrder] = React.useState<any>(null);
 
-    console.log('data:', data);
-    console.log('order:', order);
-
     const router = useRouter();
 
     React.useEffect(() => {
-        if (data) {
-            /* const meals = data.meals;
-            const specialMeals = data.specialMeals;
-            const vrac = data.vrac; */
-            setOrder(
-                convertObj1ToObj2({
-                    ...data,
-                    /* meals,
-                    specialMeals,
-                    vrac, */
-                })
-            );
+        if (data && !isValidating) {
+            setOrder(convertOrder(data));
         }
     }, [data, client]);
 

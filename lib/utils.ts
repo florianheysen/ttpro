@@ -1,8 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import useSWR from "swr";
 
-export const fetcher = (url: string) => fetch(url).then((res) => res.json());
+export const fetcher = (url: string) => fetch(url, { cache: "no-cache" }).then((res) => res.json());
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -80,21 +79,21 @@ export function calculerTotalMayonnaise(data: any) {
     return totalMayonnaise;
 }
 
-export function convertObj1ToObj2(obj1: any) {
+export function convertOrder(order: any) {
     const client = {
-        _id: obj1.clientId?.$oid || obj1._id,
-        name: obj1.clientName,
+        _id: order.clientId?.$oid || order._id,
+        name: order.clientName,
         email_address: "",
         inserted_at: "",
         updated_at: "",
         postal_address: "",
-        city: obj1.clientInfo?.city,
-        postal_code: obj1.clientInfo?.postal_code,
+        city: order.clientInfo?.city,
+        postal_code: order.clientInfo?.postal_code,
         phone_fixe: "",
-        phone_port: obj1.clientInfo?.phone_port,
+        phone_port: order.clientInfo?.phone_port,
     };
-    
-    const meals = obj1.meals?.map((meal: any) => ({
+
+    const meals = order.meals?.map((meal: any) => ({
         mealId: meal.mealId,
         code: meal.code,
         name: meal.name,
@@ -103,8 +102,8 @@ export function convertObj1ToObj2(obj1: any) {
         qty: meal.qty,
         comment: meal.comment,
     }));
-    
-    const specialMeals = obj1.specialMeals?.map((specialMeal: any) => ({
+
+    const specialMeals = order.specialMeals?.map((specialMeal: any) => ({
         code: specialMeal.code,
         id: specialMeal.id,
         personnes: specialMeal.personnes,
@@ -113,8 +112,8 @@ export function convertObj1ToObj2(obj1: any) {
         selectedIngredients: specialMeal.selectedIngredients,
         comment: specialMeal.comment,
     }));
-    
-    const vrac = obj1.vrac?.map((vracItem: any) => ({
+
+    const vrac = order.vrac?.map((vracItem: any) => ({
         _id: vracItem._id,
         code: vracItem.code,
         name: vracItem.name,
@@ -125,15 +124,11 @@ export function convertObj1ToObj2(obj1: any) {
     }));
 
     return {
-        num: obj1.num,
-        seller: obj1.seller,
+        ...order,
         client,
         meals,
         specialMeals,
         vrac,
-        consigne: obj1.consigne,
-        accompte: obj1.accompte || obj1.deposit,
-        delivery_date: obj1.delivery_date,
-        created_at: obj1.created_at,
+        accompte: order.accompte ?? order.deposit,
     };
 }

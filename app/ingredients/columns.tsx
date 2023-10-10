@@ -51,7 +51,7 @@ export const columns: ColumnDef<any>[] = [
                     <DropdownMenuContent align="end">
                         <Link href={`/ingredients/${ingredient._id}`}>
                             <DropdownMenuItem className="cursor-pointer">
-                                <PersonIcon className="mr-2" /> Modifier l'ingrédient
+                                <PersonIcon className="mr-2" /> Modifier l&apos;ingrédient
                             </DropdownMenuItem>
                         </Link>
                         <DropdownMenuSeparator />

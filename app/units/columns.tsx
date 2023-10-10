@@ -46,7 +46,7 @@ export const columns: ColumnDef<any>[] = [
                     <DropdownMenuContent align="end">
                         <Link href={`/units/${unit._id}`}>
                             <DropdownMenuItem className="cursor-pointer">
-                                <PersonIcon className="mr-2" /> Modifier l'unité
+                                <PersonIcon className="mr-2" /> Modifier l&apos;unité
                             </DropdownMenuItem>
                         </Link>
                         <DropdownMenuSeparator />
