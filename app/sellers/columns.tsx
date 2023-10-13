@@ -72,7 +72,7 @@ export const columns: ColumnDef<any>[] = [
                                         <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Cette action ne peut être annulée. Elle supprimera définitivement le vendeur{" "}
-                                            "{seller.name}."
+                                            &quot;{seller.name}.&quot;
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
