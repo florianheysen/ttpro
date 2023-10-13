@@ -18,6 +18,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 export type Order = {
     _id: string;
@@ -61,6 +62,13 @@ export const columns: ColumnDef<any>[] = [
         accessorKey: "num",
         header: "Numéro",
         size: 100,
+        cell: ({ row }) => {
+            return (
+                <Badge className="rounded px-2 whitespace-nowrap" variant="outline">
+                    {row.getValue("num")}
+                </Badge>
+            );
+        },
     },
     {
         accessorKey: "clientName",

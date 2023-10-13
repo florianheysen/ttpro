@@ -36,7 +36,7 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
         if (data && !isValidating) {
             setMeal(data);
         }
-    }, [data]);
+    }, [data, isValidating]);
 
     const handleChange = (field: string, newValue: unknown) => {
         setMeal((prevState: any) => ({
@@ -93,6 +93,8 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
 
         console.log(result);
     };
+
+    if (!data || isValidating) return "Loading...";
 
     return (
         <Appshell>

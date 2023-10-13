@@ -5,10 +5,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { Pencil2Icon, CopyIcon } from "@radix-ui/react-icons";
+import { Pencil2Icon, CopyIcon, TrashIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,6 +15,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 function handleCopyID(id: string) {
     navigator.clipboard.writeText(id);
@@ -50,6 +61,26 @@ export const columns: ColumnDef<any>[] = [
                             <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(seller._id)}>
                                 <CopyIcon className="mr-2" /> Copier l&apos;identifiant
                             </DropdownMenuItem>
+                            <AlertDialog>
+                                <AlertDialogTrigger>
+                                    <span className="hover:bg-red-100 dark:hover:bg-red-800 cursor-pointer flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent">
+                                        <TrashIcon className="mr-2" /> Supprimer le vendeur
+                                    </span>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Cette action ne peut être annulée. Elle supprimera définitivement le vendeur{" "}
+                                            "{seller.name}."
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                        <Button variant="destructive">Supprimer définitivement</Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

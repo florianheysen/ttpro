@@ -77,20 +77,21 @@
     }
 }
 
-.cl-card {
+/* .cl-card {
     box-shadow: none;
-}
+} */
 
 .cl-rootBox > div > div:last-child,
-.cl-navbar {
+.cl-navbar,
+.cl-organizationSwitcherPopoverFooter {
     display: none;
 }
 
-.cl-rootBox > div,
+/* .cl-rootBox > div,
 .cl-pageScrollBox {
     margin: 0;
     padding: 0;
-}
+}  */
 
 table#spselector tbody {
     display: block;

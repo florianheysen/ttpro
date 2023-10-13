@@ -31,7 +31,7 @@ function Orders() {
             <Appshell>
                 <AppTableHead
                     title="Commandes"
-                    currentPage="Aperçu"
+                    currentPage="Liste"
                     btnLabel="Nouvelle commande"
                     btnLink="/orders/create"
                     count={0}
@@ -48,7 +48,7 @@ function Orders() {
         <Appshell>
             <AppTableHead
                 title="Commandes"
-                currentPage="Aperçu"
+                currentPage="Liste"
                 btnLabel="Nouvelle commande"
                 btnLink="/orders/create"
                 count={data.pagination.count}

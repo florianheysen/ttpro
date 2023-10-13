@@ -17,7 +17,7 @@ function CreateClientPage() {
     });
 
     const handleSubmit = async (client: any) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients/create`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients/insertOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

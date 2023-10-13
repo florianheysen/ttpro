@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+/* import { auth } from "@clerk/nextjs"; */
 
 export async function GET() {
+    /* const { orgSlug } = auth();
+
+    console.log(orgSlug); */
     try {
         const client = await clientPromise;
         const db = client.db("TTPRO_LAMAREEBARLIN");

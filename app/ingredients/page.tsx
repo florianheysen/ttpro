@@ -34,7 +34,7 @@ function IngredientsPage() {
             <Appshell>
                 <AppTableHead
                     title="Ingrédients"
-                    currentPage="Aperçu"
+                    currentPage="Liste"
                     btnLabel="Nouvel ingrédient"
                     btnLink="/ingredients/create"
                     count={0}
@@ -51,7 +51,7 @@ function IngredientsPage() {
         <Appshell>
             <AppTableHead
                 title="Ingrédients"
-                currentPage="Aperçu"
+                currentPage="Liste"
                 btnLabel="Nouvel ingrédient"
                 btnLink="/ingredients/create"
                 count={data.pagination.count}

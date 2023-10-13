@@ -17,9 +17,9 @@ function AppTableHead({ title, currentPage, btnLabel, btnLink, count }: AppTable
             <div className="flex flex-col gap-4">
                 <p className="flex gap-2 text-sm">
                     <span className="opacity-40">{title}</span>
-                    <span>/</span>
-                    <span>{currentPage}</span>
-                    <span className="opacity-40">{count === 0 ? "-" : count}</span>
+                    <span className="opacity-40">/</span>
+                    <span className="font-medium">{currentPage}</span>
+                    <span className="opacity-40">{count === 0 ? "—" : count}</span>
                 </p>
                 <h1 className="text-3xl font-semibold">{title}</h1>
             </div>
