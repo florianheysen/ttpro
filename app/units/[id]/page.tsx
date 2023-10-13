@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { z } from "zod";
 
 function EditUnitPage({ params }: { params: { id: string } }) {
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/unit?id=${params.id}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/findOne?id=${params.id}`, fetcher);
 
     const [unit, setUnit] = React.useState<any>(null);
     const [client, setClient] = React.useState<any>(false);
@@ -37,7 +37,7 @@ function EditUnitPage({ params }: { params: { id: string } }) {
     });
 
     const handleSubmit = async (e: any) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/unit/edit`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/units/updateOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

@@ -21,7 +21,7 @@ export function OrderMealsSelector({ order, handleChange }: { order: any; handle
     const debouncedSearch = React.useRef(
         debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/meals`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/meals/search`, {
                     method: "POST",
                     headers: {
                         Accept: "application.json",

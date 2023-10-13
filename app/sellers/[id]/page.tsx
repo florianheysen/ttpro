@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { z } from "zod";
 
 function CreateSellerPage({ params }: { params: { id: string } }) {
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/seller?id=${params.id}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellers/findOne?id=${params.id}`, fetcher);
 
     const [seller, setSeller] = React.useState<any>(null);
     const [client, setClient] = React.useState<any>(false);
@@ -33,7 +33,7 @@ function CreateSellerPage({ params }: { params: { id: string } }) {
     });
 
     const handleSubmit = async (e: any) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/seller/edit`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/sellers/updateOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

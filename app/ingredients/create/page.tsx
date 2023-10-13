@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 
 function CreateIngredientPage() {
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
 
     if (!data) return <div>Chargement...</div>;
 
@@ -24,7 +24,7 @@ function CreateIngredientPage() {
             };
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/createIngredient`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/create`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

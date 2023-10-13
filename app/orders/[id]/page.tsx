@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Toaster, toast } from "sonner";
 import moment from "moment";
-import { setLocal, stringIngredients, formatPrice, fetcher, calculerTotalMayonnaise, convertOrder } from "@/lib/utils";
+import { setLocal, stringIngredients, formatPrice, fetcher, calculerTotalMayonnaise } from "@/lib/utils";
 import Appshell from "@/components/appshell";
 import useSWR from "swr";
 
@@ -28,30 +28,36 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { id: string } }) {
-    const { data, isValidating } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.id}`, fetcher);
+    const { data, isValidating } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/findOne?id=${params.id}`, fetcher);
     const [accompte, setAccompte] = React.useState<any>(0);
-    const [client, setClient] = React.useState<boolean>(false);
-    const [order, setOrder] = React.useState<any>(null);
+    const [order, setOrder] = React.useState<any>({
+        num: null,
+        seller: null,
+        client: null,
+        meals: [],
+        specialMeals: [],
+        vrac: [],
+        consigne: false,
+        accompte,
+        delivery_date: null,
+        created_at: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSSSSS"),
+    });
 
     const router = useRouter();
 
-    React.useEffect(() => {
-        if (data && !isValidating) {
-            setOrder(convertOrder(data));
-        }
-    }, [data, client]);
+    console.log(data);
 
     React.useEffect(() => {
-        setTimeout(() => {
-            setClient(true);
-        }, 200);
-    }, [data, client]);
+        if (data && !isValidating) {
+            setOrder({ ...data });
+        }
+    }, [data]);
 
     React.useEffect(() => {
         setLocal("order", JSON.stringify(order));
     }, [order]);
 
-    if (order === null)
+    if (!data)
         return (
             <div className="w-screen h-screen flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 2400" width="24" height="24">
@@ -249,7 +255,7 @@ export default function Page({ params }: { params: { id: string } }) {
             };
             delete finalOrder.client;
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/order/edit`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/orders/updateOne`, {
                 method: "POST",
                 headers: {
                     Accept: "application.json",

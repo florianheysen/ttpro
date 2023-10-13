@@ -92,7 +92,7 @@ export default function CreateOrder() {
             };
             delete finalOrder.client;
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/order/create`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/orders/insertOne`, {
                 method: "POST",
                 headers: {
                     Accept: "application.json",
@@ -107,7 +107,7 @@ export default function CreateOrder() {
         }
     };
 
-    const { data: nextNum } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orderNum`, fetcher);
+    const { data: nextNum } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/getNumber`, fetcher);
 
     React.useEffect(() => {
         handleChange("num", nextNum);
@@ -326,7 +326,7 @@ export default function CreateOrder() {
                     </div>
                     <div className="flex flex-col">
                         <span className="mb-1 ">Date de livraison</span>
-                        <OrderDatePicker order={order}  handleChange={handleChange} />
+                        <OrderDatePicker order={order} handleChange={handleChange} />
                     </div>
                 </div>
                 <span className="mb-1 mt-8">Ajouter à la commande</span>

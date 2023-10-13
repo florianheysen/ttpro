@@ -18,7 +18,7 @@ export function ClientSelector({ order, handleChange }: { order: any; handleChan
     const debouncedSearch = React.useRef(
         debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients/search`, {
                     method: "POST",
                     headers: {
                         Accept: "application.json",

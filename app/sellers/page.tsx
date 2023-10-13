@@ -18,7 +18,7 @@ function SellersPage() {
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
 
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellersTable?page=${page}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellers/table?page=${page}`, fetcher);
 
     useEffect(() => {
         if (data) {

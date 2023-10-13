@@ -9,6 +9,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Toaster, toast } from "sonner";
 
 export function OrderVracSelector({ order, handleChange }: { order: any; handleChange: any }) {
     const [open, setOpen] = React.useState(false);
@@ -17,7 +18,7 @@ export function OrderVracSelector({ order, handleChange }: { order: any; handleC
     const debouncedSearch = React.useRef(
         debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/vrac`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/vrac/search`, {
                     method: "POST",
                     headers: {
                         Accept: "application.json",
@@ -38,21 +39,27 @@ export function OrderVracSelector({ order, handleChange }: { order: any; handleC
     const addVrac = (ingredient: any) => {
         const currentVrac = order.vrac;
 
-        const newVrac = {
-            _id: ingredient._id,
-            code: "VRAC",
-            name: ingredient.name,
-            price: ingredient.price,
-            qty: 1,
-            comment: "",
-            unit: {
-                name: "pièce",
-                symbol: "pc",
-            },
-        };
+        const existingVrac = currentVrac.find((vrac: any) => vrac._id === ingredient._id);
 
-        currentVrac.push(newVrac);
-        handleChange("vrac", currentVrac);
+        if (existingVrac) {
+            toast.error(`'${ingredient.name}' a déjà été ajouté`);
+        } else {
+            const newVrac = {
+                _id: ingredient._id,
+                code: "VRAC",
+                name: ingredient.name,
+                price: ingredient.price,
+                qty: 1,
+                comment: "",
+                unit: {
+                    name: ingredient.unit.name,
+                    symbol: ingredient.unit.symbol,
+                },
+            };
+
+            currentVrac.push(newVrac);
+            handleChange("vrac", currentVrac);
+        }
     };
 
     return (
@@ -82,6 +89,7 @@ export function OrderVracSelector({ order, handleChange }: { order: any; handleC
                     </CommandGroup>
                 </Command>
             </PopoverContent>
+            <Toaster richColors closeButton />
         </Popover>
     );
 }

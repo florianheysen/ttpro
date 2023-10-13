@@ -11,7 +11,7 @@ function CreateSellerPage() {
     });
 
     const handleSubmit = async (seller: any) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/createSeller`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/sellers/insertOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

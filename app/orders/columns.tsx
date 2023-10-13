@@ -60,7 +60,7 @@ export const columns: ColumnDef<any>[] = [
     {
         accessorKey: "num",
         header: "Numéro",
-        size: 120,
+        size: 100,
     },
     {
         accessorKey: "clientName",
@@ -97,34 +97,38 @@ export const columns: ColumnDef<any>[] = [
         cell: ({ row }) => {
             const order = row.original;
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open actions</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <Link href={`/orders/${order._id}`}>
-                            <DropdownMenuItem className="cursor-pointer">
-                                <CardStackMinusIcon className="mr-2" /> Voir la commande
+                <div className="flex flex-col items-end pr-3">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open actions</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <Link href={`/orders/${order._id}`}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <CardStackMinusIcon className="mr-2" /> Voir la commande
+                                </DropdownMenuItem>
+                            </Link>
+                            <Link href={`/orders/print/${order._id}`}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <FileTextIcon className="mr-2" /> Impression
+                                </DropdownMenuItem>
+                            </Link>
+                            <DropdownMenuSeparator />
+                            <Link href={`/clients/${order.clientId.$oid}`}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <PersonIcon className="mr-2" /> Voir le client
+                                </DropdownMenuItem>
+                            </Link>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(order._id)}>
+                                <CopyIcon className="mr-2" /> Copier l&apos;identifiant
                             </DropdownMenuItem>
-                        </Link>
-                        <Link href={`/orders/print/${order._id}`}>
-                            <DropdownMenuItem className="cursor-pointer" onClick={() => console.log(order._id)}>
-                                <FileTextIcon className="mr-2" /> Impression
-                            </DropdownMenuItem>
-                        </Link>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => console.log(order.clientId)}>
-                            <PersonIcon className="mr-2" /> Voir le client
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(order._id)}>
-                            <CopyIcon className="mr-2" /> Copier l&apos;identifiant
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             );
         },
     },

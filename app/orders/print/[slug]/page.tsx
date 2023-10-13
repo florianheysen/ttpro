@@ -16,9 +16,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
         setIsClient(true);
     }, []);
 
-    console.log(order);
-
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/order?id=${params.slug}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/findOne?id=${params.slug}`, fetcher);
 
     React.useEffect(() => {
         data && setOrder(data);

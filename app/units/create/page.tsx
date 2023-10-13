@@ -12,7 +12,7 @@ function CreateUnitPage() {
     });
 
     const handleSubmit = async (unit: any) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/createUnit`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/units/insertOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

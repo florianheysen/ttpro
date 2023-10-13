@@ -5,8 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { PersonIcon, CopyIcon } from "@radix-ui/react-icons";
-
+import { Pencil2Icon, CopyIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
 
@@ -33,25 +32,27 @@ export const columns: ColumnDef<any>[] = [
         cell: ({ row }) => {
             const seller = row.original;
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open actions</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <Link href={`/sellers/${seller._id}`}>
-                            <DropdownMenuItem className="cursor-pointer">
-                                <PersonIcon className="mr-2" /> Modifier le vendeur
+                <div className="flex flex-col items-end pr-3">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open actions</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <Link href={`/sellers/${seller._id}`}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Pencil2Icon className="mr-2" /> Modifier le vendeur
+                                </DropdownMenuItem>
+                            </Link>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(seller._id)}>
+                                <CopyIcon className="mr-2" /> Copier l&apos;identifiant
                             </DropdownMenuItem>
-                        </Link>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(seller._id)}>
-                            <CopyIcon className="mr-2" /> Copier l&apos;identifiant
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             );
         },
     },

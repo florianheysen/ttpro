@@ -18,7 +18,7 @@ function UnitsPage() {
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
 
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/unitsTable?page=${page}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/table?page=${page}`, fetcher);
 
     useEffect(() => {
         if (data) {

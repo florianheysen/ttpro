@@ -8,8 +8,11 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 
 function CreateIngredientPage({ params }: { params: { id: string } }) {
-    const { data: units } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units`, fetcher);
-    const { data: ingredient } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/ingredient?id=${params.id}`, fetcher);
+    const { data: units } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
+    const { data: ingredient } = useSWR(
+        `${process.env.NEXT_PUBLIC_URL}/api/ingredients/findOne?id=${params.id}`,
+        fetcher
+    );
 
     if (!units || !ingredient) return <div>Chargement...</div>;
 
@@ -27,7 +30,7 @@ function CreateIngredientPage({ params }: { params: { id: string } }) {
             };
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredient/edit`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/updateOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",

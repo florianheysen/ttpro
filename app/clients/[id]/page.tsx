@@ -8,7 +8,7 @@ import { z } from "zod";
 import ClientForm from "@/components/form/clientForm";
 
 function CreateSellerPage({ params }: { params: { id: string } }) {
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/client?id=${params.id}`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/clients/findOne?id=${params.id}`, fetcher);
 
     const [client, setClient] = React.useState<any>(null);
     const [isClient, setisClient] = React.useState<any>(false);
@@ -65,7 +65,7 @@ function CreateSellerPage({ params }: { params: { id: string } }) {
     });
 
     const handleSubmit = async (e: any) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/client/edit`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients/updateOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",
