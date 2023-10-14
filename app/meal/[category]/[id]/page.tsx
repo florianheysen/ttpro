@@ -16,7 +16,7 @@ import LoadingScreen from "@/components/loadingScreen";
 const categoryTitles: Record<string, string> = {
     hot: "chaud",
     cold: "froid",
-    oysters: "d'huitres ouvertes",
+    oysters: "d'huître ouvertes",
     special: "PL",
 };
 

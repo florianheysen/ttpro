@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 
 import {
     ColumnDef,
@@ -16,12 +15,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-import { CardStackPlusIcon } from "@radix-ui/react-icons";
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];

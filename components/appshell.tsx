@@ -101,7 +101,7 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
             current: pathname.includes("/special"),
         },
         {
-            name: "Huitres ouvertes",
+            name: "Huître ouvertes",
             href: "/meal/oysters",
             current: pathname.includes("/oysters"),
         },

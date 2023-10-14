@@ -9,10 +9,8 @@ import { Toaster } from "sonner";
 import { DataTablePagination } from "@/components/ui/datatable-pagination";
 import { TableLoading } from "./table-loading";
 import { DataTablePaginationLoading } from "@/components/ui/datatable-pagination-loading";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { CardStackPlusIcon } from "@radix-ui/react-icons";
 import { fetcher } from "@/lib/utils";
+import AppTableHead from "@/components/apptablehead";
 
 function SellersPage() {
     const [page, setPage] = useState(1);
@@ -31,14 +29,13 @@ function SellersPage() {
     if (!data)
         return (
             <Appshell>
-                <div className="flex justify-between pb-8">
-                    <h1 className="text-3xl font-semibold">Vendeurs</h1>
-                    <Button variant="outline" asChild>
-                        <Link href="/clients/create">
-                            <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouveau vendeur
-                        </Link>
-                    </Button>
-                </div>
+                <AppTableHead
+                    title="Vendeurs"
+                    currentPage="Liste"
+                    btnLabel="Nouveau vendeur"
+                    btnLink="/sellers/create"
+                    count={0}
+                />
                 <TableLoading columns={columns} data={test} />
                 <div className="flex items-center justify-end space-x-2 py-4">
                     <DataTablePaginationLoading />
@@ -49,14 +46,13 @@ function SellersPage() {
 
     return (
         <Appshell>
-            <div className="flex justify-between">
-                <h1 className="text-3xl font-semibold">Vendeurs</h1>
-                <Button variant="outline" asChild>
-                    <Link href="/sellers/create">
-                        <CardStackPlusIcon className="mr-2 h-4 w-4" /> Nouveau vendeur
-                    </Link>
-                </Button>
-            </div>
+            <AppTableHead
+                title="Vendeurs"
+                currentPage="Liste"
+                btnLabel="Nouveau vendeur"
+                btnLink="/sellers/create"
+                count={data.pagination.count}
+            />
             <DataTable columns={columns} data={data.sellers} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <DataTablePagination page={page} setPage={setPage} pageCount={pageCount} />

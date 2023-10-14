@@ -18,7 +18,6 @@ import {
 
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -32,6 +31,22 @@ function handleCopyID(id: string) {
     navigator.clipboard.writeText(id);
     toast("Identifiant copié dans le presse papier");
 }
+
+const handleDelete = async (id: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/sellers/deleteOne`, {
+        method: "POST",
+        headers: {
+            Accept: "application.json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+    });
+    if (res.ok === false) {
+        window.location.reload();
+    } else {
+        toast.error("La suppression du vendeur a échoué.");
+    }
+};
 
 export const columns: ColumnDef<any>[] = [
     {
@@ -71,13 +86,15 @@ export const columns: ColumnDef<any>[] = [
                                     <AlertDialogHeader>
                                         <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            Cette action ne peut être annulée. Elle supprimera définitivement le vendeur{" "}
-                                            &quot;{seller.name}.&quot;
+                                            Cette action ne peut pas être annulée. Elle supprimera définitivement le
+                                            vendeur &quot;{seller.name}&quot;.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                        <Button variant="destructive">Supprimer définitivement</Button>
+                                        <Button onClick={() => handleDelete(seller._id)} variant="destructive">
+                                            Supprimer définitivement
+                                        </Button>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

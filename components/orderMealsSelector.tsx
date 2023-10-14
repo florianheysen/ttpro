@@ -51,6 +51,7 @@ export function OrderMealsSelector({ order, handleChange }: { order: any; handle
         } else {
             const formattedMeal = {
                 mealId: meal.mealId,
+                category: meal.mealCategory,
                 code: meal.mealCode,
                 name: meal.mealName,
                 price: meal.mealPrice,
