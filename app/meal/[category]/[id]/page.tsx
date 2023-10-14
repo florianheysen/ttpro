@@ -11,6 +11,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
+import LoadingScreen from "@/components/loadingScreen";
 
 const categoryTitles: Record<string, string> = {
     hot: "chaud",
@@ -94,7 +95,7 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
         console.log(result);
     };
 
-    if (!data || isValidating) return "Loading...";
+    if (!data || isValidating) return <LoadingScreen />;
 
     return (
         <Appshell>

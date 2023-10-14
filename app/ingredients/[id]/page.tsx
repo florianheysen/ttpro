@@ -6,6 +6,7 @@ import React from "react";
 import { z } from "zod";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
+import LoadingScreen from "@/components/loadingScreen";
 
 function CreateIngredientPage({ params }: { params: { id: string } }) {
     const { data: units } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
@@ -14,7 +15,7 @@ function CreateIngredientPage({ params }: { params: { id: string } }) {
         fetcher
     );
 
-    if (!units || !ingredient) return <div>Chargement...</div>;
+    if (!units || !ingredient) return <LoadingScreen />;
 
     const unitEnum = units.units.map((unit: any) => unit.name);
 

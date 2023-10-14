@@ -6,6 +6,7 @@ import React from "react";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 import { z } from "zod";
+import LoadingScreen from "@/components/loadingScreen";
 
 function EditUnitPage({ params }: { params: { id: string } }) {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/findOne?id=${params.id}`, fetcher);
@@ -53,7 +54,7 @@ function EditUnitPage({ params }: { params: { id: string } }) {
         console.log(res);
     };
 
-    if (unit === null) return "Loading...";
+    if (unit === null) return <LoadingScreen />;
 
     return (
         <Appshell>

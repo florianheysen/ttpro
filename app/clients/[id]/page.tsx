@@ -6,6 +6,7 @@ import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 import { z } from "zod";
 import ClientForm from "@/components/form/clientForm";
+import LoadingScreen from "@/components/loadingScreen";
 
 function CreateSellerPage({ params }: { params: { id: string } }) {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/clients/findOne?id=${params.id}`, fetcher);
@@ -82,7 +83,7 @@ function CreateSellerPage({ params }: { params: { id: string } }) {
         console.log(res);
     };
 
-    if (client === null) return "Loading...";
+    if (client === null) return <LoadingScreen />;
 
     return (
         <Appshell>

@@ -114,11 +114,11 @@ export const columns: ColumnDef<any>[] = [
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <Link href={`/orders/${order._id}`}>
+                            <a href={`/orders/${order._id}`}>
                                 <DropdownMenuItem className="cursor-pointer">
                                     <CardStackMinusIcon className="mr-2" /> Voir la commande
                                 </DropdownMenuItem>
-                            </Link>
+                            </a>
                             <Link href={`/orders/print/${order._id}`}>
                                 <DropdownMenuItem className="cursor-pointer">
                                     <FileTextIcon className="mr-2" /> Impression

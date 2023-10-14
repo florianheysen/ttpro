@@ -6,11 +6,12 @@ import React from "react";
 import { z } from "zod";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
+import LoadingScreen from "@/components/loadingScreen";
 
 function CreateIngredientPage() {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
 
-    if (!data) return <div>Chargement...</div>;
+    if (!data) return <LoadingScreen />;
 
     const unitEnum = data.units.map((unit: any) => unit.name);
 
