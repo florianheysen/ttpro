@@ -30,6 +30,7 @@ import { useRouter } from "next/navigation";
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isValidating } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/findOne?id=${params.id}`, fetcher);
     const [accompte, setAccompte] = React.useState<any>(0);
+    const [client, setClient] = React.useState<boolean>(false);
     const [order, setOrder] = React.useState<any>({
         num: null,
         seller: null,
@@ -45,13 +46,15 @@ export default function Page({ params }: { params: { id: string } }) {
 
     const router = useRouter();
 
-    console.log(data);
-
     React.useEffect(() => {
         if (data && !isValidating) {
             setOrder({ ...data });
         }
-    }, [data]);
+    }, [data, client]);
+
+    React.useEffect(() => {
+        setClient(true);
+    }, []);
 
     React.useEffect(() => {
         setLocal("order", JSON.stringify(order));
