@@ -2,10 +2,13 @@
 
 import Appshell from "@/components/appshell";
 import SellerForm from "@/components/form/sellerForm";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
 function CreateSellerPage() {
+    const router = useRouter();
+
     const formSchema = z.object({
         name: z.string().describe("Nom"),
     });
@@ -23,6 +26,8 @@ function CreateSellerPage() {
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/sellers/`);
     };
 
     return (

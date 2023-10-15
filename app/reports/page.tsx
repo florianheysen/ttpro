@@ -38,16 +38,16 @@ const DEFAULT_TARGET = "global";
 
 const ReportsPage = () => {
     const router = useRouter();
-    const [parentDate, setParentDate] = useState<DateRange | undefined>({ from: new Date() });
+    const [parentDate, setParentDate] = useState<DateRange | undefined>({ from: new Date(), to: new Date() });
     const [target, setTarget] = useState<string>(DEFAULT_TARGET);
 
     const { from, to } = parentDate || {};
 
     const handleSubmit = () => {
-        const queryString = `target=${target}${from ? `&from=${format(from, "yyyy-MM-dd")}` : ""}${
+        const queryString = `/${target}?target=${target}${from ? `&from=${format(from, "yyyy-MM-dd")}` : ""}${
             to ? `&to=${format(to, "yyyy-MM-dd")}` : ""
         }`;
-        router.push(`${REPORTS_API_PATH}?${queryString}`);
+        router.push(`${REPORTS_API_PATH}${queryString}`);
     };
 
     const renderRadioGroup = () => (
@@ -72,7 +72,7 @@ const ReportsPage = () => {
                     </p>
                     <h1 className="text-3xl font-semibold">Comptes rendus</h1>
                     <div className="mb-2">
-                        <p className="text-sm mb-1">Date de livraison</p>
+                        <p className="text-sm mb-1">Intervalle de dates</p>
                         <DatePickerWithRange date={parentDate} setDate={setParentDate} />
                     </div>
                     {renderRadioGroup()}

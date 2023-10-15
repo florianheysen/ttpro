@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 import LoadingScreen from "@/components/loadingScreen";
+import { useRouter } from "next/navigation";
 
 const categoryTitles: Record<string, string> = {
     hot: "chaud",
@@ -21,6 +22,7 @@ const categoryTitles: Record<string, string> = {
 };
 
 function EditMealPage({ params: { id, category } }: { params: { id: string; category: string } }) {
+    const router = useRouter();
     const title = categoryTitles[category as string] || "";
     const { data, isValidating } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/meals/findOne?id=${id}`, fetcher);
 
@@ -93,6 +95,8 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/meal/${category}/`);
     };
 
     if (!data || isValidating) return <LoadingScreen />;

@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableCaption, TableHead, TableHeader, Tabl
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const categoryTitles: Record<string, string> = {
     hot: "chaud",
@@ -18,6 +19,7 @@ const categoryTitles: Record<string, string> = {
 };
 
 function CreateMealPage({ params: { category } }: { params: { category: string } }) {
+    const router = useRouter();
     const title = categoryTitles[category as string] || "";
 
     const [meal, setMeal] = React.useState({
@@ -83,6 +85,8 @@ function CreateMealPage({ params: { category } }: { params: { category: string }
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/meal/${category}/`);
     };
 
     return (

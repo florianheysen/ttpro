@@ -9,7 +9,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 export function OrderVracSelector({ order, handleChange }: { order: any; handleChange: any }) {
     const [open, setOpen] = React.useState(false);
@@ -89,7 +89,6 @@ export function OrderVracSelector({ order, handleChange }: { order: any; handleC
                     </CommandGroup>
                 </Command>
             </PopoverContent>
-            <Toaster richColors closeButton />
         </Popover>
     );
 }

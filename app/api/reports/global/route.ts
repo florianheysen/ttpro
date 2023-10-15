@@ -72,7 +72,7 @@ function processIngredients(idMap: Map<string, any>, ingredients: any[]): any[] 
         const itemName = ingredient.name.toLowerCase();
         const rawQty = parseFloat(ingredient.qty) || 0;
         const formattedQty = Math.round(rawQty * 100) / 100;
-        const unitName = ingredient.unit?.name || ingredient.units?.name || "×";
+        const unitName = ingredient.unit?.symbol || ingredient.units?.symbol || "×";
 
         const formattedIngredient = {
             name: itemName.toUpperCase(),

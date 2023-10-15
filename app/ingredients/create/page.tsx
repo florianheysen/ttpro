@@ -7,8 +7,11 @@ import { z } from "zod";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import LoadingScreen from "@/components/loadingScreen";
+import { useRouter } from "next/navigation";
 
 function CreateIngredientPage() {
+    const router = useRouter();
+
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
 
     if (!data) return <LoadingScreen />;
@@ -25,7 +28,7 @@ function CreateIngredientPage() {
             };
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/create`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/insertOne`, {
             method: "POST",
             headers: {
                 Accept: "application.json",
@@ -37,6 +40,8 @@ function CreateIngredientPage() {
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/ingredients/`);
     };
 
     const formSchema = z.object({

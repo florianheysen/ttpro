@@ -4,8 +4,11 @@ import Appshell from "@/components/appshell";
 import ClientForm from "@/components/form/clientForm";
 import React from "react";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 function CreateClientPage() {
+    const router = useRouter();
+
     const formSchema = z.object({
         name: z.string().describe("Nom complet"),
         email_address: z.string().email().optional().nullable().describe("Adresse email"),
@@ -29,6 +32,8 @@ function CreateClientPage() {
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/clients/`);
     };
 
     return (

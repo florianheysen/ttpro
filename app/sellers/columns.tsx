@@ -32,19 +32,27 @@ function handleCopyID(id: string) {
     toast("Identifiant copié dans le presse papier");
 }
 
+const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/sellers/deleteOne`;
+
 const handleDelete = async (id: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/sellers/deleteOne`, {
-        method: "POST",
-        headers: {
-            Accept: "application.json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-    });
-    if (res.ok === false) {
-        window.location.reload();
-    } else {
-        toast.error("La suppression du vendeur a échoué.");
+    try {
+        const res = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: id }),
+        });
+
+        if (res.ok && res.status === 200) {
+            window.location.reload();
+        } else {
+            toast.error("La suppression du vendeur a échoué.");
+        }
+    } catch (error) {
+        console.error("Une erreur s'est produite lors de la suppression du vendeur", error);
+        toast.error("Une erreur s'est produite lors de la suppression du vendeur.");
     }
 };
 

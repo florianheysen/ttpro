@@ -7,8 +7,11 @@ import useSWR from "swr";
 import { z } from "zod";
 import ClientForm from "@/components/form/clientForm";
 import LoadingScreen from "@/components/loadingScreen";
+import { useRouter } from "next/navigation";
 
 function CreateSellerPage({ params }: { params: { id: string } }) {
+    const router = useRouter();
+
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/clients/findOne?id=${params.id}`, fetcher);
 
     const [client, setClient] = React.useState<any>(null);
@@ -81,6 +84,8 @@ function CreateSellerPage({ params }: { params: { id: string } }) {
         });
 
         console.log(res);
+
+        router.push(`/clients/`);
     };
 
     if (client === null) return <LoadingScreen />;

@@ -7,8 +7,11 @@ import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 import { z } from "zod";
 import LoadingScreen from "@/components/loadingScreen";
+import { useRouter } from "next/navigation";
 
 function EditUnitPage({ params }: { params: { id: string } }) {
+    const router = useRouter();
+
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/findOne?id=${params.id}`, fetcher);
 
     const [unit, setUnit] = React.useState<any>(null);
@@ -52,6 +55,7 @@ function EditUnitPage({ params }: { params: { id: string } }) {
             }),
         });
         console.log(res);
+        router.push(`/units/`);
     };
 
     if (unit === null) return <LoadingScreen />;

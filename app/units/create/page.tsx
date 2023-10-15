@@ -2,10 +2,13 @@
 
 import Appshell from "@/components/appshell";
 import UnitForm from "@/components/form/unitForm";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
 function CreateUnitPage() {
+    const router = useRouter();
+
     const formSchema = z.object({
         name: z.string().describe("Nom"),
         symbol: z.string().describe("Symbole"),
@@ -24,6 +27,8 @@ function CreateUnitPage() {
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/units/`);
     };
 
     return (

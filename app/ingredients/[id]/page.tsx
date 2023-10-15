@@ -7,8 +7,11 @@ import { z } from "zod";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import LoadingScreen from "@/components/loadingScreen";
+import { useRouter } from "next/navigation";
 
 function CreateIngredientPage({ params }: { params: { id: string } }) {
+    const router = useRouter();
+
     const { data: units } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
     const { data: ingredient } = useSWR(
         `${process.env.NEXT_PUBLIC_URL}/api/ingredients/findOne?id=${params.id}`,
@@ -48,6 +51,8 @@ function CreateIngredientPage({ params }: { params: { id: string } }) {
         const result = await res.json();
 
         console.log(result);
+
+        router.push(`/ingredients/`);
     };
 
     const formSchema = z.object({

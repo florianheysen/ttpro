@@ -7,8 +7,11 @@ import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 import { z } from "zod";
 import LoadingScreen from "@/components/loadingScreen";
+import { useRouter } from "next/navigation";
 
 function CreateSellerPage({ params }: { params: { id: string } }) {
+    const router = useRouter();
+
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellers/findOne?id=${params.id}`, fetcher);
 
     const [seller, setSeller] = React.useState<any>(null);
@@ -48,9 +51,9 @@ function CreateSellerPage({ params }: { params: { id: string } }) {
             }),
         });
 
-        console.log(e);
-
         console.log(res);
+
+        router.push(`/sellers/`);
     };
 
     if (seller === null) return <LoadingScreen />;

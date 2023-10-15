@@ -35,14 +35,17 @@ export function DatePickerWithRange({
                         {propDate?.from ? (
                             propDate.to ? (
                                 <>
-                                    {format(propDate.from, "LLL dd, y", { locale: fr })} -{" "}
-                                    {format(propDate.to, "LLL dd, y", { locale: fr })}
+                                    du <b className="mx-1">{format(propDate.from, "dd LLL y", { locale: fr })}</b> au{" "}
+                                    <b className="ml-1">{format(propDate.to, "dd LLL y", { locale: fr })}</b>
                                 </>
                             ) : (
-                                format(propDate.from, "LLL dd, y", { locale: fr })
+                                <>
+                                    du <b className="mx-1">{format(propDate.from, "dd LLL y", { locale: fr })}</b> à
+                                    maintenant
+                                </>
                             )
                         ) : (
-                            <span>Choisir une date</span>
+                            <span>Choisir une intervalle</span>
                         )}
                     </Button>
                 </PopoverTrigger>
