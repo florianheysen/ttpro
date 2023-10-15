@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 className="max-w-sm"
               /> */}
             </div>
-            <div className="rounded-md border h-[532px] overflow-y-scroll">
+            <div className="rounded-md border h-[550px] overflow-y-scroll">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

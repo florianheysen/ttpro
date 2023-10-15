@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon } from "@radix-ui/react-icons";
+import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
 import moment from "moment";
 
@@ -105,10 +105,16 @@ export const columns: ColumnDef<any>[] = [
         cell: ({ row }) => {
             const order = row.original;
             return (
-                <div className="flex flex-col items-end pr-3">
+                <div className="flex gap-2 flex-row justify-end pr-3">
+                    <a href={`/orders/${order._id}`}>
+                        <Button variant="outline" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open actions</span>
+                            <Pencil1Icon />
+                        </Button>
+                    </a>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
+                            <Button variant="outline" className="h-8 w-8 p-0">
                                 <span className="sr-only">Open actions</span>
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>

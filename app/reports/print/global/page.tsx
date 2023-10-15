@@ -11,6 +11,7 @@ import { fr } from "date-fns/locale";
 
 import { Page, Text, View, Document, PDFViewer, StyleSheet } from "@react-pdf/renderer";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 function PrintGlobal() {
     const { get: getParam } = useSearchParams();
@@ -24,6 +25,33 @@ function PrintGlobal() {
     );
 
     if (!data) return <LoadingScreen />;
+
+    if (data.length === 0)
+        return (
+            <Appshell>
+                <div className="flex justify-between items-end mb-8">
+                    <div className="flex flex-col gap-4">
+                        <p className="flex gap-2 text-sm">
+                            <span className="opacity-40">Comptes rendus</span>
+                            <span className="opacity-40">/</span>
+                            <Link href="/reports" className="opacity-40 hover:opacity-80 transition-opacity">
+                                Création
+                            </Link>
+                            <span className="opacity-40">/</span>
+                            <span className="font-medium">Impression</span>
+                        </p>
+                        <h1 className="text-3xl font-semibold">
+                            Listing global du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                            {to && "au " + format(new Date(to), "dd LLL y", { locale: fr })}
+                        </h1>
+                    </div>
+                </div>
+                <p className="mb-4">Aucun élément trouvé sur cet interalle de dates.</p>
+                <Link href="/reports/">
+                    <Button variant="secondary">Retour</Button>
+                </Link>
+            </Appshell>
+        );
 
     return (
         <Appshell>
@@ -39,21 +67,21 @@ function PrintGlobal() {
                         <span className="font-medium">Impression</span>
                     </p>
                     <h1 className="text-3xl font-semibold">
-                        Listing global du {format(new Date(from), "dd LLL y", { locale: fr })} au{" "}
-                        {format(new Date(to), "dd LLL y", { locale: fr })}
+                        Listing global du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                        {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
                     </h1>
                 </div>
             </div>
             <PDFViewer width="100%" height="700px">
                 <Document
-                    title={`Listing global du ${format(new Date(from), "dd LLL y", { locale: fr })} au ${" "}
-                        ${format(new Date(to), "dd LLL y", { locale: fr })}`}
+                    title={`Listing global du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
+                        ${to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}`}
                 >
                     <Page wrap style={styles.page}>
                         <View style={styles.title}>
                             <Text>
-                                Listing global du {format(new Date(from), "dd LLL y", { locale: fr })} au{" "}
-                                {format(new Date(to), "dd LLL y", { locale: fr })}
+                                Listing global du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                                {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
                         </View>
                         {data.map((item: any) => (
@@ -66,11 +94,9 @@ function PrintGlobal() {
                         <Text
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
-                                `Listing global du ${format(new Date(from), "dd LLL y", { locale: fr })} au ${format(
-                                    new Date(to),
-                                    "dd LLL y",
-                                    { locale: fr }
-                                )} | ${pageNumber} / ${totalPages}`
+                                `Listing global du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
+                                    to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
+                                } | ${pageNumber} / ${totalPages}`
                             }
                             fixed
                         />

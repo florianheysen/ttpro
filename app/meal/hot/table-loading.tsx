@@ -49,7 +49,7 @@ export function TableLoading<TData, TValue>({ columns, data }: DataTableProps<TD
     });
 
     return (
-        <div className="rounded-md border h-[532px] overflow-y-scroll mt-8">
+        <div className="rounded-md border h-[550px] overflow-y-scroll mt-8">
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
