@@ -18,7 +18,9 @@ export function OrderDatePicker({ handleChange, order, data }: { order: any; han
     );
 
     React.useEffect(() => {
-        setDate(new Date(data.delivery_date));
+        if (data?.delivery_date) {
+            setDate(new Date(data.delivery_date));
+        }
     }, [data]);
 
     React.useEffect(() => {
