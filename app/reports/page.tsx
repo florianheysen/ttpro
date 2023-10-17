@@ -14,22 +14,27 @@ const reports = [
     {
         name: "global",
         label: "Global",
+        disabled: false,
     },
     {
         name: "meals%2Fhot",
         label: "Plats chauds",
+        disabled: true,
     },
     {
         name: "meals%2Fcold",
         label: "Plats froids",
+        disabled: true,
     },
     {
         name: "meals%2Fspecial",
         label: "Plats PL1 à PL5",
+        disabled: true,
     },
     {
         name: "meals%2Foysters",
         label: "Plats d'huître",
+        disabled: true,
     },
 ];
 
@@ -54,8 +59,15 @@ const ReportsPage = () => {
         <RadioGroup className="space-y-3" defaultValue={DEFAULT_TARGET}>
             {reports.map((report: any) => (
                 <div key={report.name} className="flex items-center space-x-2">
-                    <RadioGroupItem value={report.name} id={report.name} onClick={() => setTarget(report.name)} />
-                    <Label htmlFor={report.name}>{report.label}</Label>
+                    <RadioGroupItem
+                        disabled={report.disabled}
+                        value={report.name}
+                        id={report.name}
+                        onClick={() => setTarget(report.name)}
+                    />
+                    <Label className={report.disabled && "opacity-50 cursor-not-allowed"} htmlFor={report.name}>
+                        {report.label}
+                    </Label>
                 </div>
             ))}
         </RadioGroup>
