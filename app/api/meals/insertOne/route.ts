@@ -6,7 +6,7 @@ export async function POST(req: Request) {
 
     try {
         const mongo = await clientPromise;
-        const db = mongo.db("TTPRO_LAMAREEBARLIN");
+        const db = mongo.db(process.env.MONGO_DB_NAME);
         const result = await db.collection("meals").insertOne(meal);
 
         const resMeal = {

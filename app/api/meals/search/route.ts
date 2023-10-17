@@ -6,7 +6,7 @@ export async function POST(req: Request) {
 
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const clients = await db
             .collection("meals")

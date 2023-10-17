@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const url = new URL(req.url);
         const from: any = url.searchParams.get("from");

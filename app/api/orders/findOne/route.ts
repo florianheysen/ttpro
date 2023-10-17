@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const order = await db
             .collection("orders")

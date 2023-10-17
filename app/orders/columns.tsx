@@ -75,12 +75,21 @@ export const columns: ColumnDef<any>[] = [
         header: "Client",
         size: 250,
     },
-    {
+    /* {
         accessorKey: "created_at",
         header: "Créé le",
         cell: ({ row }) => {
             const created_at = row.getValue("created_at") || "";
             const formatted = moment(created_at).format("DD/MM/YYYY");
+            return <div>{formatted}</div>;
+        },
+    }, */
+    {
+        accessorKey: "delivery_date",
+        header: "Livraison",
+        cell: ({ row }) => {
+            const delivery_date = row.getValue("delivery_date") || "";
+            const formatted = moment(delivery_date).format("DD/MM/YYYY");
             return <div>{formatted}</div>;
         },
     },

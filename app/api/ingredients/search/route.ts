@@ -4,7 +4,7 @@ import clientPromise from "@/lib/mongodb";
 export async function GET() {
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const ingredients = await db.collection("ingredients").find().sort({ created_at: -1 }).toArray();
 
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const clients = await db
             .collection("ingredients")

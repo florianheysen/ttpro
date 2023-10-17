@@ -8,7 +8,7 @@ export async function GET() {
     console.log(orgSlug); */
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const { n: orderCount } = await db.command({ count: "orders" });
         const { n: clientsCount } = await db.command({ count: "clients" });

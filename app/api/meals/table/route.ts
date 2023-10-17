@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const client = await clientPromise;
-        const db = client.db("TTPRO_LAMAREEBARLIN");
+        const db = client.db(process.env.MONGO_DB_NAME);
 
         const count = await db.collection("meals").countDocuments({ mealCategory: category });
         const pageCount = count / ITEMS_PER_PAGE;
