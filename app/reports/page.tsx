@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { format } from "date-fns";
-import { useRouter } from "next/navigation";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+/* import { useRouter } from "next/navigation"; */
 
 const reports = [
     {
@@ -17,23 +18,48 @@ const reports = [
         disabled: false,
     },
     {
-        name: "meals%2Fhot",
+        name: "commandes",
+        label: "Commandes (🚧 en cours)",
+        disabled: true,
+    },
+    {
+        name: "meal-hot",
         label: "Plats chauds",
-        disabled: true,
+        disabled: false,
     },
     {
-        name: "meals%2Fcold",
+        name: "meal-cold",
         label: "Plats froids",
-        disabled: true,
+        disabled: false,
     },
     {
-        name: "meals%2Fspecial",
+        name: "meal-special",
         label: "Plats PL1 à PL5",
+        disabled: false,
+    },
+    {
+        name: "meal-huitres",
+        label: "Plats d'huîtres ouvertes",
+        disabled: false,
+    },
+    {
+        name: "meal-custom",
+        label: "Plateaux spéciaux (🚧 en cours)",
         disabled: true,
     },
     {
-        name: "meals%2Foysters",
-        label: "Plats d'huître",
+        name: "mayo",
+        label: "Mayonnaise (🚧 en cours)",
+        disabled: true,
+    },
+    {
+        name: "vrac-produit",
+        label: "Vrac par produit (🚧 en cours)",
+        disabled: true,
+    },
+    {
+        name: "vrac-commande",
+        label: "Vrac par commande (🚧 en cours)",
         disabled: true,
     },
 ];
@@ -42,7 +68,7 @@ const REPORTS_API_PATH = "/reports/print";
 const DEFAULT_TARGET = "global";
 
 const ReportsPage = () => {
-    const router = useRouter();
+    /* const router = useRouter(); */
     const [parentDate, setParentDate] = useState<DateRange | undefined>({ from: new Date(), to: new Date() });
     const [target, setTarget] = useState<string>(DEFAULT_TARGET);
 
@@ -52,7 +78,7 @@ const ReportsPage = () => {
         const queryString = `/${target}?target=${target}${from ? `&from=${format(from, "yyyy-MM-dd")}` : ""}${
             to ? `&to=${format(to, "yyyy-MM-dd")}` : ""
         }`;
-        router.push(`${REPORTS_API_PATH}${queryString}`);
+        window.open(`${REPORTS_API_PATH}${queryString}`, "_ blank");
     };
 
     const renderRadioGroup = () => (
@@ -89,7 +115,7 @@ const ReportsPage = () => {
                     </div>
                     {renderRadioGroup()}
                     <Button className="mt-2" onClick={handleSubmit}>
-                        Créer le PDF
+                        Créer le PDF <ExternalLinkIcon className="ml-2" />
                     </Button>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 import Appshell from "@/components/appshell";
 
 function EstimatesPage() {
-    return <Appshell>Page en construction</Appshell>;
+    return <Appshell>🚧 Création en cours</Appshell>;
 }
 
 export default EstimatesPage;

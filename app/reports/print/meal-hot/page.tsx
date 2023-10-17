@@ -13,7 +13,7 @@ import { Page, Text, View, Document, PDFViewer, StyleSheet } from "@react-pdf/re
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-function PrintGlobal() {
+function PrintHotMeal() {
     const { get: getParam } = useSearchParams();
     const target = getParam("target");
     const from: any = getParam("from");
@@ -23,6 +23,8 @@ function PrintGlobal() {
         `${process.env.NEXT_PUBLIC_URL}/api/reports/${target}?from=${from}${to ? `&to=${to}` : ""}`,
         fetcher
     );
+
+    console.log(data);
 
     if (!data) return <LoadingScreen />;
 
@@ -41,7 +43,7 @@ function PrintGlobal() {
                             <span className="font-medium">Impression</span>
                         </p>
                         <h1 className="text-3xl font-semibold">
-                            Listing global du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                            Listing plats chauds du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                             {to && "au " + format(new Date(to), "dd LLL y", { locale: fr })}
                         </h1>
                     </div>
@@ -67,34 +69,53 @@ function PrintGlobal() {
                         <span className="font-medium">Impression</span>
                     </p>
                     <h1 className="text-3xl font-semibold">
-                        Listing global du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                        Listing plats chauds du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                         {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
                     </h1>
                 </div>
             </div>
             <PDFViewer width="100%" height="700px">
                 <Document
-                    title={`Listing global du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
+                    title={`Listing plats chauds du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
                         ${to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}`}
                 >
                     <Page wrap style={styles.page}>
                         <View style={styles.title}>
                             <Text>
-                                Listing global du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                                Listing plats chauds du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                                 {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
                         </View>
                         {data.map((item: any) => (
-                            <View key={item.name} style={styles.row}>
-                                <Text style={styles.qty}>{item.qty}</Text>
-                                <Text style={styles.unit}>{item.unit}</Text>
-                                <Text style={styles.name}>{item.name}</Text>
+                            <View wrap={false} key={item.name} style={styles.mb}>
+                                <View style={styles.row}>
+                                    <Text style={styles.qty}>{item.meal_qty}×</Text>
+                                    <Text style={styles.unit}>{item.meal_code}</Text>
+                                    <Text style={styles.name}>{item.meal_name}</Text>
+                                </View>
+                                <View>
+                                    {item.orders.map((order: any, index: number) => {
+                                        const rowStyle: any = {
+                                            backgroundColor: index % 2 === 1 ? "#f2f2f2" : "white",
+                                        };
+
+                                        return (
+                                            <View style={[styles.orderlist, rowStyle]} key={order.order_code}>
+                                                <Text style={styles.code}>{order.order_code}</Text>
+                                                <Text style={styles.date}>{order.order_delivery_date}</Text>
+                                                <Text style={styles.clientName}>{order.order_client_name}</Text>
+                                                <Text style={styles.individual}>{order.order_individual_qty}</Text>
+                                                <Text style={styles.comment}>{order.meal_comment}</Text>
+                                            </View>
+                                        );
+                                    })}
+                                </View>
                             </View>
                         ))}
                         <Text
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
-                                `Listing global du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
+                                `Listing plats chauds du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
                                     to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
                                 } | ${pageNumber} / ${totalPages}`
                             }
@@ -122,6 +143,31 @@ const styles = StyleSheet.create({
         bottom: "10px",
         right: "10px",
     },
+    code: {
+        fontSize: "10px",
+        width: "55px",
+    },
+    individual: {
+        fontSize: "10px",
+        width: "20px",
+    },
+    date: {
+        fontSize: "10px",
+        color: "red",
+        width: "55px",
+    },
+    clientName: {
+        fontSize: "10px",
+        width: "170px",
+    },
+    comment: {
+        display: "flex",
+        fontSize: "10px",
+        width: "250px",
+    },
+    mb: {
+        marginBottom: "10px",
+    },
     title: {
         fontSize: "16px",
         paddingBottom: "20px",
@@ -129,27 +175,32 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        paddingBottom: "2px",
+    },
+    orderlist: {
+        marginTop: "-1px",
+        display: "flex",
+        flexDirection: "row",
+        gap: "5px",
+        border: "1px solid darkgray",
+        marginLeft: "10px",
+        padding: "1px",
     },
     qty: {
         fontSize: "12px",
         width: "35px",
         textAlign: "right",
         paddingBottom: "2px",
-        borderBottom: "1px solid lightgrey",
     },
     unit: {
-        fontSize: "12px",
+        fontSize: "11px",
         padding: "0px 10px",
-        paddingBottom: "2px",
-        borderBottom: "1px solid lightgrey",
+        paddingBottom: "1px",
     },
     name: {
         fontSize: "12px",
-        width: "100%",
+        width: "auto",
         paddingBottom: "2px",
-        borderBottom: "1px solid lightgrey",
     },
 });
 
-export default PrintGlobal;
+export default PrintHotMeal;
