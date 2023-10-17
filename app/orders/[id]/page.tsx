@@ -311,7 +311,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     </div>
                     <div className="flex flex-col">
                         <span className="mb-1 ">Date de livraison</span>
-                        <OrderDatePicker order={order} handleChange={handleChange} />
+                        <OrderDatePicker data={data} order={order} handleChange={handleChange} />
                     </div>
                 </div>
                 <span className="mb-1 mt-8">Ajouter à la commande</span>

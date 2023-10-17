@@ -12,9 +12,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { fr } from "date-fns/locale";
 import moment from "moment";
 
-export function OrderDatePicker({ handleChange, order }: { order: any, handleChange: any }) {
-    const [date, setDate] = React.useState<Date | undefined>(order.delivery_date ? new Date(order.delivery_date) : new Date());
-    
+export function OrderDatePicker({ handleChange, order, data }: { order: any; handleChange: any; data?: any }) {
+    const [date, setDate] = React.useState<Date | undefined>(
+        order.delivery_date ? new Date(order.delivery_date) : new Date()
+    );
+
+    React.useEffect(() => {
+        setDate(new Date(data.delivery_date));
+    }, [data]);
+
     React.useEffect(() => {
         handleChange("delivery_date", moment(date).format("YYYY-MM-DD"));
     }, [date, setDate]);
