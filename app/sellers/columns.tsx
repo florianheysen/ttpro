@@ -92,7 +92,7 @@ export const columns: ColumnDef<any>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
+                                        <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Cette action ne peut pas être annulée. Elle supprimera définitivement le
                                             vendeur &quot;{seller.name}&quot;.

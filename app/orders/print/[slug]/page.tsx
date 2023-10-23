@@ -170,7 +170,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
 
                             <Text>&nbsp;</Text>
 
-                            <Text style={styles.textBase}>Montant total : {order?.price} EUR</Text>
+                            <Text style={styles.textBase}>Montant total : {order?.price?.toFixed(2)} EUR</Text>
                             <Text style={styles.textBase}>Acompte : {order?.deposit | order?.accompte} EUR</Text>
                             <Text style={styles.textBase}>
                                 Reste à régler : {(order?.price - (order?.deposit | order?.accompte)).toFixed(2)} EUR

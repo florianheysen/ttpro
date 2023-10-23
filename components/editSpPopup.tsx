@@ -183,9 +183,8 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
                         </div>
                     </AlertDialogTitle>
                     <br />
-                    <section className="border rounded-md overflow-hidden">
-                        <Table id="spselector">
-                            {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+                    <section className="border rounded-md overflow-y-scroll overflow-x-hidden">
+                        <Table id="spselector" className="overflow-y-scroll overflow-x-hidden">
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="w-[80px]">Qté</TableHead>
@@ -202,7 +201,7 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
                                                 onChange={(e) =>
                                                     handleQty({
                                                         id: ingredient._id,
-                                                        qty: parseInt(e.target.value),
+                                                        qty: parseFloat(e.target.value),
                                                     })
                                                 }
                                                 type="number"

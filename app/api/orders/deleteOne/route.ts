@@ -12,11 +12,11 @@ export async function POST(req: Request) {
     try {
         const mongo = await clientPromise;
         const db = mongo.db(process.env.MONGO_DB_NAME);
-        const result = await db.collection("sellers").deleteOne({ _id: new ObjectId(id) });
+        const result = await db.collection("orders").deleteOne({ _id: new ObjectId(id) });
 
         posthog.capture({
             distinctId: userId as string,
-            event: "Vendeur - Supression",
+            event: "Commande - Supression",
             properties: {
                 $set: { email: user.emailAddresses[0].emailAddress },
                 mongoRes: result,

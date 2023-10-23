@@ -11,14 +11,19 @@ export async function POST(req: Request) {
 
     const update = { $set: { ...client } };
 
-    console.log("query: ", query);
-    console.log("update: ", update);
-
     try {
         const mongo = await clientPromise;
         const db = mongo.db(process.env.MONGO_DB_NAME);
         const result = await db.collection("clients").updateOne(query, update);
-        return NextResponse.json(result);
+
+        console.log(result);
+
+        const resClient = {
+            ...query,
+            ...update.$set,
+        };
+
+        return NextResponse.json(resClient);
     } catch (e) {
         console.error(e);
     }

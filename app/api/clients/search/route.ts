@@ -8,9 +8,12 @@ export async function POST(req: Request) {
         const client = await clientPromise;
         const db = client.db(process.env.MONGO_DB_NAME);
 
+        const escapedSearchTerm = name.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+        const regexPattern = new RegExp(`^${escapedSearchTerm}`, "i");
+
         const clients = await db
             .collection("clients")
-            .find({ name: { $regex: name, $options: "i" } })
+            .find({ name: { $regex: regexPattern } })
             .limit(10)
             .sort({ created_at: 1 })
             .toArray();

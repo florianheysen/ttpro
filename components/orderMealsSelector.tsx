@@ -59,6 +59,7 @@ export function OrderMealsSelector({ order, handleChange }: { order: any; handle
                 qty: 1,
                 comment: "",
             };
+            console.log(formattedMeal);
             meals.push(formattedMeal);
         }
 

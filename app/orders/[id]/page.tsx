@@ -16,6 +16,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ClientSelector } from "@/components/clientSelector";
 import { SellerSelectorPopup } from "@/components/sellerSelectorPopup";
 import { NewClientPopup } from "@/components/newClientPopup";
+import { EditClientPopup } from "@/components/editClientPopup";
 
 import { OrderMealsSelector } from "@/components/orderMealsSelector";
 import { OrderVracSelector } from "@/components/orderVracSelector";
@@ -208,6 +209,8 @@ export default function Page({ params }: { params: { id: string } }) {
         }
     };
 
+    console.log(order);
+
     const handleSubmit = async () => {
         if (orderValidation(order) === true) {
             const finalOrder = {
@@ -285,6 +288,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         <div className="flex flex-col items-start gap-2">
                             <div className="flex flex-row items-end gap-2">
                                 <ClientSelector order={order} handleChange={handleChange} />
+                                {order.client && <EditClientPopup order={order} handleChange={handleChange} />}
                                 <NewClientPopup handleChange={handleChange} />
                             </div>
 
@@ -339,13 +343,13 @@ export default function Page({ params }: { params: { id: string } }) {
                                     onChange={(e) => setAccompte(parseInt(e.target.value))}
                                     value={accompte}
                                 />
-                                <Badge
+                                {/* <Badge
                                     onClick={() => setAccompte(totalPrice.toFixed(2))}
                                     className="group-hover:visible invisible absolute bottom-[7px] right-8 rounded cursor-pointer"
                                     variant="secondary"
                                 >
                                     max
-                                </Badge>
+                                </Badge> */}
                             </div>
                         </div>
 
@@ -399,7 +403,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                             onChange={(e) =>
                                                 handleQty({
                                                     item: meal,
-                                                    qty: parseInt(e.target.value),
+                                                    qty: parseFloat(e.target.value),
                                                 })
                                             }
                                             defaultValue={meal.qty}
@@ -463,7 +467,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                             onChange={(e) =>
                                                 handleQty({
                                                     item: meal,
-                                                    qty: parseInt(e.target.value),
+                                                    qty: parseFloat(e.target.value),
                                                 })
                                             }
                                             defaultValue={meal.qty}
@@ -527,7 +531,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                             onChange={(e) =>
                                                 handleQty({
                                                     item: vrac,
-                                                    qty: parseInt(e.target.value),
+                                                    qty: parseFloat(e.target.value),
                                                 })
                                             }
                                             defaultValue={vrac.qty}
@@ -585,15 +589,11 @@ const orderValidation = (order: any) => {
     if (order.delivery_date === null) {
         toast.error("Veuillez choisir une date de livraison");
     }
-    if (order.delivery_date === moment(new Date()).format("YYYY-MM-DD")) {
-        toast.error("La livraison ne peux pas être le jour actuel");
-    }
     if (
         order.seller === null ||
         order.client === null ||
         (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) ||
-        order.delivery_date === null ||
-        order.delivery_date === moment(new Date()).format("YYYY-MM-DD")
+        order.delivery_date === null
     ) {
         return false;
     } else {

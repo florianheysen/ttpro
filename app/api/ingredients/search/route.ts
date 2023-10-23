@@ -17,6 +17,9 @@ export async function GET() {
 export async function POST(req: Request) {
     const { name } = await req.json();
 
+    const escapedSearchTerm = name.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    const regexPattern = new RegExp(`^${escapedSearchTerm}`, "i");
+
     try {
         const client = await clientPromise;
         const db = client.db(process.env.MONGO_DB_NAME);
@@ -24,7 +27,7 @@ export async function POST(req: Request) {
         const clients = await db
             .collection("ingredients")
             .find({
-                $or: [{ name: { $regex: name, $options: "i" } }],
+                $or: [{ name: { $regex: regexPattern } }],
             })
             .limit(10)
             .sort({ created_at: 1 })

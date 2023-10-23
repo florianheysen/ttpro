@@ -17,6 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ClientSelector } from "@/components/clientSelector";
 import { SellerSelectorPopup } from "@/components/sellerSelectorPopup";
 import { NewClientPopup } from "@/components/newClientPopup";
+import { EditClientPopup } from "@/components/editClientPopup";
 
 import { OrderMealsSelector } from "@/components/orderMealsSelector";
 import { OrderVracSelector } from "@/components/orderVracSelector";
@@ -300,6 +301,7 @@ export default function CreateOrder() {
                         <div className="flex flex-col items-start gap-2">
                             <div className="flex flex-row items-end gap-2">
                                 <ClientSelector order={order} handleChange={handleChange} />
+                                {order.client && <EditClientPopup order={order} handleChange={handleChange} />}
                                 <NewClientPopup handleChange={handleChange} />
                             </div>
 
@@ -414,7 +416,7 @@ export default function CreateOrder() {
                                             onChange={(e) =>
                                                 handleQty({
                                                     item: meal,
-                                                    qty: parseInt(e.target.value),
+                                                    qty: parseFloat(e.target.value),
                                                 })
                                             }
                                             defaultValue={meal.qty}
@@ -478,7 +480,7 @@ export default function CreateOrder() {
                                             onChange={(e) =>
                                                 handleQty({
                                                     item: meal,
-                                                    qty: parseInt(e.target.value),
+                                                    qty: parseFloat(e.target.value),
                                                 })
                                             }
                                             defaultValue={meal.qty}
@@ -542,7 +544,7 @@ export default function CreateOrder() {
                                             onChange={(e) =>
                                                 handleQty({
                                                     item: vrac,
-                                                    qty: parseInt(e.target.value),
+                                                    qty: parseFloat(e.target.value),
                                                 })
                                             }
                                             defaultValue={vrac.qty}

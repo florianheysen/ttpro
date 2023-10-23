@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon, Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 
 import moment from "moment";
 
@@ -18,6 +18,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { Badge } from "@/components/ui/badge";
 
 export type Order = {
@@ -56,6 +68,30 @@ function handleCopyID(id: string) {
     navigator.clipboard.writeText(id);
     toast("Identifiant copié dans le presse papier");
 }
+
+const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/orders/deleteOne`;
+
+const handleDelete = async (id: string) => {
+    try {
+        const res = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: id }),
+        });
+
+        if (res.ok && res.status === 200) {
+            window.location.reload();
+        } else {
+            toast.error("La suppression de la commande a échoué.");
+        }
+    } catch (error) {
+        console.error("Une erreur s'est produite lors de la suppression de la commande", error);
+        toast.error("Une erreur s'est produite lors de la suppression de la commande.");
+    }
+};
 
 export const columns: ColumnDef<any>[] = [
     {
@@ -149,6 +185,31 @@ export const columns: ColumnDef<any>[] = [
                             <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyID(order._id)}>
                                 <CopyIcon className="mr-2" /> Copier l&apos;identifiant
                             </DropdownMenuItem>
+                            <AlertDialog>
+                                <AlertDialogTrigger>
+                                    <span className="hover:bg-red-100 dark:hover:bg-red-800 cursor-pointer flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent">
+                                        <TrashIcon className="mr-2" /> Supprimer la commande
+                                    </span>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Cette action ne peut pas être annulée. Elle supprimera définitivement la
+                                            commande{" "}
+                                            <Badge className="rounded px-2 whitespace-nowrap" variant="outline">
+                                                {order.num}
+                                            </Badge>
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                        <Button onClick={() => handleDelete(order._id)} variant="destructive">
+                                            Supprimer définitivement
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
