@@ -21,37 +21,30 @@ import { Button } from "@/components/ui/button";
 function Orders() {
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
-    const [searchTerm, setSearchTerm]: any = useState(null);
     const [searchResult, setSearchResult]: any = useState(null);
 
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/table?page=${page}`, fetcher);
 
-    useEffect(() => {
-        const debouncedSearch = debounce(async () => {
+    const debouncedSearch = React.useRef(
+        debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
             try {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/orders/search`, {
                     method: "POST",
                     headers: {
-                        Accept: "application/json",
+                        Accept: "application.json",
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ searchTerm }),
+                    body: JSON.stringify({ searchTerm: e.target.value }),
                 });
 
                 const orders = await res.json();
 
                 setSearchResult(orders);
-            } catch (error) {
-                console.error(error);
+            } catch (e) {
+                console.log(e);
             }
-        }, 200);
-
-        debouncedSearch();
-    }, [searchTerm]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
+        }, 200)
+    ).current;
 
     const clearSearch = () => {
         window.location.reload();
@@ -99,7 +92,7 @@ function Orders() {
                 count={data.pagination.count}
             />
             <div className="flex w-80 gap-3 mt-2">
-                <Input value={searchTerm} onChange={handleChange} id="search" placeholder="Rechercher..." />
+                <Input onChange={(e) => debouncedSearch(e)} id="search" placeholder="Rechercher..." />
                 {searchResult && (
                     <Button onClick={clearSearch} variant="outline" className="py-0 px-2">
                         <span className="sr-only">Supprimer</span>

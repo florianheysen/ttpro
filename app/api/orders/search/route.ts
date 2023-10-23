@@ -16,7 +16,7 @@ export async function POST(req: Request) {
                     { num: { $regex: searchTerm, $options: "i" } },
                 ],
             })
-            .limit(7)
+            .limit(10)
             .sort({ created_at: 1 })
             .toArray();
 
