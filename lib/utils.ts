@@ -98,6 +98,7 @@ export function convertOrder(order: any) {
         code: meal.code,
         name: meal.name,
         price: meal.price,
+        category: meal.category,
         selectedIngredients: meal.selectedIngredients,
         qty: meal.qty,
         comment: meal.comment,
