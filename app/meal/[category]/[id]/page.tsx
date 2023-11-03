@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { MealIngredientSelector } from "@/components/mealIngredientSelector";
 import { Table, TableBody, TableCell, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import { fetcher } from "@/lib/utils";
@@ -32,12 +33,13 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
         mealCode: "",
         mealPrice: 0,
         mealCategory: "",
+        indisponible: false,
         ingredients: [],
     });
 
     React.useEffect(() => {
         if (data && !isValidating) {
-            setMeal(data);
+            setMeal({ ...data, indisponible: data.indisponible ?? false });
         }
     }, [data, isValidating]);
 
@@ -134,9 +136,24 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
                         />
                     </div>
                 </div>
-                <div>
-                    <p className="mb-1">Ingrédients</p>
-                    <MealIngredientSelector meal={meal} handleChange={handleChange} />
+                <div className="flex flex-row gap-6 items-center">
+                    <div>
+                        <p className="mb-1">Ingrédients</p>
+                        <MealIngredientSelector meal={meal} handleChange={handleChange} />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            onClick={() => handleChange("indisponible", !meal.indisponible)}
+                            checked={meal.indisponible}
+                            id="terms"
+                        />
+                        <label
+                            htmlFor="terms"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Marquer comme indisponible
+                        </label>
+                    </div>
                 </div>
             </section>
             <section className="border rounded-md w-[750px] my-6">

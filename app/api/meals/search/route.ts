@@ -11,7 +11,15 @@ export async function POST(req: Request) {
         const clients = await db
             .collection("meals")
             .find({
-                $or: [{ mealName: { $regex: name, $options: "i" } }, { mealCode: { $regex: name, $options: "i" } }],
+                $and: [
+                    {
+                        $or: [
+                            { mealName: { $regex: name, $options: "i" } },
+                            { mealCode: { $regex: name, $options: "i" } },
+                        ],
+                    },
+                    { $or: [{ indisponible: { $exists: false } }, { indisponible: false }] },
+                ],
             })
             .limit(15)
             .sort({ created_at: 1 })

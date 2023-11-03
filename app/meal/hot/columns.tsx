@@ -32,8 +32,12 @@ export const columns: ColumnDef<any>[] = [
         size: 80,
         cell: ({ row }) => {
             const meal = row.original;
+            console.log(meal);
             return (
-                <Badge className="rounded px-2 whitespace-nowrap" variant="outline">
+                <Badge
+                    className="rounded px-2 whitespace-nowrap"
+                    variant={meal?.indisponible ? "destructive" : "outline"}
+                >
                     {meal.mealCode}
                 </Badge>
             );
