@@ -83,7 +83,7 @@ export function OrderMealsSelector({ order, handleChange }: { order: any; handle
                 <Command>
                     <Input className="" onChange={(e) => debouncedSearch(e)} placeholder="Rechercher..." />
                     <CommandEmpty>Aucun plat trouvé.</CommandEmpty>
-                    <CommandGroup>
+                    <CommandGroup className="h-[300px] overflow-y-scroll">
                         {meals.map((meal: any) => (
                             <CommandItem
                                 key={meal?._id}

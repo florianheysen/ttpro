@@ -42,9 +42,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
         let finalPrice = 0;
 
         finalIngredients.forEach((i: any) => {
-            const prix = parseFloat(i.price);
-            const quantite = parseInt(i.qty);
-            finalPrice += prix * quantite;
+            finalPrice += parseFloat(i.price) * parseFloat(i.qty);
         });
 
         const finalPlateau = {
@@ -97,7 +95,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
             const result = await res.json();
 
             // Parcourir l'array pour ajuster les quantités
-            const modifiedIngredients = result.map((ingredient: any) => {
+            const modifiedIngredients = result?.map((ingredient: any) => {
                 if (
                     ingredient._id === "285af28604a340c5be59eabc" || // Petit plateau
                     ingredient._id === "1f148604c2eb4ba991bdde88" || // Grand plateau
@@ -128,12 +126,12 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
         getIngredientsSp();
     }, []);
 
-    const handleQty = ({ id, qty }: { id: string; qty: number }) => {
+    const handleQty = ({ id, qty }: { id: string; qty: string }) => {
         const nouveauIngredients = ingredients.map((ingr: any) => {
             if (ingr._id === id) {
                 return {
                     ...ingr,
-                    qty,
+                    qty: qty,
                 };
             }
             return ingr;
@@ -172,13 +170,13 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
                         </div>
                     </AlertDialogTitle>
                     <br />
-                    <section className="border rounded-md  overflow-y-scroll overflow-x-hidden">
-                        <Table id="spselector" className="overflow-y-scroll overflow-x-hidden">
+                    <section className="border rounded-md">
+                        <Table id="spselector">
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="w-[80px]">Qté</TableHead>
                                     <TableHead className="w-[100px]">Unité</TableHead>
-                                    <TableHead className="w-[300px]">Ingrédient</TableHead>
+                                    <TableHead className="w-[280px]">Ingrédient</TableHead>
                                     <TableHead className="w-[110px]">Prix/Unité</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -190,7 +188,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
                                                 onChange={(e) =>
                                                     handleQty({
                                                         id: ingredient._id,
-                                                        qty: parseFloat(e.target.value),
+                                                        qty: e.target.value,
                                                     })
                                                 }
                                                 type="number"
@@ -198,7 +196,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
                                             />
                                         </TableCell>
                                         <TableCell className="w-[100px]">{ingredient.unit.name}</TableCell>
-                                        <TableCell className="w-[300px]">{ingredient.name}</TableCell>
+                                        <TableCell className="w-[280px]">{ingredient.name}</TableCell>
                                         <TableCell className="w-[110px]">
                                             {new Intl.NumberFormat("fr-FR", {
                                                 style: "currency",

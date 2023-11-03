@@ -79,6 +79,7 @@ export default function CreateOrder() {
             const finalOrder = {
                 ...order,
                 price: totalPrice,
+                accompte: accompte,
                 totalMayo: calculerTotalMayonnaise(order),
                 clientName: order.client.name.toUpperCase(),
                 clientId: { $oid: order.client._id },
@@ -461,11 +462,11 @@ export default function CreateOrder() {
                                             <Tooltip>
                                                 <TooltipTrigger>
                                                     <p className="w-[200px] text-left whitespace-nowrap truncate cursor-help">
-                                                        {stringIngredients(meal.selectedIngredients)}
+                                                        Plateau spécial
                                                     </p>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <p>{stringIngredients(meal.selectedIngredients)}</p>
+                                                    <p>Plateau spécial</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>

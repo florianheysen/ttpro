@@ -13,7 +13,7 @@ export async function POST(req: Request) {
             .find({
                 $or: [{ mealName: { $regex: name, $options: "i" } }, { mealCode: { $regex: name, $options: "i" } }],
             })
-            .limit(7)
+            .limit(15)
             .sort({ created_at: 1 })
             .toArray();
 

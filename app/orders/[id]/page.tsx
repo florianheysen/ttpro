@@ -217,6 +217,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 ...order,
                 _id: data._id,
                 price: totalPrice,
+                accompte: accompte,
                 totalMayo: calculerTotalMayonnaise(order),
                 clientName: order.client.name.toUpperCase(),
                 clientId: { $oid: order.client._id },
@@ -242,7 +243,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             const result = await res.json();
 
-            if (result.acknowledged === true) {
+            if (result?.acknowledged === true) {
                 router.push(`/orders/print/${params.id}`);
             } else {
                 toast.error("Une erreur est survenue");
@@ -448,11 +449,11 @@ export default function Page({ params }: { params: { id: string } }) {
                                             <Tooltip>
                                                 <TooltipTrigger>
                                                     <p className="w-[200px] text-left whitespace-nowrap truncate cursor-help">
-                                                        {stringIngredients(meal.selectedIngredients)}
+                                                        Plateau spécial
                                                     </p>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <p>{stringIngredients(meal.selectedIngredients)}</p>
+                                                    <p>Plateau spécial</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
