@@ -49,7 +49,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
             code: "SP",
             id: genId(),
             personnes: personnes,
-            finalPrice,
+            finalPrice: Math.ceil(finalPrice),
             qty: 1,
             selectedIngredients: finalIngredients,
         };

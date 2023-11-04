@@ -36,7 +36,7 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
             code: "SP",
             id: initialData.id,
             personnes,
-            finalPrice,
+            finalPrice: Math.ceil(finalPrice),
             qty: initialData.qty,
             selectedIngredients: finalIngredients,
             comment: initialData.comment,

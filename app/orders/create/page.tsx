@@ -105,7 +105,7 @@ export default function CreateOrder() {
 
             const result = await res.json();
 
-            router.push(`/orders/print/${result._id}`);
+            router.push(`/orders/print/${result?._id}`);
         }
     };
 
