@@ -2,7 +2,7 @@
 const nextConfig = (module.exports = {
     headers: () => [
         {
-            source: "/:orders*",
+            source: "/orders/:slug*",
             headers: [
                 {
                     key: "Cache-Control",
