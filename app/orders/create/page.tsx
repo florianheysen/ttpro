@@ -109,13 +109,15 @@ export default function CreateOrder() {
         }
     };
 
-    const { data: nextNum } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/getNumber`, fetcher);
-
-    console.log(nextNum);
-
     React.useEffect(() => {
-        handleChange("num", nextNum);
-    }, [nextNum]);
+        const fetchData = async () => {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/orders/getNumber`);
+            const nextNum = await res.json();
+            handleChange("num", nextNum);
+        };
+
+        fetchData();
+    }, []);
 
     const handleChange = (field: string, newValue: unknown) => {
         setOrder((prevState: any) => ({
@@ -359,13 +361,13 @@ export default function CreateOrder() {
                                     onChange={(e) => setAccompte(parseInt(e.target.value))}
                                     value={accompte}
                                 />
-                                <Badge
+                                {/* <Badge
                                     onClick={() => setAccompte(totalPrice.toFixed(2))}
                                     className="group-hover:visible invisible absolute bottom-[7px] right-8 rounded cursor-pointer"
                                     variant="secondary"
                                 >
                                     max
-                                </Badge>
+                                </Badge> */}
                             </div>
                         </div>
 
