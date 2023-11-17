@@ -51,6 +51,7 @@ export default function Page({ params }: { params: { id: string } }) {
     React.useEffect(() => {
         if (data && !isValidating) {
             setOrder({ ...data });
+            setAccompte(data.accompte);
         }
     }, [data, client]);
 

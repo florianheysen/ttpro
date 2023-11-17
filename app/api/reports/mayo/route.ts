@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 
         const orders = await db.collection("orders").find(query).sort({ created_at: -1 }).toArray();
 
-        const test = processMayoOrders(orders)
+        const test = processMayoOrders(orders);
 
         return NextResponse.json(test);
     } catch (e) {
@@ -41,55 +41,54 @@ export async function GET(req: NextRequest) {
 
 function processMayoOrders(data: any[]): any {
     const results: any = {
-      totalMayo: 0,
-      totalPots: {
-        veryLarge: 0,
-        large: 0,
-        medium: 0,
-        small: 0
-      },
+        totalMayo: 0,
+        totalPots: {
+            veryLarge: 0,
+            large: 0,
+            medium: 0,
+            small: 0,
+        },
     };
-  
+
     function distributeMayoByPot(totalMayo: any) {
         const potSizes = [800, 550, 300, 100];
         const potCount = [0, 0, 0, 0];
-      
+
         for (let i = 0; i < potSizes.length; i++) {
-          potCount[i] = Math.floor(totalMayo / potSizes[i]);
-          totalMayo %= potSizes[i];
+            potCount[i] = Math.floor(totalMayo / potSizes[i]);
+            totalMayo %= potSizes[i];
         }
-      
+
         for (let i = potCount.length - 1; i > 0; i--) {
-          while (potCount[i] >= 2) {
-            const combinedSize = potSizes[i] + potSizes[i - 1];
-            const combinedCount = Math.floor(potCount[i] / 2);
-            potCount[i - 1] += combinedCount;
-            potCount[i] -= combinedCount * 2;
-            totalMayo -= combinedCount * combinedSize;
-          }
+            while (potCount[i] >= 2) {
+                const combinedSize = potSizes[i] + potSizes[i - 1];
+                const combinedCount = Math.floor(potCount[i] / 2);
+                potCount[i - 1] += combinedCount;
+                potCount[i] -= combinedCount * 2;
+                totalMayo -= combinedCount * combinedSize;
+            }
         }
-      
+
         return {
-          veryLargePotCount: potCount[0],
-          largePotCount: potCount[1],
-          mediumPotCount: potCount[2],
-          smallPotCount: potCount[3],
-          remainingMayo: totalMayo
+            veryLargePotCount: potCount[0],
+            largePotCount: potCount[1],
+            mediumPotCount: potCount[2],
+            smallPotCount: potCount[3],
+            remainingMayo: totalMayo,
         };
-      }      
-  
-    for (const order of data) {
-      const { totalMayo } = order;
-      if (totalMayo !== undefined && totalMayo !== 0) {
-        const { veryLargePotCount, largePotCount, mediumPotCount, smallPotCount } = distributeMayoByPot(totalMayo);
-        results.totalMayo += totalMayo;
-        results.totalPots.veryLarge += veryLargePotCount;
-        results.totalPots.large += largePotCount;
-        results.totalPots.medium += mediumPotCount;
-        results.totalPots.small += smallPotCount;
-      }
     }
-  
+
+    for (const order of data) {
+        const { totalMayo } = order;
+        if (totalMayo !== undefined && totalMayo !== 0) {
+            const { veryLargePotCount, largePotCount, mediumPotCount, smallPotCount } = distributeMayoByPot(totalMayo);
+            results.totalMayo += totalMayo;
+            results.totalPots.veryLarge += veryLargePotCount;
+            results.totalPots.large += largePotCount;
+            results.totalPots.medium += mediumPotCount;
+            results.totalPots.small += smallPotCount;
+        }
+    }
+
     return results.totalMayo > 0 ? results : null;
 }
-  

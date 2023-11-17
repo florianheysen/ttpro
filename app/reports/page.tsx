@@ -19,8 +19,8 @@ const reports = [
     },
     {
         name: "commandes",
-        label: "Commandes (🚧 en cours)",
-        disabled: true,
+        label: "Commandes",
+        disabled: false,
     },
     {
         name: "meal-hot",
@@ -49,8 +49,8 @@ const reports = [
     },
     {
         name: "mayo",
-        label: "Mayonnaise (🚧 en cours)",
-        disabled: true,
+        label: "Mayonnaise",
+        disabled: false,
     },
     {
         name: "vrac-produit",

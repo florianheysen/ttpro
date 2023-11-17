@@ -111,6 +111,8 @@ export default function CreateOrder() {
 
     const { data: nextNum } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/getNumber`, fetcher);
 
+    console.log(nextNum);
+
     React.useEffect(() => {
         handleChange("num", nextNum);
     }, [nextNum]);

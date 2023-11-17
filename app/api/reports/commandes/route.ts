@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 
         const orders = await db.collection("orders").find(query).sort({ created_at: -1 }).toArray();
 
-        const test = checkMealTypes(orders)
+        const test = checkMealTypes(orders);
 
         return NextResponse.json(test);
     } catch (e) {
@@ -42,25 +42,25 @@ export async function GET(req: NextRequest) {
 function checkMealTypes(mealObjects: any[]): any[] {
     const mealTypes: Set<string> = new Set(["meal-hot", "meal-cold", "meal-special", "meal-huitres"]);
     const results: any[] = [];
-  
+
     mealObjects.forEach((mealObject: any) => {
-      const result: any = {
-        orderNumber: mealObject.num,
-        clientName: mealObject.clientName,
-        deliveryDate: mealObject.deliveryDate,
-        sellerName: mealObject.seller,
-      };
-  
-      mealTypes.forEach((type: string) => {
-        result[type] = mealObject.meals.some((meal: any) => meal.category === type);
-      });
-  
-      result.vrac = mealObject.vrac && Object.keys(mealObject.vrac).length > 0;
-      result.specialMeals = mealObject.specialMeals && Object.keys(mealObject.specialMeals).length > 0;
-  
-      results.push(result);
+        const result: any = {
+            orderNumber: mealObject.num,
+            clientName: mealObject.clientName,
+            deliveryDate: mealObject.delivery_date,
+            sellerName: mealObject.seller,
+        };
+
+        mealTypes.forEach((type: string) => {
+            const camelCaseType = type.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+            result[camelCaseType] = mealObject.meals.some((meal: any) => meal.category === type);
+        });
+
+        result.vrac = mealObject.vrac && Object.keys(mealObject.vrac).length > 0;
+        result.specialMeals = mealObject.specialMeals && Object.keys(mealObject.specialMeals).length > 0;
+
+        results.push(result);
     });
-  
-    return results;
-  }
-  
+
+    return results.reverse();
+}
