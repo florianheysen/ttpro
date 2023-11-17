@@ -109,7 +109,7 @@ export default function CreateOrder() {
         }
     };
 
-    React.useEffect(() => {
+    /* React.useEffect(() => {
         const fetchData = async () => {
             const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/orders/getNumber`, { cache: "no-cache" });
             const nextNum = await res.json();
@@ -117,7 +117,7 @@ export default function CreateOrder() {
         };
 
         fetchData();
-    }, []);
+    }, []); */
 
     const handleChange = (field: string, newValue: unknown) => {
         setOrder((prevState: any) => ({

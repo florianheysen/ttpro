@@ -11,7 +11,12 @@ export async function POST(req: Request) {
     try {
         const mongo = await clientPromise;
         const db = mongo.db(process.env.MONGO_DB_NAME);
-        const result = await db.collection("orders").insertOne(order);
+        const latestOrder = await db.collection("orders").find().limit(1).sort({ created_at: -1 }).toArray();
+
+        const lastNum = latestOrder[0].num;
+        const nextNum = getNextNum(lastNum);
+
+        const result = await db.collection("orders").insertOne({ ...order, num: nextNum });
 
         posthog.capture({
             distinctId: userId as string,
@@ -31,4 +36,26 @@ export async function POST(req: Request) {
     } catch (e) {
         console.error(e);
     }
+}
+
+function getNextNum(input: string): string {
+    const parts = input.split("/");
+    if (parts.length !== 2) {
+        throw new Error("Format de chaine invalide. Utilisez le format 'numéro/année'.");
+    }
+
+    const numero = parseInt(parts[0]);
+    const annee = parseInt(parts[1]);
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+    let nouveauNumero: number;
+    if (annee === currentYear) {
+        nouveauNumero = numero + 1;
+    } else {
+        nouveauNumero = 1;
+    }
+
+    return `${nouveauNumero}/${currentYear}`;
 }
