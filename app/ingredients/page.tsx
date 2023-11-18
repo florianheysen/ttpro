@@ -11,15 +11,44 @@ import { TableLoading } from "./table-loading";
 import { DataTablePaginationLoading } from "@/components/ui/datatable-pagination-loading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { CardStackPlusIcon } from "@radix-ui/react-icons";
+import { CardStackPlusIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { fetcher } from "@/lib/utils";
 import AppTableHead from "@/components/apptablehead";
+import React from "react";
+import debounce from "lodash.debounce";
+import { Input } from "@/components/ui/input";
 
 function IngredientsPage() {
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
+    const [searchResult, setSearchResult]: any = useState(null);
 
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/table?page=${page}`, fetcher);
+
+    const debouncedSearch = React.useRef(
+        debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/search`, {
+                    method: "POST",
+                    headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ name: e.target.value }),
+                });
+
+                const clients = await res.json();
+
+                setSearchResult(clients);
+            } catch (e) {
+                console.log(e);
+            }
+        }, 200)
+    ).current;
+
+    const clearSearch = () => {
+        window.location.reload();
+    };
 
     useEffect(() => {
         if (data) {
@@ -39,6 +68,9 @@ function IngredientsPage() {
                     btnLink="/ingredients/create"
                     count={0}
                 />
+                <div className="flex w-80 gap-3 mt-2">
+                    <Input disabled id="search" placeholder="Rechercher..." />
+                </div>
                 <TableLoading columns={columns} data={test} />
                 <div className="flex items-center justify-end space-x-2 py-4">
                     <DataTablePaginationLoading />
@@ -56,7 +88,16 @@ function IngredientsPage() {
                 btnLink="/ingredients/create"
                 count={data.pagination.count}
             />
-            <DataTable columns={columns} data={data.ingredients} />
+            <div className="flex w-80 gap-3 mt-2">
+                <Input onChange={(e) => debouncedSearch(e)} id="search" placeholder="Rechercher..." />
+                {searchResult && (
+                    <Button onClick={clearSearch} variant="outline" className="py-0 px-2">
+                        <span className="sr-only">Supprimer</span>
+                        <Cross2Icon className="h-4 w-4" />
+                    </Button>
+                )}
+            </div>
+            <DataTable columns={columns} data={searchResult ?? data.ingredients} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <DataTablePagination page={page} setPage={setPage} pageCount={pageCount} />
             </div>
