@@ -192,6 +192,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
                                                     })
                                                 }
                                                 type="number"
+                                                min="0"
                                                 value={ingredient.qty}
                                             />
                                         </TableCell>

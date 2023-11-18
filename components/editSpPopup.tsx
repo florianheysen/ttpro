@@ -203,6 +203,7 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
                                                     })
                                                 }
                                                 type="number"
+                                                min="0"
                                                 value={ingredient.qty}
                                             />
                                         </TableCell>
