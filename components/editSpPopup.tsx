@@ -81,6 +81,7 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
     React.useEffect(() => {
         const getIngredientsSp = async () => {
             const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/sp/findMany`, {
+                cache: "no-store",
                 method: "GET",
                 headers: {
                     Accept: "application.json",
