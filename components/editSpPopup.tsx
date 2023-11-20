@@ -136,16 +136,22 @@ export function EditSpPopup({ handleChange, order, initialData }: { handleChange
     }, [initialData]);
 
     const handleQty = ({ id, qty }: { id: string; qty: string }) => {
-        const nouveauIngredients = ingredients.map((ingr: any) => {
-            if (ingr._id === id) {
-                return {
-                    ...ingr,
-                    qty: qty,
-                };
-            }
-            return ingr;
-        });
-        setIngredients(nouveauIngredients);
+        const isPositiveNumberOrEmpty = /^$|^\d+(\.\d+)?$/.test(qty);
+
+        if (isPositiveNumberOrEmpty) {
+            const nouveauIngredients = ingredients.map((ingr: any) => {
+                if (ingr._id === id) {
+                    return {
+                        ...ingr,
+                        qty: qty,
+                    };
+                }
+                return ingr;
+            });
+            setIngredients(nouveauIngredients);
+        } else {
+            console.error("Quantity must be an empty string or a positive number.");
+        }
     };
 
     return (
