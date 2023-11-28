@@ -79,7 +79,7 @@ export default function CreateOrder() {
             const finalOrder = {
                 ...order,
                 price: totalPrice,
-                accompte: accompte,
+                accompte: parseInt(accompte) != 0 ? parseInt(accompte) : 0,
                 totalMayo: calculerTotalMayonnaise(order),
                 clientName: order.client.name.toUpperCase(),
                 clientId: { $oid: order.client._id },
@@ -358,7 +358,7 @@ export default function CreateOrder() {
                                     type="number"
                                     min="0"
                                     max={totalPrice}
-                                    onChange={(e) => setAccompte(parseInt(e.target.value))}
+                                    onChange={(e) => setAccompte(e.target.value)}
                                     value={accompte}
                                 />
                                 {/* <Badge
