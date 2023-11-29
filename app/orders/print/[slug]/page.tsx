@@ -16,6 +16,8 @@ export default function Pagee({ params }: { params: { slug: string } }) {
         setIsClient(true);
     }, []);
 
+    console.log(order);
+
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/findOne?id=${params.slug}`, fetcher);
 
     React.useEffect(() => {
@@ -49,14 +51,11 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                         <View>
                             <Text>Bon de commande - La Marée Barlin</Text>
                             <Text>&nbsp;</Text>
-
                             <Text style={styles.textSmall}>
                                 Numéro de commande : {order?.num} | Date de livraison : {deliveryDate.slice(1, -1)} |
                                 Vendeur : {order?.seller}
                             </Text>
-
                             <Text>&nbsp;</Text>
-
                             <Text style={styles.textSmall}>
                                 {order?.clientName ? `Client : ${order?.clientName}` : ``}
                             </Text>
@@ -78,18 +77,14 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                     ? `Téléphone Fixe : ${order?.clientInfo.phone_fixe}`
                                     : ``}
                             </Text>
-
                             <Text>&nbsp;</Text>
-
                             {/* <Text style={styles.textSmall}>
               Date de commande : {orderDate.slice(1, -1)}
             </Text> */}
                             <Text style={styles.consigne}>
                                 {order?.consigne === true ? "CONSIGNE OK" : "CONSIGNE A DEMANDER"}
                             </Text>
-
                             <Text>&nbsp;</Text>
-
                             <View style={styles.table}>
                                 <View style={[styles.row, styles.bold, styles.header]}>
                                     <Text style={styles.row1}>QTÉ</Text>
@@ -167,17 +162,26 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                     </React.Fragment>
                                 ))}
                             </View>
-
                             <Text>&nbsp;</Text>
-
                             <Text style={styles.textBase}>Montant total : {order?.price?.toFixed(2)} EUR</Text>
-                            <Text style={styles.textBase}>Acompte : {order?.deposit | order?.accompte} EUR</Text>
-                            <Text style={styles.textBase}>
-                                Reste à régler : {(order?.price - (order?.deposit | order?.accompte)).toFixed(2)} EUR
-                            </Text>
 
+                            {order?.deposit && (
+                                <>
+                                    <Text style={styles.textBase}>Acompte : {order?.deposit.toFixed(2)} EUR</Text>
+                                    <Text style={styles.textBase}>
+                                        Reste à régler : {(order?.price - order?.deposit).toFixed(2)} EUR
+                                    </Text>
+                                </>
+                            )}
+                            {order?.accompte && (
+                                <>
+                                    <Text style={styles.textBase}>Acompte : {order?.accompte.toFixed(2)} EUR</Text>
+                                    <Text style={styles.textBase}>
+                                        Reste à régler : {(order?.price - order?.accompte).toFixed(2)} EUR
+                                    </Text>
+                                </>
+                            )}
                             <Text>&nbsp;</Text>
-
                             {pots[0] != undefined && <Text style={styles.textBase}>Mayonnaise:</Text>}
                             {pots[0] != undefined && pots[0] != 0 && (
                                 <Text style={styles.textSmall}>{pots[0]} x Très grand 800g</Text>
@@ -191,16 +195,12 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                             {pots[3] != undefined && pots[3] != 0 && (
                                 <Text style={styles.textSmall}>{pots[3]} x Petit 100g</Text>
                             )}
-
                             <Text>&nbsp;</Text>
-
                             <Text style={styles.textBase}>
                                 MERCI DE VERIFIER votre commande AVANT de quitter le magasin (NOMBRE DE PLAT, sauce,
                                 mayo...)
                             </Text>
-
                             <Text>&nbsp;</Text>
-
                             <Text style={styles.textBase}>
                                 {order?.consigne === true ? "" : "Chèque de consigne à verser."}
                             </Text>

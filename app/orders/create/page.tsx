@@ -79,7 +79,7 @@ export default function CreateOrder() {
             const finalOrder = {
                 ...order,
                 price: totalPrice,
-                accompte: parseInt(accompte) != 0 ? parseInt(accompte) : 0,
+                accompte: parseFloat(accompte) != 0 ? parseFloat(accompte) : 0,
                 totalMayo: calculerTotalMayonnaise(order),
                 clientName: order.client.name.toUpperCase(),
                 clientId: { $oid: order.client._id },

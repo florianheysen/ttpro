@@ -199,7 +199,8 @@ export const columns: ColumnDef<any>[] = [
                                             commande{" "}
                                             <Badge className="rounded px-2 whitespace-nowrap" variant="outline">
                                                 {order.num}
-                                            </Badge>
+                                            </Badge>{" "}
+                                            de {order.clientName}.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>

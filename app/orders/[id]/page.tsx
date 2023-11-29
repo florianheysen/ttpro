@@ -218,7 +218,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 ...order,
                 _id: data._id,
                 price: totalPrice,
-                accompte: parseInt(accompte) != 0 ? parseInt(accompte) : 0,
+                accompte: parseFloat(accompte) != 0 ? parseFloat(accompte) : 0,
                 totalMayo: calculerTotalMayonnaise(order),
                 clientName: order.client.name.toUpperCase(),
                 clientId: { $oid: order.client._id },
