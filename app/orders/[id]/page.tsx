@@ -29,6 +29,15 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import LoadingScreen from "@/components/loadingScreen";
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isValidating } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/orders/findOne?id=${params.id}`, fetcher);
     const [accompte, setAccompte] = React.useState<any>(0);
@@ -415,7 +424,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         <Input
                                             className="w-48"
                                             type="text"
-                                            maxLength={30}
+                                            maxLength={90}
                                             onChange={(e) =>
                                                 +handleComment({
                                                     item: meal,
@@ -449,12 +458,37 @@ export default function Page({ params }: { params: { id: string } }) {
                                         <TooltipProvider>
                                             <Tooltip>
                                                 <TooltipTrigger>
-                                                    <p className="w-[200px] text-left whitespace-nowrap truncate cursor-help">
-                                                        Plateau spécial
-                                                    </p>
+                                                    <Dialog>
+                                                        <DialogTrigger>
+                                                            <p className="w-[200px] text-left whitespace-nowrap truncate cursor-help">
+                                                                Plateau spécial
+                                                            </p>
+                                                        </DialogTrigger>
+                                                        <DialogContent>
+                                                            <DialogHeader>
+                                                                <DialogTitle>Plateau spécial</DialogTitle>
+                                                                <p>
+                                                                    <br />
+                                                                    <ul>
+                                                                        {meal.selectedIngredients.map(
+                                                                            (ingredient: any) => (
+                                                                                <li
+                                                                                    className="text-black"
+                                                                                    key={ingredient.id}
+                                                                                >
+                                                                                    - {ingredient.qty} ×{" "}
+                                                                                    {ingredient.name}
+                                                                                </li>
+                                                                            )
+                                                                        )}
+                                                                    </ul>
+                                                                </p>
+                                                            </DialogHeader>
+                                                        </DialogContent>
+                                                    </Dialog>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <p>Plateau spécial</p>
+                                                    <p>Voir les ingrédients</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -479,7 +513,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         <Input
                                             className="w-48"
                                             type="text"
-                                            maxLength={30}
+                                            maxLength={90}
                                             onChange={(e) =>
                                                 +handleComment({
                                                     item: meal,
@@ -543,7 +577,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         <Input
                                             className="w-48"
                                             type="text"
-                                            maxLength={30}
+                                            maxLength={90}
                                             onChange={(e) =>
                                                 +handleComment({
                                                     item: vrac,

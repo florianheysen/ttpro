@@ -29,13 +29,9 @@ export function stringIngredients(ingredients: any) {
     for (let i = 0; i < ingredients.length; i++) {
         const ingredient = ingredients[i];
         const nomIngredient = ingredient.name;
-        const quantite = `${ingredient.qty}${ingredient.unit?.symbol}`;
+        const quantite = `${ingredient.qty}${ingredient.unit?.symbol === undefined ? "x" : ingredient.unit?.symbol}`;
 
-        chaineIngredients += `${quantite} ${nomIngredient}`;
-
-        if (i !== ingredients.length - 1) {
-            chaineIngredients += ", ";
-        }
+        chaineIngredients += `- ${quantite} ${nomIngredient}\n`;
     }
 
     return chaineIngredients;

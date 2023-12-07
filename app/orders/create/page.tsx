@@ -431,7 +431,7 @@ export default function CreateOrder() {
                                         <Input
                                             className="w-48"
                                             type="text"
-                                            maxLength={30}
+                                            maxLength={90}
                                             onChange={(e) =>
                                                 +handleComment({
                                                     item: meal,
@@ -495,7 +495,7 @@ export default function CreateOrder() {
                                         <Input
                                             className="w-48"
                                             type="text"
-                                            maxLength={30}
+                                            maxLength={90}
                                             onChange={(e) =>
                                                 +handleComment({
                                                     item: meal,
@@ -559,7 +559,7 @@ export default function CreateOrder() {
                                         <Input
                                             className="w-48"
                                             type="text"
-                                            maxLength={30}
+                                            maxLength={90}
                                             onChange={(e) =>
                                                 +handleComment({
                                                     item: vrac,
