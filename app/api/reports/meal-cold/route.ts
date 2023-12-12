@@ -33,76 +33,61 @@ export async function GET(req: NextRequest) {
 
         const orders = await db.collection("orders").find(query).sort({ created_at: -1 }).toArray();
 
-        const resObj = groupAndFilter(orders);
-
-        resObj.sort((a, b) => a.meal_name.localeCompare(b.meal_name));
-
-        resObj.forEach((meal) => {
-            meal.orders.sort(
-                (a: { order_code: string }, b: { order_code: string }) =>
-                    parseInt(a.order_code) - parseInt(b.order_code)
-            );
-        });
-
-        return NextResponse.json(resObj);
+        return NextResponse.json(trierPlatsChauds(orders));
     } catch (e) {
         console.error(e);
     }
-
-    function groupAndFilter(orders: any[]): any[] {
-        const groupedOrders: Record<any, any> = {};
-
-        orders.forEach((order: any) => {
-            order.meals.forEach((meal: any) => {
-                const mealCode: any = meal.code;
-                const mealName: any = meal.name;
-                const mealId: any = meal.id;
-                const mealQty: any = meal.qty;
-                const mealCategory: any = meal.category;
-                const mealComment: any = meal.comment;
-
-                if (mealCategory === category) {
-                    if (!groupedOrders[mealId]) {
-                        groupedOrders[mealId] = {
-                            meal_code: mealCode,
-                            meal_name: mealName,
-                            meal_qty: mealQty,
-                            orders: [],
-                        };
-                    } else {
-                        groupedOrders[mealId].meal_qty += mealQty;
-                    }
-
-                    groupedOrders[mealId].orders.push({
-                        order_code: order.num,
-                        order_delivery_date: order.delivery_date,
-                        order_client_name: order.clientName,
-                        order_individual_qty: meal.qty,
-                        meal_comment: mealComment,
-                        meal: meal,
-                    });
-                }
-            });
-        });
-
-        const result: any = Object.values(groupedOrders).filter((groupedOrder: any) =>
-            groupedOrder.orders.some((order: any) => order.meal.category === category)
-        );
-
-        removeMeal(result);
-
-        return result;
-    }
-
-    function removeMeal(data: any) {
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].orders) {
-                for (let j = 0; j < data[i].orders.length; j++) {
-                    if (data[i].orders[j].meal) {
-                        delete data[i].orders[j].meal;
-                    }
-                }
-            }
-        }
-    }
 }
+
+function trierPlatsChauds(data: any[]) {
+    const platsChauds = data.filter((commande, index, array) => {
+      const isDuplicate = array.findIndex((cmd) => cmd.num === commande.num) !== index;
+      return !isDuplicate && commande.meals.some((plat: { category: string; }) => plat.category === category);
+    });
+  
+    const listePlatsChauds = platsChauds.reduce((acc, commande) => {
+      commande.meals.forEach((plat: { category: string; code: any; qty: any; name: any; comment: any; }) => {
+        if (plat.category === category) {
+          const existingPlat = acc.find((p: { meal_code: any; }) => p.meal_code === plat.code);
+          if (existingPlat) {
+            // Plat déjà existant, mise à jour de la quantité
+            existingPlat.meal_qty += plat.qty;
+            // Vérifier si la commande existe déjà pour éviter les doublons
+            const existingOrder = existingPlat.orders.find((o: { order_code: any; }) => o.order_code === commande.num);
+            if (existingOrder) {
+              // Commande existe déjà, mise à jour de la quantité individuelle
+              existingOrder.order_individual_qty += plat.qty;
+            } else {
+              // Commande n'existe pas encore, ajout de la commande
+              existingPlat.orders.push({
+                order_code: commande.num,
+                order_client_name: commande.clientName,
+                order_delivery_date: commande.delivery_date,
+                order_individual_qty: plat.qty,
+                meal_comment: plat.comment,
+              });
+            }
+          } else {
+            // Plat n'existe pas encore, ajout du plat avec la première commande
+            acc.push({
+              meal_name: plat.name,
+              meal_category: plat.category,
+              meal_code: plat.code,
+              meal_qty: plat.qty,
+              orders: [{
+                order_code: commande.num,
+                order_client_name: commande.clientName,
+                order_delivery_date: commande.delivery_date,
+                order_individual_qty: plat.qty,
+                meal_comment: plat.comment,
+              }],
+            });
+          }
+        }
+      });
+      return acc;
+    }, []);
+  
+    return listePlatsChauds;
+  }
+  

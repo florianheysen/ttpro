@@ -1,8 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
-const category = "meal-special";
-
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
@@ -33,76 +31,69 @@ export async function GET(req: NextRequest) {
 
         const orders = await db.collection("orders").find(query).sort({ created_at: -1 }).toArray();
 
-        const resObj = groupAndFilter(orders);
-
-        resObj.sort((a, b) => a.meal_name.localeCompare(b.meal_name));
-
-        resObj.forEach((meal) => {
-            meal.orders.sort(
-                (a: { order_code: string }, b: { order_code: string }) =>
-                    parseInt(a.order_code) - parseInt(b.order_code)
-            );
-        });
-
-        return NextResponse.json(resObj);
+        return NextResponse.json(trierPlatsChauds(orders));
     } catch (e) {
         console.error(e);
     }
 }
 
-function groupAndFilter(orders: any[]): any[] {
-    const groupedOrders: Record<any, any> = {};
-
-    orders.forEach((order: any) => {
-        order.meals.forEach((meal: any) => {
-            const mealCode: any = meal.code;
-            const mealName: any = meal.name;
-            const mealId: any = meal.id;
-            const mealQty: any = meal.qty;
-            const mealCategory: any = meal.category;
-            const mealComment: any = meal.comment;
-
-            if (mealCategory === category) {
-                if (!groupedOrders[mealId]) {
-                    groupedOrders[mealId] = {
-                        meal_code: mealCode,
-                        meal_name: mealName,
-                        meal_qty: mealQty,
-                        orders: [],
-                    };
-                } else {
-                    groupedOrders[mealId].meal_qty += mealQty;
-                }
-
-                groupedOrders[mealId].orders.push({
-                    order_code: order.num,
-                    order_delivery_date: order.delivery_date,
-                    order_client_name: order.clientName,
-                    order_individual_qty: meal.qty,
-                    meal_comment: mealComment,
-                    meal: meal,
-                });
+function trierPlatsChauds(data: any[]) {
+    const category = "meal-special";
+  
+    const listePlatsChauds: any[] = [];
+  
+    data.forEach((commande) => {
+      commande.meals.forEach((plat: any) => {
+        if (plat.category === category) {
+          const normalizedCode = plat.code.replace(/\s/g, "").toUpperCase();
+  
+          const existingPlatIndex = listePlatsChauds.findIndex((p) => p.meal_code === normalizedCode);
+  
+          if (existingPlatIndex !== -1) {
+            const existingPlat = listePlatsChauds[existingPlatIndex];
+            existingPlat.meal_qty += plat.qty;
+  
+            const existingOrderIndex = existingPlat.orders.findIndex((o: any) => o.order_code === commande.num);
+  
+            if (existingOrderIndex !== -1) {
+              existingPlat.orders[existingOrderIndex].order_individual_qty += plat.qty;
+            } else {
+              existingPlat.orders.push({
+                order_code: commande.num,
+                order_client_name: commande.clientName,
+                order_delivery_date: commande.delivery_date,
+                order_individual_qty: plat.qty,
+                meal_comment: plat.comment,
+              });
             }
-        });
-    });
-
-    const result: any = Object.values(groupedOrders).filter((groupedOrder: any) =>
-        groupedOrder.orders.some((order: any) => order.meal.category === category)
-    );
-
-    removeMeal(result);
-
-    return result;
-}
-
-function removeMeal(data: any) {
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].orders) {
-            for (let j = 0; j < data[i].orders.length; j++) {
-                if (data[i].orders[j].meal) {
-                    delete data[i].orders[j].meal;
-                }
-            }
+          } else {
+            listePlatsChauds.push({
+              meal_name: plat.name,
+              meal_category: plat.category,
+              meal_code: normalizedCode,
+              meal_qty: plat.qty,
+              orders: [
+                {
+                  order_code: commande.num,
+                  order_client_name: commande.clientName,
+                  order_delivery_date: commande.delivery_date,
+                  order_individual_qty: plat.qty,
+                  meal_comment: plat.comment,
+                },
+              ],
+            });
+          }
         }
-    }
+      });
+    });
+  
+    const sortedListePlatsChauds = listePlatsChauds.sort((a, b) => {
+      const codeA = a.meal_code;
+      const codeB = b.meal_code;
+  
+      // En utilisant la fonction de comparaison de chaînes pour trier les codes dans l'ordre souhaité
+      return codeA.localeCompare(codeB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+  
+    return sortedListePlatsChauds;
 }
