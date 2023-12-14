@@ -13,7 +13,7 @@ import { Page, Text, View, Document, PDFViewer, StyleSheet } from "@react-pdf/re
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-function PrintSpecialMeal() {
+function PrintHotMeal() {
     const { get: getParam } = useSearchParams();
     const target = getParam("target");
     const from: any = getParam("from");
@@ -43,7 +43,7 @@ function PrintSpecialMeal() {
                             <span className="font-medium">Impression</span>
                         </p>
                         <h1 className="text-3xl font-semibold">
-                            Listing plats spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                            Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                             {to && "au " + format(new Date(to), "dd LLL y", { locale: fr })}
                         </h1>
                     </div>
@@ -69,52 +69,42 @@ function PrintSpecialMeal() {
                         <span className="font-medium">Impression</span>
                     </p>
                     <h1 className="text-3xl font-semibold">
-                        Listing plats spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                        Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                         {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
                     </h1>
                 </div>
             </div>
             <PDFViewer width="100%" height="700px">
                 <Document
-                    title={`Listing plats spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
+                    title={`Listing plateaux spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
                         ${to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}`}
                 >
                     <Page wrap style={styles.page}>
                         <View style={styles.title}>
                             <Text>
-                                Listing plats spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                                Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                                 {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
                         </View>
                         {data.map((item: any) => (
                             <View wrap={false} key={item.name} style={styles.mb}>
                                 <View style={styles.row}>
-                                    <Text style={styles.qty}>{item.meal_qty}×</Text>
-                                    <Text style={styles.name}>{item.meal_name}</Text>
+                                    <Text style={styles.personnes}>{item.personnes} personnes </Text>
+                                    <Text style={styles.clientName}>{item.clientName} </Text>
+                                    <Text style={styles.orderNum}>{item.num} </Text>
+                                    <Text style={styles.date}>{format(new Date(item.deliveryDate), "dd-LL-y", { locale: fr })}</Text>
                                 </View>
                                 <View>
-                                    {item.orders.map((order: any, index: number) => {
-                                        const rowStyle: any = {
-                                            backgroundColor: index % 2 === 1 ? "#f2f2f2" : "white",
-                                        };
-
-                                        return (
-                                            <View style={[styles.orderlist, rowStyle]} key={order.order_code}>
-                                                <Text style={styles.code}>{order.order_code}</Text>
-                                                <Text style={styles.date}>{order.order_delivery_date}</Text>
-                                                <Text style={styles.clientName}>{order.order_client_name}</Text>
-                                                <Text style={styles.individual}>{order.order_individual_qty}</Text>
-                                                <Text style={styles.comment}>{order.meal_comment}</Text>
-                                            </View>
-                                        );
-                                    })}
+                                    {item.selectedIngredients.map((ingredient: any) => 
+                                        <Text style={styles.ingredient}>{ingredient[0]} {ingredient[1]} {ingredient[2]}</Text>
+                                    )}
                                 </View>
                             </View>
                         ))}
                         <Text
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
-                                `Listing plats spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
+                                `Listing plateaux spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
                                     to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
                                 } | ${pageNumber} / ${totalPages}`
                             }
@@ -142,22 +132,42 @@ const styles = StyleSheet.create({
         bottom: "10px",
         right: "10px",
     },
-    code: {
-        fontSize: "10px",
-        width: "55px",
-    },
-    individual: {
-        fontSize: "10px",
-        width: "20px",
-    },
-    date: {
-        fontSize: "10px",
-        color: "red",
-        width: "55px",
+    personnes: {
+        fontSize: "11px",
+        width: "70px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px"
     },
     clientName: {
-        fontSize: "10px",
-        width: "170px",
+        fontSize: "11px",
+        width: "140px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px"
+    },
+    date: {
+        fontSize: "11px",
+        color: "red",
+        width: "70px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px"
+    },
+    orderNum: {
+        fontSize: "11px",
+        width: "55px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px"
+    },
+    ingredient: {
+        fontSize: "11px",
+        marginBottom: "2px",
+        paddingLeft: "10px"
     },
     comment: {
         display: "flex",
@@ -175,16 +185,7 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        gap: "5px",
-    },
-    orderlist: {
-        marginTop: "-1px",
-        display: "flex",
-        flexDirection: "row",
-        gap: "5px",
-        border: "1px solid darkgray",
-        marginLeft: "10px",
-        padding: "1px",
+        marginBottom: "5px"
     },
     qty: {
         fontSize: "12px",
@@ -199,9 +200,9 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: "12px",
-        width: "90%",
+        width: "auto",
         paddingBottom: "2px",
     },
 });
 
-export default PrintSpecialMeal;
+export default PrintHotMeal;

@@ -20,6 +20,7 @@ import { toast } from "sonner";
 export function NewClientPopup({ handleChange }: { handleChange: any }) {
     const [isPopupOpen, setPopupOpen] = React.useState(false);
 
+    const [isSubmitting, SetIsSubmitting] = React.useState(false);
     const [client, setClient] = React.useState({
         name: "",
         email_address: "",
@@ -33,6 +34,7 @@ export function NewClientPopup({ handleChange }: { handleChange: any }) {
 
     const createClient = async () => {
         if (client.name.trim() != "") {
+            SetIsSubmitting(true)
             const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/clients/insertOne`, {
                 method: "POST",
                 headers: {
@@ -45,6 +47,7 @@ export function NewClientPopup({ handleChange }: { handleChange: any }) {
             const result = await res.json();
 
             handleChange("client", result);
+            SetIsSubmitting(false)
             setPopupOpen(false);
         } else {
             toast.error("Veuillez renseigner un nom");
@@ -156,7 +159,7 @@ export function NewClientPopup({ handleChange }: { handleChange: any }) {
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
                     <AlertDialogCancel onClick={() => setPopupOpen(false)}>Annuler</AlertDialogCancel>
-                    <AlertDialogAction onClick={createClient}>Créer et assigner</AlertDialogAction>
+                    <AlertDialogAction disabled={isSubmitting} onClick={createClient}>{isSubmitting ? 'Création en cours...' : 'Créer et assigner'}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -44,8 +44,8 @@ const reports = [
     },
     {
         name: "meal-custom",
-        label: "Plateaux spéciaux (🚧 en cours)",
-        disabled: true,
+        label: "Plateaux spéciaux",
+        disabled: false,
     },
     {
         name: "mayo",

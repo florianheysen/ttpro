@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
         display: "flex",
         fontSize: "10px",
         width: "250px",
+        color: "red"
     },
     mb: {
         marginBottom: "10px",

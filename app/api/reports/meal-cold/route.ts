@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { customComparator } from "@/lib/utils";
 
 const category = "meal-cold";
 
@@ -87,6 +88,8 @@ function trierPlatsChauds(data: any[]) {
       });
       return acc;
     }, []);
+
+    listePlatsChauds.sort((a: { meal_code: any; }, b: { meal_code: any; }) => customComparator(a.meal_code, b.meal_code));
   
     return listePlatsChauds;
   }

@@ -129,3 +129,40 @@ export function convertOrder(order: any) {
         accompte: order.accompte ?? order.deposit,
     };
 }
+
+// Permet de trier les numéros de plat par ordre croissant même si il y a une lettre dans la string
+export function customComparator(a: string, b: string): number {
+    // Extract numeric and alphabetic parts
+    const [numA, alphaA] = splitNumericAlpha(a);
+    const [numB, alphaB] = splitNumericAlpha(b);
+
+    // Convert numeric parts to integers
+    const intA = parseInt(numA);
+    const intB = parseInt(numB);
+
+    // If both are numbers, compare them directly
+    if (!isNaN(intA) && !isNaN(intB)) {
+        if (intA !== intB) {
+            return intA - intB;
+        }
+    }
+
+    // If one is a number and the other is a letter, prioritize the number
+    if (!isNaN(intA) && isNaN(intB)) {
+        return -1;
+    } else if (isNaN(intA) && !isNaN(intB)) {
+        return 1;
+    }
+
+    // Both are letters, compare them alphabetically
+    return alphaA.localeCompare(alphaB);
+}
+
+export function splitNumericAlpha(str: string): [string, string] {
+    // Split the string into numeric and alphabetic parts
+    const match = str.match(/(\d+)(.*)/);
+    if (match) {
+        return [match[1], match[2]];
+    }
+    return ["", str];
+}
