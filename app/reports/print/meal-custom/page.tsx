@@ -96,7 +96,7 @@ function PrintHotMeal() {
                                 </View>
                                 <View>
                                     {item.selectedIngredients.map((ingredient: any) => 
-                                        <Text style={styles.ingredient}>{ingredient[0]} {ingredient[1]} {ingredient[2]}</Text>
+                                        <Text key={ingredient[2]} style={styles.ingredient}>{ingredient[0]} {ingredient[1]} {ingredient[2]}</Text>
                                     )}
                                 </View>
                             </View>
