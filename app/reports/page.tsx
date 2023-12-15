@@ -54,8 +54,8 @@ const reports = [
     },
     {
         name: "vrac-produit",
-        label: "Vrac par produit (🚧 en cours)",
-        disabled: true,
+        label: "Vrac par produit",
+        disabled: false,
     },
     {
         name: "vrac-commande",

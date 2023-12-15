@@ -19,6 +19,12 @@ function PrintHotMeal() {
     const from: any = getParam("from");
     const to: any = getParam("to");
 
+    function roundFloat(number: number) {
+        return typeof number === 'number' && number % 1 !== 0
+          ? parseFloat(number.toFixed(2))
+          : number;
+    }
+
     const { data } = useSWR(
         `${process.env.NEXT_PUBLIC_URL}/api/reports/${target}?from=${from}${to ? `&to=${to}` : ""}`,
         fetcher
@@ -43,7 +49,7 @@ function PrintHotMeal() {
                             <span className="font-medium">Impression</span>
                         </p>
                         <h1 className="text-3xl font-semibold">
-                            Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                            Listing vrac par produit du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                             {to && "au " + format(new Date(to), "dd LLL y", { locale: fr })}
                         </h1>
                     </div>
@@ -54,6 +60,7 @@ function PrintHotMeal() {
                 </Link>
             </Appshell>
         );
+
 
     return (
         <Appshell>
@@ -69,35 +76,39 @@ function PrintHotMeal() {
                         <span className="font-medium">Impression</span>
                     </p>
                     <h1 className="text-3xl font-semibold">
-                        Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                        Listing vrac par produit du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                         {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
                     </h1>
                 </div>
             </div>
             <PDFViewer width="100%" height="700px">
                 <Document
-                    title={`Listing plateaux spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
+                    title={`Listing vrac par produit du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
                         ${to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}`}
                 >
                     <Page wrap style={styles.page}>
                         <View style={styles.title}>
                             <Text>
-                                Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                                Listing vrac par produit du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                                 {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
                         </View>
                         {data.map((item: any) => (
                             <View wrap={false} key={item.name} style={styles.mb}>
                                 <View style={styles.row}>
-                                    <Text style={styles.personnes}>{item.personnes} personnes </Text>
-                                    <Text style={styles.clientName}>{item.clientName} </Text>
-                                    <Text style={styles.orderNum}>{item.num} </Text>
-                                    <Text style={styles.date}>{format(new Date(item.deliveryDate), "dd-LL-y", { locale: fr })}</Text>
-                                    <Text style={styles.comment}>{item.comment}</Text>
+                                    <Text style={styles.totalQty}>{roundFloat(item.totalQty)} </Text>
+                                    <Text style={styles.itemName}>{item.itemName} </Text>
                                 </View>
                                 <View>
-                                    {item.selectedIngredients.map((ingredient: any) => 
-                                        <Text key={ingredient[2]} style={styles.ingredient}>{ingredient[0]} {ingredient[1]} {ingredient[2]}</Text>
+                                    {item.orders.map((order: any) => 
+                                        <View key={order.orderNum} style={styles.order}>
+                                            <Text style={styles.orderNum}>{order.orderNum} </Text>
+                                            <Text style={styles.date}>{format(new Date(order.deliveryDate), "dd LLL", { locale: fr })} </Text>
+                                            <Text style={styles.clientName}>{order.clientName} </Text>
+                                            <Text style={styles.vracQty}>{roundFloat(order.vracQty)} </Text>
+                                            <Text style={styles.reste}>{order.reste > 0 ? `${roundFloat(order.reste) + "€"}` : ''} </Text>
+                                            <Text style={styles.vracComment}>{order.vracComment}</Text>
+                                        </View>
                                     )}
                                 </View>
                             </View>
@@ -105,7 +116,7 @@ function PrintHotMeal() {
                         <Text
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
-                                `Listing plateaux spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
+                                `Listing vrac par produit du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
                                     to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
                                 } | ${pageNumber} / ${totalPages}`
                             }
@@ -133,16 +144,17 @@ const styles = StyleSheet.create({
         bottom: "10px",
         right: "10px",
     },
-    personnes: {
+    totalQty: {
         fontSize: "11px",
-        width: "80px",
+        width: "30px",
         border: "1px solid darkgray",
         paddingTop: "1px",
-        paddingLeft: "2px"
+        paddingLeft: "2px",
+        textAlign: "right"
     },
-    clientName: {
+    itemName: {
         fontSize: "11px",
-        width: "140px",
+        width: "500px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
@@ -151,11 +163,12 @@ const styles = StyleSheet.create({
     date: {
         fontSize: "11px",
         color: "red",
-        width: "70px",
+        width: "50px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
+        textAlign: "center"
     },
     orderNum: {
         fontSize: "11px",
@@ -165,22 +178,51 @@ const styles = StyleSheet.create({
         paddingLeft: "2px",
         marginLeft: "-1px"
     },
-    ingredient: {
+    order: {
+        display: "flex",
+        flexDirection: "row",
         fontSize: "11px",
-        marginBottom: "2px",
+        marginBottom: "-1px",
         paddingLeft: "10px"
     },
-    comment: {
-        fontSize: "10px",
-        width: "180px",
-        color: "red",
-        marginLeft: "-1px",
+    clientName: {
+        fontSize: "11px",
+        width: "155px",
+        border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
+        marginLeft: "-1px"
+    },
+    vracQty: {
+        fontSize: "11px",
+        width: "25px",
         border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+        textAlign: "center"
+    },
+    reste: {
+        fontSize: "11px",
+        width: "50px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+        color: "red",
+        textAlign: "center"
+    },
+    vracComment: {
+        fontSize: "11px",
+        width: "190px",
+        border: "1px solid darkgray",
+        color: "red",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
     },
     mb: {
-        marginBottom: "10px",
+        marginBottom: "15px",
     },
     title: {
         fontSize: "16px",
@@ -189,7 +231,7 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        marginBottom: "5px"
+        marginBottom: "-1px"
     },
     qty: {
         fontSize: "12px",

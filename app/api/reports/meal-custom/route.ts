@@ -42,13 +42,14 @@ function organizeSpecialMeals(orders: any[]) {
   
     orders.forEach((order) => {
       if (order.specialMeals && Array.isArray(order.specialMeals) && order.specialMeals.length > 0) {
-        order.specialMeals.forEach((specialMeal: { personnes: any; selectedIngredients: any[]; }) => {
+        order.specialMeals.forEach((specialMeal: any) => {
           const specialMealObj = {
             personnes: specialMeal.personnes || 0,
             clientName: order.clientName || "Unknown",
             num: order.num || "Unknown",
             deliveryDate: order.delivery_date || "Unknown",
-            selectedIngredients: specialMeal.selectedIngredients.map((ingredient) => {
+            comment: specialMeal.comment || '',
+            selectedIngredients: specialMeal.selectedIngredients.map((ingredient: any) => {
               return [ingredient.qty || 0, ingredient.unit?.name === "pièce" ? "×" : ingredient.unit?.name  || "Unknown", ingredient.name || "Unknown"];
             }),
           };
