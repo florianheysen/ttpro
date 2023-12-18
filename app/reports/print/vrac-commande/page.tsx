@@ -19,6 +19,12 @@ function PrintHotMeal() {
     const from: any = getParam("from");
     const to: any = getParam("to");
 
+    function roundFloat(number: number) {
+        return typeof number === 'number' && number % 1 !== 0
+          ? parseFloat(number.toFixed(2))
+          : number;
+    }
+
     const { data } = useSWR(
         `${process.env.NEXT_PUBLIC_URL}/api/reports/${target}?from=${from}${to ? `&to=${to}` : ""}`,
         fetcher
@@ -43,7 +49,7 @@ function PrintHotMeal() {
                             <span className="font-medium">Impression</span>
                         </p>
                         <h1 className="text-3xl font-semibold">
-                            Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                            Listing vrac par commande du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                             {to && "au " + format(new Date(to), "dd LLL y", { locale: fr })}
                         </h1>
                     </div>
@@ -54,6 +60,7 @@ function PrintHotMeal() {
                 </Link>
             </Appshell>
         );
+
 
     return (
         <Appshell>
@@ -69,36 +76,38 @@ function PrintHotMeal() {
                         <span className="font-medium">Impression</span>
                     </p>
                     <h1 className="text-3xl font-semibold">
-                        Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                        Listing vrac par commande du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                         {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
                     </h1>
                 </div>
             </div>
             <PDFViewer width="100%" height="700px">
                 <Document
-                    title={`Listing plateaux spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
+                    title={`Listing vrac par commande du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
                         ${to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}`}
                 >
                     <Page wrap style={styles.page}>
                         <View style={styles.title}>
                             <Text>
-                                Listing plateaux spéciaux du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
+                                Listing vrac par commande du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
                                 {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
-                            <Text style={styles.mt}>Total : {data.totalPersons} personnes</Text>
                         </View>
-                        {data.specialMeals.map((item: any) => (
+                        {data.map((item: any) => (
                             <View wrap={false} key={item.name} style={styles.mb}>
                                 <View style={styles.row}>
-                                    <Text style={styles.personnes}>{item.personnes} personnes </Text>
-                                    <Text style={styles.clientName}>{item.clientName} </Text>
-                                    <Text style={styles.orderNum}>{item.num} </Text>
-                                    <Text style={styles.date}>{format(new Date(item.deliveryDate), "dd-LL-y", { locale: fr })}</Text>
-                                    <Text style={styles.comment}>{item.comment}</Text>
+                                    <Text style={styles.num}>{item.num} </Text>
+                                    <Text style={styles.delivery_date}>{format(new Date(item.delivery_date), "dd LLL yyyy", { locale: fr })}</Text>
+                                    <Text style={styles.clientName}>{item.clientName}</Text>
+                                    {item.reste > 0 && <Text style={styles.reste}>{item.reste} €</Text>}
                                 </View>
                                 <View>
-                                    {item.selectedIngredients.map((ingredient: any) => 
-                                        <Text key={ingredient[2]} style={styles.ingredient}>{ingredient[0]} {ingredient[1]} {ingredient[2]}</Text>
+                                    {item.vrac.map((vrac: any) => 
+                                        <View key={vrac.name} style={styles.list}>
+                                            <Text style={styles.date}>{vrac.qty}</Text>
+                                            <Text style={styles.vracName}>{vrac.name} </Text>
+                                            <Text style={styles.comment}>{vrac.comment} </Text>
+                                        </View>
                                     )}
                                 </View>
                             </View>
@@ -106,7 +115,7 @@ function PrintHotMeal() {
                         <Text
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
-                                `Listing plateaux spéciaux du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
+                                `Listing vrac par commande du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
                                     to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
                                 } | ${pageNumber} / ${totalPages}`
                             }
@@ -134,16 +143,17 @@ const styles = StyleSheet.create({
         bottom: "10px",
         right: "10px",
     },
-    personnes: {
+    num: {
         fontSize: "11px",
-        width: "80px",
+        width: "60px",
         border: "1px solid darkgray",
         paddingTop: "1px",
-        paddingLeft: "2px"
+        paddingLeft: "2px",
+        textAlign: "right"
     },
-    clientName: {
+    itemName: {
         fontSize: "11px",
-        width: "140px",
+        width: "70px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
@@ -151,41 +161,85 @@ const styles = StyleSheet.create({
     },
     date: {
         fontSize: "11px",
+        width: "40px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+        textAlign: "center"
+    },
+    delivery_date: {
+        fontSize: "11px",
+        width: "80px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
         color: "red",
-        width: "70px",
-        border: "1px solid darkgray",
-        paddingTop: "1px",
-        paddingLeft: "2px",
-        marginLeft: "-1px"
-    },
-    orderNum: {
-        fontSize: "11px",
-        width: "55px",
-        border: "1px solid darkgray",
-        paddingTop: "1px",
-        paddingLeft: "2px",
-        marginLeft: "-1px"
-    },
-    ingredient: {
-        fontSize: "11px",
-        marginBottom: "2px",
-        paddingLeft: "10px"
+        textAlign: "center"
     },
     comment: {
-        fontSize: "10px",
-        width: "180px",
-        color: "red",
-        marginLeft: "-1px",
+        fontSize: "11px",
+        width: "200px",
+        border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
+        marginLeft: "-1px",
+        color: "red"
+    },
+    list: {
+        display: "flex",
+        flexDirection: "row",
+        fontSize: "11px",
+        marginBottom: "-1px",
+        paddingLeft: "9px"
+    },
+    clientName: {
+        fontSize: "11px",
+        width: "219px",
         border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px"
+    },
+    vracName:{
+        fontSize: "11px",
+        width: "300px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px"
+    },
+    vracQty: {
+        fontSize: "11px",
+        width: "25px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+        textAlign: "center"
+    },
+    reste: {
+        fontSize: "11px",
+        width: "50px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+        color: "red",
+        textAlign: "center"
+    },
+    vracComment: {
+        fontSize: "11px",
+        width: "190px",
+        border: "1px solid darkgray",
+        color: "red",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
     },
     mb: {
-        marginBottom: "10px",
-    },
-    mt: {
-        marginTop:"10px",
-        fontSize: "13px",
+        marginBottom: "15px",
     },
     title: {
         fontSize: "16px",
@@ -194,7 +248,7 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        marginBottom: "5px"
+        marginBottom: "-1px"
     },
     qty: {
         fontSize: "12px",

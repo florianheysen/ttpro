@@ -42,25 +42,33 @@ export async function GET(req: NextRequest) {
 function checkMealTypes(mealObjects: any[]): any[] {
     const mealTypes: Set<string> = new Set(["meal-hot", "meal-cold", "meal-special", "meal-huitres"]);
     const results: any[] = [];
-
+  
     mealObjects.forEach((mealObject: any) => {
-        const result: any = {
-            orderNumber: mealObject.num,
-            clientName: mealObject.clientName,
-            deliveryDate: mealObject.delivery_date,
-            sellerName: mealObject.seller,
-        };
-
-        mealTypes.forEach((type: string) => {
-            const camelCaseType = type.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
-            result[camelCaseType] = mealObject.meals.some((meal: any) => meal.category === type);
-        });
-
-        result.vrac = mealObject.vrac && Object.keys(mealObject.vrac).length > 0;
-        result.specialMeals = mealObject.specialMeals && Object.keys(mealObject.specialMeals).length > 0;
-
-        results.push(result);
+      const result: any = {
+        orderNumber: mealObject.num,
+        clientName: mealObject.clientName,
+        deliveryDate: mealObject.delivery_date,
+        sellerName: mealObject.seller,
+      };
+  
+      mealTypes.forEach((type: string) => {
+        const camelCaseType = type.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+        result[camelCaseType] = mealObject.meals.some((meal: any) => meal.category === type);
+      });
+  
+      result.vrac = mealObject.vrac && Object.keys(mealObject.vrac).length > 0;
+      result.specialMeals = mealObject.specialMeals && Object.keys(mealObject.specialMeals).length > 0;
+  
+      results.push(result);
     });
-
-    return results.reverse();
-}
+  
+    // Sort results by clientName in alphabetical order
+    results.sort((a: { clientName: string }, b: { clientName: string }) => {
+      const nameA = a.clientName.toUpperCase();
+      const nameB = b.clientName.toUpperCase();
+      return nameA.localeCompare(nameB);
+    });
+  
+    return results;
+  }
+  

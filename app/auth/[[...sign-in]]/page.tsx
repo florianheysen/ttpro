@@ -11,10 +11,13 @@ export default async function Home() {
                 <SymbolIcon className="animate-spin" />
             </ClerkLoading>
             <ClerkLoaded>
-                <div>
-                    {/* <Image src="/logo-full.svg" height={200} width={200} alt="Traiteur Pro" /> */}
-                    <div className="-ml-14">
-                        <SignIn afterSignInUrl="/" />
+                <div className="flex justify-center items-center w-screen h-screen">
+                    <div className="flex flex-col w-[200]">
+                        <div className="ml-[60px]">
+                            <Image src="/logo-full.svg" height={200} width={160} alt="Traiteur Pro" />
+                            <h1 className="mt-8 text-2xl font-semibold">Bon retour parmi nous</h1>
+                        </div>
+                        <SignIn afterSignInUrl="/" /> 
                     </div>
                 </div>
             </ClerkLoaded>

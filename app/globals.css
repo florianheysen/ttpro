@@ -77,9 +77,9 @@
     }
 }
 
-/* .cl-card {
-    box-shadow: none;
-} */
+ .cl-card {
+    box-shadow: none!important;
+}
 
 .cl-rootBox > div > div:last-child,
 .cl-navbar,
@@ -87,11 +87,15 @@
     display: none;
 }
 
-/* .cl-rootBox > div,
-.cl-pageScrollBox {
-    margin: 0;
-    padding: 0;
-}  */
+/* Clerk custom css */
+.cl-signIn-start > div:last-child,
+.cl-signUp-start > div:last-child,
+.cl-signIn-start .cl-header,
+.cl-signUp-start .cl-header,
+.cl-signIn-start .cl-footer,
+.cl-signUp-start .cl-footer, .cl-logoBox /* , .cl-dividerRow, .cl-form  */{
+  display: none;
+}
 
 table#spselector tbody {
     display: block;

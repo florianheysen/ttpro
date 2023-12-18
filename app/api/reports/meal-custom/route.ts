@@ -38,32 +38,35 @@ export async function GET(req: NextRequest) {
 }
 
 function organizeSpecialMeals(orders: any[]) {
-    const result: any = [];
-  
-    orders.forEach((order) => {
-      if (order.specialMeals && Array.isArray(order.specialMeals) && order.specialMeals.length > 0) {
-        order.specialMeals.forEach((specialMeal: any) => {
-          const specialMealObj = {
-            personnes: specialMeal.personnes || 0,
-            clientName: order.clientName || "Unknown",
-            num: order.num || "Unknown",
-            deliveryDate: order.delivery_date || "Unknown",
-            comment: specialMeal.comment || '',
-            selectedIngredients: specialMeal.selectedIngredients.map((ingredient: any) => {
-              return [ingredient.qty || 0, ingredient.unit?.name === "pièce" ? "×" : ingredient.unit?.name  || "Unknown", ingredient.name || "Unknown"];
-            }),
-          };
-  
-          result.push(specialMealObj);
-        });
-      }
-    });
+  const result: any = [];
+  let totalPersons = 0;
 
-    result.sort((a: { num: string; }, b: { num: string; }) => {
-        const numA = parseInt(a.num.replace("/2023", ""), 10) || 0;
-        const numB = parseInt(b.num.replace("/2023", ""), 10) || 0;
-        return numA - numB;
+  orders.forEach((order) => {
+    if (order.specialMeals && Array.isArray(order.specialMeals) && order.specialMeals.length > 0) {
+      order.specialMeals.forEach((specialMeal: any) => {
+        const specialMealObj = {
+          personnes: specialMeal.personnes || 0,
+          clientName: order.clientName || "Unknown",
+          num: order.num || "Unknown",
+          deliveryDate: order.delivery_date || "Unknown",
+          comment: specialMeal.comment || '',
+          selectedIngredients: specialMeal.selectedIngredients.map((ingredient: any) => {
+            return [ingredient.qty || 0, ingredient.unit?.name === "pièce" ? "×" : ingredient.unit?.name || "Unknown", ingredient.name || "Unknown"];
+          }),
+        };
+
+        totalPersons += specialMealObj.personnes;
+        result.push(specialMealObj);
       });
-  
-    return result;
-  }
+    }
+  });
+
+  result.sort((a: { num: string; }, b: { num: string; }) => {
+    const numA = parseInt(a.num.replace("/2023", ""), 10) || 0;
+    const numB = parseInt(b.num.replace("/2023", ""), 10) || 0;
+    return numA - numB;
+  });
+
+  // Return an object with both the array and totalPersons
+  return { specialMeals: result, totalPersons };
+}
