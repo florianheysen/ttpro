@@ -52,7 +52,7 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
 
     const handleQty = ({ item, qty }: { item: any; qty: number }) => {
         const n = meal.ingredients.map((meal: any) => {
-            if (meal.code === item.code) {
+            if (meal.id === item.id) {
                 return {
                     ...meal,
                     qty,
