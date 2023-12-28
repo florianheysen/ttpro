@@ -50,12 +50,12 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
         }));
     };
 
-    const handleQty = ({ item, qty }: { item: any; qty: number }) => {
+    const handleQty = ({ item, qty }: { item: any; qty: string }) => {
         const n = meal.ingredients.map((meal: any) => {
             if (meal.id === item.id) {
                 return {
                     ...meal,
-                    qty,
+                    qty: parseFloat(qty),
                 };
             }
             return meal;
@@ -191,7 +191,7 @@ function EditMealPage({ params: { id, category } }: { params: { id: string; cate
                                         onChange={(e) =>
                                             handleQty({
                                                 item: ingredient,
-                                                qty: parseInt(e.target.value),
+                                                qty: e.target.value,
                                             })
                                         }
                                         defaultValue={ingredient.qty}

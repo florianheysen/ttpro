@@ -9,7 +9,7 @@ export async function GET(req: Request) {
         const collection = db.collection('orders');
 
          // Filtres
-        const cursor = collection.find({ "meals.code": 'X', "meals.name": "XX" });
+        const cursor = collection.find({ "meals.code": 'PL1', "meals.name": "PL 1 ( 1 lang, 1 gambas, 1 pince, 5 CF, 100g bulots, 50g bigor, 50 C.grises, 6 huîtres)" });
     
         const result = [];
         while (await cursor.hasNext()) {
