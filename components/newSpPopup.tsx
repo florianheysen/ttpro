@@ -86,6 +86,7 @@ export function NewSpPopup({ handleChange, order }: { handleChange: any; order: 
         const getIngredientsSp = async () => {
             const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ingredients/sp/findMany`, {
                 cache: "no-store",
+                next: { revalidate: 60 },
                 method: "GET",
                 headers: {
                     Accept: "application.json",
