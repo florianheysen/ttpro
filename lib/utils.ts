@@ -1,7 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export const fetcher = (url: string) => fetch(url, { cache: "no-cache" }).then((res) => res.json());
+export const fetcher = (url: string) =>
+    fetch(url, { cache: "no-cache", next: { revalidate: 60 } }).then((res) => res.json());
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

@@ -2,6 +2,8 @@ import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
+export const revalidate = 0;
+
 export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const id: any = url.searchParams.get("id");
