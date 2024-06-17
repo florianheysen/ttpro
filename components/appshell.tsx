@@ -223,7 +223,7 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
             </div>
 
             <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-                <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:border-gray-800 pt-5">
+                <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:bg-black dark:border-gray-800 pt-5">
                     <div className="flex width-full justify-between items-center px-4">
                         <ContextMenu>
                             <ContextMenuTrigger>
@@ -302,12 +302,14 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
                             {mainPages.map((page) => (
                                 <Button
                                     key={page.href}
-                                    className="w-full justify-start"
+                                    className="flex w-full justify-between"
                                     variant={page.current ? "default" : "ghost"}
                                     asChild
                                 >
                                     <Link href={page.href}>
-                                        {page.icon} {page.name} &nbsp;
+                                        <div className="flex items-center">
+                                            {page.icon} {page.name}
+                                        </div>
                                         {page.isCount && (
                                             <Badge
                                                 className={

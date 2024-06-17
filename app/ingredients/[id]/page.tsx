@@ -4,19 +4,36 @@ import Appshell from "@/components/appshell";
 import IngredientForm from "@/components/form/ingredientForm";
 import React from "react";
 import { z } from "zod";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { fetcher } from "@/lib/utils";
 import LoadingScreen from "@/components/loadingScreen";
 import { useRouter } from "next/navigation";
 
 function CreateIngredientPage({ params }: { params: { id: string } }) {
     const router = useRouter();
+    const [ingredient, setIngredient] = React.useState<any>(null);
+    const [loading, setLoading] = React.useState(true);
 
     const { data: units } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/units/search`, fetcher);
-    const { data: ingredient } = useSWR(
-        `${process.env.NEXT_PUBLIC_URL}/api/ingredients/findOne?id=${params.id}`,
-        fetcher
-    );
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const ingredientRes = await fetch(
+                    `${process.env.NEXT_PUBLIC_URL}/api/ingredients/findOne?id=${params.id}`
+                );
+                const ingredientData = await ingredientRes.json();
+
+                setIngredient(ingredientData);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données :", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [params.id]);
 
     if (!units || !ingredient) return <LoadingScreen />;
 
@@ -79,6 +96,8 @@ function CreateIngredientPage({ params }: { params: { id: string } }) {
             .describe("Disponible en vrac")
             .default(ingredient?.is_vrac),
     });
+
+    if (loading) return "Loading...";
 
     return (
         <Appshell>

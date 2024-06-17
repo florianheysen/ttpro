@@ -14,14 +14,14 @@ export async function GET() {
         const { n: orderCount } = await db.command({ count: "orders" });
         const { n: clientsCount } = await db.command({ count: "clients" });
 
-        posthog.capture({
+        /* posthog.capture({
             distinctId: userId as string,
             event: "Général - Count",
             properties: {
                 $set: { email: user.emailAddresses[0].emailAddress },
                 mongoRes: { orderCount, clientsCount },
             },
-        });
+        }); */
 
         return NextResponse.json({ orderCount, clientsCount });
     } catch (e) {

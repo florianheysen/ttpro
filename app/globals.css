@@ -77,8 +77,8 @@
     }
 }
 
- .cl-card {
-    box-shadow: none!important;
+.cl-card {
+    box-shadow: none !important;
 }
 
 .cl-rootBox > div > div:last-child,
@@ -93,8 +93,8 @@
 .cl-signIn-start .cl-header,
 .cl-signUp-start .cl-header,
 .cl-signIn-start .cl-footer,
-.cl-signUp-start .cl-footer, .cl-logoBox /* , .cl-dividerRow, .cl-form  */{
-  display: none;
+.cl-signUp-start .cl-footer, .cl-logoBox /* , .cl-dividerRow, .cl-form  */ {
+    display: none;
 }
 
 table#spselector tbody {
@@ -125,4 +125,8 @@ table#spselector table {
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+html.dark body {
+    background-color: #0f1011;
 }
