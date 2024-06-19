@@ -172,7 +172,7 @@ export const columns: ColumnDef<any>[] = [
                             </a>
                             <Link href={`/orders/print/${order._id}`}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                    <FileTextIcon className="mr-2" /> Impression
+                                    <FileTextIcon className="mr-2" /> Imprimer
                                 </DropdownMenuItem>
                             </Link>
                             <DropdownMenuSeparator />

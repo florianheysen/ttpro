@@ -62,7 +62,7 @@ function Orders() {
         return (
             <Appshell>
                 <Head>
-                    <title>Commandes | Traiteur Pro</title>
+                    <title>Commandes | Orderise</title>
                 </Head>
                 <AppTableHead
                     title="Commandes"

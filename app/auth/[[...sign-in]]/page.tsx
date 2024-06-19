@@ -14,10 +14,10 @@ export default async function Home() {
                 <div className="flex justify-center items-center w-screen h-screen">
                     <div className="flex flex-col w-[200]">
                         <div className="ml-[60px]">
-                            <Image src="/logo-full.svg" height={200} width={160} alt="Traiteur Pro" />
+                            <Image src="/logo-full.svg" height={200} width={160} alt="Orderise" />
                             <h1 className="mt-8 text-2xl font-semibold">Bon retour parmi nous</h1>
                         </div>
-                        <SignIn afterSignInUrl="/" /> 
+                        <SignIn afterSignInUrl="/" />
                     </div>
                 </div>
             </ClerkLoaded>

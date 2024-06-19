@@ -227,7 +227,7 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
                     <div className="flex width-full justify-between items-center px-4">
                         <ContextMenu>
                             <ContextMenuTrigger>
-                                <img className="h-8 w-auto" src="/logo.svg" alt="Traiteur Pro" />
+                                <img className="h-8 w-auto" src="/logo.svg" alt="Orderise" />
                             </ContextMenuTrigger>
                             <ContextMenuContent>
                                 <ContextMenuItem>Copier le logo</ContextMenuItem>

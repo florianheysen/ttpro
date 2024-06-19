@@ -2,6 +2,15 @@ import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { CardStackPlusIcon } from "@radix-ui/react-icons";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Badge } from "./ui/badge";
 
 interface AppTableHeadProps {
     title: string;
@@ -15,12 +24,22 @@ function AppTableHead({ title, currentPage, btnLabel, btnLink, count }: AppTable
     return (
         <div className="flex justify-between items-end">
             <div className="flex flex-col gap-4">
-                <p className="flex gap-2 text-sm">
-                    <span className="opacity-40">{title}</span>
-                    <span className="opacity-40">/</span>
-                    <span className="font-medium">{currentPage}</span>
-                    <span className="opacity-40">{count === 0 ? "—" : count}</span>
-                </p>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/">{title}</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>
+                                <span>{currentPage}</span>
+                                <Badge className="ml-2 rounded font-normal" variant="outline">
+                                    {count === 0 ? "—" : count}
+                                </Badge>
+                            </BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
                 <h1 className="text-3xl font-semibold">{title}</h1>
             </div>
             <Button variant="outline" asChild>

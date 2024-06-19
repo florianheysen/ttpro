@@ -11,6 +11,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Pagee({ params }: { params: { slug: string } }) {
     const [isClient, setIsClient] = React.useState(false);
+    const [customMessage, setCustomMessage] = React.useState<string>();
     const [order, setOrder]: any = React.useState();
     React.useEffect(() => {
         setIsClient(true);
@@ -37,6 +38,23 @@ export default function Pagee({ params }: { params: { slug: string } }) {
             }
             setPots(res);
         }
+    }, [data]);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const settingsRes = await fetch(
+                    `${process.env.NEXT_PUBLIC_URL}/api/settings/findOne?id=6671c2dcf99ac29e5934bcb0`
+                );
+                const settingsData = await settingsRes.json();
+
+                setCustomMessage(settingsData.content);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données :", error);
+            }
+        };
+
+        fetchData();
     }, [data]);
 
     const [pots, setPots]: any = React.useState(0);
@@ -200,6 +218,8 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                                 MERCI DE VERIFIER votre commande AVANT de quitter le magasin (NOMBRE DE PLAT, sauce,
                                 mayo...)
                             </Text>
+                            <Text>&nbsp;</Text>
+                            {customMessage && <Text style={styles.textBase}>{customMessage}</Text>}
                             <Text>&nbsp;</Text>
                             <Text style={styles.textBase}>
                                 {order?.consigne === true ? "" : "Chèque de consigne à verser."}

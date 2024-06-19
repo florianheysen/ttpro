@@ -1,7 +1,7 @@
 import Orders from "./content";
 
 export const metadata = {
-    title: "Commandes | Traiteur Pro",
+    title: "Commandes | Orderise",
 };
 
 function Page() {

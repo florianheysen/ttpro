@@ -1,9 +1,11 @@
 import Appshell from "@/components/appshell";
-import { Button } from "@/components/ui/button";
+import { CustomMessagePopup } from "@/components/customMessagePopup";
+import { Button as Ok } from "@/components/ui/button";
+
 import Link from "next/link";
 
 export const metadata = {
-    title: "Tableau de bord | Traiteur Pro",
+    title: "Tableau de bord | Orderise",
 };
 
 export default function Home() {
@@ -18,7 +20,7 @@ export default function Home() {
                     </p>
                     <div>
                         <h1 className="text-3xl font-semibold">
-                            Bienvenue sur <b className="font-bold">Traiteur Pro</b>
+                            Bienvenue sur <b className="font-bold">Orderise</b>
                         </h1>
                         <p className="opacity-70">Voici quelques liens qui vous seront utiles :</p>
                     </div>
@@ -28,7 +30,10 @@ export default function Home() {
                 <div className="flex flex-col justify-between ">
                     <span className="text-sm font-medium">Commandes</span>
                     <Link href="/orders/create">
-                        <Button size="lg">Nouvelle commande</Button>
+                        <Ok size="lg">Nouvelle commande</Ok>
+                        {/* <Button.Root>
+                            <Button.Label>Click me</Button.Label>
+                        </Button.Root> */}
                     </Link>
                     <Link className="text-primary text-sm underline-offset-4 hover:underline" href="/orders/">
                         Toutes les commandes
@@ -66,9 +71,7 @@ export default function Home() {
                             </Link>
                         </li>
                         <li>
-                            <a className="text-primary text-sm underline-offset-4 hover:underline" href="/">
-                                Messages personnalisés
-                            </a>
+                            <CustomMessagePopup />
                         </li>
                         <li>
                             <a className="text-primary text-sm underline-offset-4 hover:underline" href="/">
