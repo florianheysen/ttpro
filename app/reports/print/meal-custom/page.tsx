@@ -90,16 +90,26 @@ function PrintHotMeal() {
                         {data.specialMeals.map((item: any) => (
                             <View wrap={false} key={item.name} style={styles.mb}>
                                 <View style={styles.row}>
-                                    <Text style={styles.personnes}>{item.personnes} personnes </Text>
+                                    <Text style={styles.personnes}>{item.personnes} pers. </Text>
                                     <Text style={styles.clientName}>{item.clientName} </Text>
                                     <Text style={styles.orderNum}>{item.num} </Text>
-                                    <Text style={styles.date}>{format(new Date(item.deliveryDate), "dd-LL-y", { locale: fr })}</Text>
+                                    <Text style={styles.date}>
+                                        {format(new Date(item.deliveryDate), "dd-LL-y", { locale: fr })}
+                                    </Text>
                                     <Text style={styles.comment}>{item.comment}</Text>
                                 </View>
                                 <View>
-                                    {item.selectedIngredients.map((ingredient: any) => 
-                                        <Text key={ingredient[2]} style={styles.ingredient}>{ingredient[0]} {ingredient[1]} {ingredient[2]}</Text>
-                                    )}
+                                    {item.selectedIngredients.map((ingredient: any, i: number) => (
+                                        <Text
+                                            key={ingredient[2]}
+                                            style={{
+                                                ...styles.ingredient,
+                                                backgroundColor: i % 2 === 0 ? "#e6e6e6" : "white",
+                                            }}
+                                        >
+                                            {ingredient[0]} {ingredient[1]} {ingredient[2]}
+                                        </Text>
+                                    ))}
                                 </View>
                             </View>
                         ))}
@@ -135,45 +145,45 @@ const styles = StyleSheet.create({
         right: "10px",
     },
     personnes: {
-        fontSize: "11px",
-        width: "80px",
-        border: "1px solid darkgray",
-        paddingTop: "1px",
-        paddingLeft: "2px"
-    },
-    clientName: {
-        fontSize: "11px",
-        width: "140px",
-        border: "1px solid darkgray",
-        paddingTop: "1px",
-        paddingLeft: "2px",
-        marginLeft: "-1px"
-    },
-    date: {
-        fontSize: "11px",
-        color: "red",
-        width: "70px",
-        border: "1px solid darkgray",
-        paddingTop: "1px",
-        paddingLeft: "2px",
-        marginLeft: "-1px"
-    },
-    orderNum: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "55px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+    },
+    clientName: {
+        fontSize: "13px",
+        width: "150px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+    },
+    date: {
+        fontSize: "13px",
+        color: "red",
+        width: "75px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
+    },
+    orderNum: {
+        fontSize: "13px",
+        width: "60px",
+        border: "1px solid darkgray",
+        paddingTop: "1px",
+        paddingLeft: "2px",
+        marginLeft: "-1px",
     },
     ingredient: {
-        fontSize: "11px",
+        fontSize: "13px",
         marginBottom: "2px",
-        paddingLeft: "10px"
+        paddingLeft: "10px",
     },
     comment: {
-        fontSize: "10px",
-        width: "180px",
+        fontSize: "12px",
+        width: "210px",
         color: "red",
         marginLeft: "-1px",
         paddingTop: "1px",
@@ -184,7 +194,7 @@ const styles = StyleSheet.create({
         marginBottom: "10px",
     },
     mt: {
-        marginTop:"10px",
+        marginTop: "10px",
         fontSize: "13px",
     },
     title: {
@@ -194,7 +204,7 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        marginBottom: "5px"
+        marginBottom: "5px",
     },
     qty: {
         fontSize: "12px",
@@ -203,7 +213,7 @@ const styles = StyleSheet.create({
         paddingBottom: "2px",
     },
     unit: {
-        fontSize: "11px",
+        fontSize: "13px",
         padding: "0px 10px",
         paddingBottom: "1px",
     },

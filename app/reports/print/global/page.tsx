@@ -84,8 +84,11 @@ function PrintGlobal() {
                                 {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
                         </View>
-                        {data.map((item: any) => (
-                            <View key={item.name} style={styles.row}>
+                        {data.map((item: any, i: number) => (
+                            <View
+                                key={item.name}
+                                style={{ ...styles.row, backgroundColor: i % 2 === 0 ? "#e6e6e6" : "white" }}
+                            >
                                 <Text style={styles.qty}>{item.qty}</Text>
                                 <Text style={styles.unit}>{item.unit}</Text>
                                 <Text style={styles.name}>{item.name}</Text>
@@ -129,26 +132,25 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        paddingBottom: "2px",
+        padding: "1px",
+        borderLeft: "1px solid lightgrey",
+        borderRight: "1px solid lightgrey",
     },
     qty: {
-        fontSize: "12px",
-        width: "35px",
+        fontSize: "13px",
+        width: "45px",
         textAlign: "right",
         paddingBottom: "2px",
-        borderBottom: "1px solid lightgrey",
     },
     unit: {
-        fontSize: "12px",
+        fontSize: "13px",
         padding: "0px 10px",
         paddingBottom: "2px",
-        borderBottom: "1px solid lightgrey",
     },
     name: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "100%",
         paddingBottom: "2px",
-        borderBottom: "1px solid lightgrey",
     },
 });
 

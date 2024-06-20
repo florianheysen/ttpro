@@ -142,35 +142,35 @@ const styles = StyleSheet.create({
     },
     pagination: {
         position: "absolute",
-        fontSize: "10px",
-        bottom: "10px",
-        right: "10px",
+        fontSize: "12px",
+        bottom: "12px",
+        right: "12px",
     },
     code: {
-        fontSize: "10px",
+        fontSize: "12px",
         width: "55px",
     },
     individual: {
-        fontSize: "10px",
+        fontSize: "12px",
         width: "20px",
     },
     date: {
-        fontSize: "10px",
+        fontSize: "12px",
         color: "red",
-        width: "55px",
+        width: "65px",
     },
     clientName: {
-        fontSize: "10px",
+        fontSize: "12px",
         width: "170px",
     },
     comment: {
         display: "flex",
-        fontSize: "10px",
+        fontSize: "12px",
         width: "250px",
-        color: "red"
+        color: "red",
     },
     mb: {
-        marginBottom: "10px",
+        marginBottom: "12px",
     },
     title: {
         fontSize: "16px",
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: "5px",
         border: "1px solid darkgray",
-        marginLeft: "10px",
+        marginLeft: "12px",
         padding: "1px",
     },
     qty: {
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     },
     unit: {
         fontSize: "11px",
-        paddingLeft: "10px",
+        paddingLeft: "12px",
         width: "70px",
         paddingBottom: "1px",
     },

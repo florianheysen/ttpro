@@ -20,9 +20,7 @@ function PrintHotMeal() {
     const to: any = getParam("to");
 
     function roundFloat(number: number) {
-        return typeof number === 'number' && number % 1 !== 0
-          ? parseFloat(number.toFixed(2))
-          : number;
+        return typeof number === "number" && number % 1 !== 0 ? parseFloat(number.toFixed(2)) : number;
     }
 
     const { data } = useSWR(
@@ -60,7 +58,6 @@ function PrintHotMeal() {
                 </Link>
             </Appshell>
         );
-
 
     return (
         <Appshell>
@@ -100,16 +97,20 @@ function PrintHotMeal() {
                                     <Text style={styles.itemName}>{item.itemName} </Text>
                                 </View>
                                 <View>
-                                    {item.orders.map((order: any) => 
+                                    {item.orders.map((order: any) => (
                                         <View key={order.orderNum} style={styles.order}>
                                             <Text style={styles.orderNum}>{order.orderNum} </Text>
-                                            <Text style={styles.date}>{format(new Date(order.deliveryDate), "dd LLL", { locale: fr })} </Text>
+                                            <Text style={styles.date}>
+                                                {format(new Date(order.deliveryDate), "dd LLL", { locale: fr })}{" "}
+                                            </Text>
                                             <Text style={styles.clientName}>{order.clientName} </Text>
                                             <Text style={styles.vracQty}>{roundFloat(order.vracQty)} </Text>
-                                            <Text style={styles.reste}>{order.reste > 0 ? `${roundFloat(order.reste) + "€"}` : ''} </Text>
+                                            <Text style={styles.reste}>
+                                                {order.reste > 0 ? `${roundFloat(order.reste) + "€"}` : ""}{" "}
+                                            </Text>
                                             <Text style={styles.vracComment}>{order.vracComment}</Text>
                                         </View>
-                                    )}
+                                    ))}
                                 </View>
                             </View>
                         ))}
@@ -145,75 +146,75 @@ const styles = StyleSheet.create({
         right: "10px",
     },
     totalQty: {
-        fontSize: "11px",
-        width: "30px",
+        fontSize: "13px",
+        width: "35px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        textAlign: "right"
+        textAlign: "right",
     },
     itemName: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "500px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
     },
     date: {
-        fontSize: "11px",
+        fontSize: "13px",
         color: "red",
         width: "50px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
-        textAlign: "center"
+        textAlign: "center",
     },
     orderNum: {
-        fontSize: "11px",
-        width: "55px",
+        fontSize: "13px",
+        width: "60px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
     },
     order: {
         display: "flex",
         flexDirection: "row",
-        fontSize: "11px",
+        fontSize: "13px",
         marginBottom: "-1px",
-        paddingLeft: "10px"
+        paddingLeft: "10px",
     },
     clientName: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "155px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
     },
     vracQty: {
-        fontSize: "11px",
-        width: "25px",
+        fontSize: "13px",
+        width: "30px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
-        textAlign: "center"
+        textAlign: "center",
     },
     reste: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "50px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
         color: "red",
-        textAlign: "center"
+        textAlign: "center",
     },
     vracComment: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "190px",
         border: "1px solid darkgray",
         color: "red",
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        marginBottom: "-1px"
+        marginBottom: "-1px",
     },
     qty: {
         fontSize: "12px",
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
         paddingBottom: "2px",
     },
     unit: {
-        fontSize: "11px",
+        fontSize: "13px",
         padding: "0px 10px",
         paddingBottom: "1px",
     },

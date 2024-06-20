@@ -53,6 +53,8 @@ function PrintGlobal() {
             </Appshell>
         );
 
+    const formatNumber = (num: number) => String(num).padStart(2, "0");
+
     return (
         <Appshell>
             <div className="flex justify-between items-end mb-8">
@@ -81,14 +83,16 @@ function PrintGlobal() {
                         <View style={styles.title}>
                             <Text>
                                 Listing mayonnaise du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
-                                {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
+                                {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
                             </Text>
                         </View>
                         <View>
-                            <Text style={styles.row}>{data.totalPots.veryLarge} x Très grand pot 800g</Text>
-                            <Text style={styles.row}>{data.totalPots.large} x Grand pot 550g</Text>
-                            <Text style={styles.row}>{data.totalPots.medium} x Moyen pot 300g</Text>
-                            <Text style={styles.row}>{data.totalPots.small} x Petit pot 100g</Text>
+                            <Text style={styles.row}>
+                                {formatNumber(data.totalPots.veryLarge)} × Très grand pot 800g
+                            </Text>
+                            <Text style={styles.row}>{formatNumber(data.totalPots.large)} × Grand pot 550g</Text>
+                            <Text style={styles.row}>{formatNumber(data.totalPots.medium)} × Moyen pot 300g</Text>
+                            <Text style={styles.row}>{formatNumber(data.totalPots.small)} × Petit pot 100g</Text>
                         </View>
                         <Text
                             style={styles.pagination}
@@ -128,9 +132,9 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        paddingBottom: "0px",
+        paddingBottom: "6px",
         gap: "4px",
-        fontSize: "12px",
+        fontSize: "14px",
     },
 });
 

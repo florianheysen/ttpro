@@ -84,8 +84,10 @@ function PrintGlobal() {
                                 {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
                             </Text>
                         </View>
-                        <View style={styles.row}>
-                            <Text style={styles.orderNumber}>Num</Text>
+                        <View fixed style={{ ...styles.row, opacity: 0.75 }}>
+                            <Text fixed style={styles.orderNumber}>
+                                Num
+                            </Text>
                             <Text style={styles.clientName}>Nom du client</Text>
                             <Text style={styles.deliveryDate}>Livraison</Text>
                             <Text style={styles.checkedArea}>PF</Text>
@@ -113,13 +115,13 @@ function PrintGlobal() {
                             </View>
                         ))}
                         <Text
+                            fixed
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
                                 `Listing commandes du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
                                     to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
                                 } | ${pageNumber} / ${totalPages}`
                             }
-                            fixed
                         />
                     </Page>
                 </Document>
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
         paddingBottom: "0px",
     },
     orderNumber: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "60px",
         textAlign: "center",
         paddingBottom: "0px",
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
         borderLeft: "1px solid lightgrey",
     },
     clientName: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "200px",
         paddingBottom: "0px",
         paddingLeft: "2px",
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
         borderLeft: "1px solid lightgrey",
     },
     deliveryDate: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "65px",
         paddingBottom: "0px",
         borderBottom: "1px solid lightgrey",
@@ -178,20 +180,20 @@ const styles = StyleSheet.create({
     },
     checkedArea: {
         width: "25px",
-        fontSize: "12px",
+        fontSize: "13px",
         textAlign: "center",
         borderBottom: "1px solid lightgrey",
         borderLeft: "1px solid lightgrey",
     },
     checkedAreaVrac: {
         width: "40px",
-        fontSize: "12px",
+        fontSize: "13px",
         textAlign: "center",
         borderBottom: "1px solid lightgrey",
         borderLeft: "1px solid lightgrey",
     },
     sellerName: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "60px",
         textAlign: "center",
         paddingBottom: "0px",

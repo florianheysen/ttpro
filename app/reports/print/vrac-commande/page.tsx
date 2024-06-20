@@ -20,9 +20,7 @@ function PrintHotMeal() {
     const to: any = getParam("to");
 
     function roundFloat(number: number) {
-        return typeof number === 'number' && number % 1 !== 0
-          ? parseFloat(number.toFixed(2))
-          : number;
+        return typeof number === "number" && number % 1 !== 0 ? parseFloat(number.toFixed(2)) : number;
     }
 
     const { data } = useSWR(
@@ -61,7 +59,6 @@ function PrintHotMeal() {
             </Appshell>
         );
 
-
     return (
         <Appshell>
             <div className="flex justify-between items-end mb-8">
@@ -97,18 +94,20 @@ function PrintHotMeal() {
                             <View wrap={false} key={item.name} style={styles.mb}>
                                 <View style={styles.row}>
                                     <Text style={styles.num}>{item.num} </Text>
-                                    <Text style={styles.delivery_date}>{format(new Date(item.delivery_date), "dd LLL yyyy", { locale: fr })}</Text>
+                                    <Text style={styles.delivery_date}>
+                                        {format(new Date(item.delivery_date), "dd LLL yyyy", { locale: fr })}
+                                    </Text>
                                     <Text style={styles.clientName}>{item.clientName}</Text>
                                     {item.reste > 0 && <Text style={styles.reste}>{item.reste} €</Text>}
                                 </View>
                                 <View>
-                                    {item.vrac.map((vrac: any) => 
+                                    {item.vrac.map((vrac: any) => (
                                         <View key={vrac.name} style={styles.list}>
                                             <Text style={styles.date}>{vrac.qty}</Text>
                                             <Text style={styles.vracName}>{vrac.name} </Text>
                                             <Text style={styles.comment}>{vrac.comment} </Text>
                                         </View>
-                                    )}
+                                    ))}
                                 </View>
                             </View>
                         ))}
@@ -144,93 +143,93 @@ const styles = StyleSheet.create({
         right: "10px",
     },
     num: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "60px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        textAlign: "right"
+        textAlign: "right",
     },
     itemName: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "70px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
     },
     date: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "40px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
-        textAlign: "center"
+        textAlign: "center",
     },
     delivery_date: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "80px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
         color: "red",
-        textAlign: "center"
+        textAlign: "center",
     },
     comment: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "200px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
-        color: "red"
+        color: "red",
     },
     list: {
         display: "flex",
         flexDirection: "row",
-        fontSize: "11px",
+        fontSize: "13px",
         marginBottom: "-1px",
-        paddingLeft: "9px"
+        paddingLeft: "9px",
     },
     clientName: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "219px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
     },
-    vracName:{
-        fontSize: "11px",
+    vracName: {
+        fontSize: "13px",
         width: "300px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
-        marginLeft: "-1px"
+        marginLeft: "-1px",
     },
     vracQty: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "25px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
-        textAlign: "center"
+        textAlign: "center",
     },
     reste: {
-        fontSize: "11px",
-        width: "50px",
+        fontSize: "13px",
+        width: "70px",
         border: "1px solid darkgray",
         paddingTop: "1px",
         paddingLeft: "2px",
         marginLeft: "-1px",
         color: "red",
-        textAlign: "center"
+        textAlign: "center",
     },
     vracComment: {
-        fontSize: "11px",
+        fontSize: "13px",
         width: "190px",
         border: "1px solid darkgray",
         color: "red",
@@ -248,21 +247,21 @@ const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",
-        marginBottom: "-1px"
+        marginBottom: "-1px",
     },
     qty: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "35px",
         textAlign: "right",
         paddingBottom: "2px",
     },
     unit: {
-        fontSize: "11px",
+        fontSize: "13px",
         padding: "0px 10px",
         paddingBottom: "1px",
     },
     name: {
-        fontSize: "12px",
+        fontSize: "13px",
         width: "auto",
         paddingBottom: "2px",
     },
