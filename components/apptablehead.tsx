@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { CardStackPlusIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -44,7 +44,7 @@ function AppTableHead({ title, currentPage, btnLabel, btnLink, count }: AppTable
             </div>
             <Button variant="outline" asChild>
                 <Link href={btnLink}>
-                    <CardStackPlusIcon className="mr-2 h-4 w-4" /> {btnLabel}
+                    <PlusIcon className="mr-2 h-4 w-4" /> {btnLabel}
                 </Link>
             </Button>
         </div>

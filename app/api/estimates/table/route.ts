@@ -1,0 +1,36 @@
+import { NextResponse, NextRequest } from "next/server";
+import clientPromise from "@/lib/mongodb";
+
+export async function GET(req: NextRequest) {
+    const url = new URL(req.url);
+    const page: any = url.searchParams.get("page");
+
+    const ITEMS_PER_PAGE = 10;
+
+    try {
+        const client = await clientPromise;
+        const db = client.db(process.env.MONGO_DB_NAME);
+
+        const { n: count } = await db.command({ count: "estimates" });
+        const pageCount = count / ITEMS_PER_PAGE;
+        const skip = (page - 1) * ITEMS_PER_PAGE;
+
+        const estimates = await db
+            .collection("estimates")
+            .find()
+            .limit(ITEMS_PER_PAGE)
+            .skip(skip)
+            .sort({ created_at: -1 })
+            .toArray();
+
+        return NextResponse.json({
+            pagination: {
+                count,
+                pageCount,
+            },
+            estimates,
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}

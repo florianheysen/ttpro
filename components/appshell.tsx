@@ -71,16 +71,18 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
             count: data?.clientsCount,
         },
         {
+            name: "Devis",
+            href: "/estimates",
+            current: pathname.includes("/estimates"),
+            icon: <CrumpledPaperIcon className="mr-2 h-4 w-4" />,
+            isCount: true,
+            count: data?.estimatesCount,
+        },
+        {
             name: "Comptes rendus",
             href: "/reports",
             current: pathname.includes("/reports"),
             icon: <CalendarIcon className="mr-2 h-4 w-4" />,
-        },
-        {
-            name: "Devis plateau spécial",
-            href: "/estimate",
-            current: pathname.includes("/estimate"),
-            icon: <CrumpledPaperIcon className="mr-2 h-4 w-4" />,
         },
     ];
 
