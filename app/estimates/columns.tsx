@@ -111,7 +111,7 @@ export const columns: ColumnDef<any>[] = [
         header: "Client",
         size: 250,
     },
-    /* {
+    {
         accessorKey: "created_at",
         header: "Créé le",
         cell: ({ row }) => {
@@ -119,8 +119,8 @@ export const columns: ColumnDef<any>[] = [
             const formatted = moment(created_at).format("DD/MM/YYYY");
             return <div>{formatted}</div>;
         },
-    }, */
-    {
+    },
+    /* {
         accessorKey: "delivery_date",
         header: "Livraison",
         cell: ({ row }) => {
@@ -128,7 +128,7 @@ export const columns: ColumnDef<any>[] = [
             const formatted = moment(delivery_date).format("DD/MM/YYYY");
             return <div>{formatted}</div>;
         },
-    },
+    }, */
     {
         accessorKey: "seller",
         header: "Vendeur",

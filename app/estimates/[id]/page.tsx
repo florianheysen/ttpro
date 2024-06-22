@@ -329,10 +329,10 @@ export default function Page({ params }: { params: { id: string } }) {
                             )}
                         </div>
                     </div>
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                         <span className="mb-1 ">Date de livraison</span>
                         <OrderDatePicker data={data} order={estimate} handleChange={handleChange} />
-                    </div>
+                    </div> */}
                 </div>
                 <span className="mb-1 mt-8">Ajouter au devis</span>
                 <div className="flex gap-4">
@@ -622,14 +622,14 @@ const orderValidation = (order: any) => {
     if (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) {
         toast.error("Veuillez sélectionner au moins un plat/vrac");
     }
-    if (order.delivery_date === null) {
+    /* if (order.delivery_date === null) {
         toast.error("Veuillez choisir une date de livraison");
-    }
+    } */
     if (
         order.seller === null ||
         order.client === null ||
-        (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) ||
-        order.delivery_date === null
+        (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) /*  ||
+        order.delivery_date === null */
     ) {
         return false;
     } else {

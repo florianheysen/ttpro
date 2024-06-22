@@ -68,8 +68,7 @@ export default function Pagee({ params }: { params: { slug: string } }) {
                             <Text>Devis - La Marée Barlin</Text>
                             <Text>&nbsp;</Text>
                             <Text style={styles.textSmall}>
-                                Numéro de devis : {estimate?.num} | Date de livraison : {deliveryDate.slice(1, -1)} |
-                                Vendeur : {estimate?.seller}
+                                Numéro de devis : {estimate?.num} | Vendeur : {estimate?.seller}
                             </Text>
                             <Text>&nbsp;</Text>
                             <Text style={styles.textSmall}>
