@@ -68,20 +68,20 @@ function PrintGlobal() {
                     </p>
                     <h1 className="text-3xl font-semibold">
                         Listing commandes du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
-                        {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}
+                        {to && to !== from ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : ""}
                     </h1>
                 </div>
             </div>
             <PDFViewer width="100%" height="700px">
                 <Document
                     title={`Listing commandes du ${format(new Date(from), "dd LLL y", { locale: fr })} ${" "}
-                        ${to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"}`}
+                        ${to && to !== from ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : ""}`}
                 >
                     <Page wrap style={styles.page}>
                         <View style={styles.title}>
                             <Text>
                                 Listing commandes du {format(new Date(from), "dd LLL y", { locale: fr })}{" "}
-                                {to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maitenant"}
+                                {to && to !== from ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : ""}
                             </Text>
                         </View>
                         <View fixed style={{ ...styles.row, opacity: 0.75 }}>
@@ -119,7 +119,7 @@ function PrintGlobal() {
                             style={styles.pagination}
                             render={({ pageNumber, totalPages }) =>
                                 `Listing commandes du ${format(new Date(from), "dd LLL y", { locale: fr })} ${
-                                    to ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : "à maintenant"
+                                    to && to !== from ? "au " + format(new Date(to), "dd LLL y", { locale: fr }) : ""
                                 } | ${pageNumber} / ${totalPages}`
                             }
                         />

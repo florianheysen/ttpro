@@ -14,51 +14,67 @@ import { ExternalLinkIcon } from "@radix-ui/react-icons";
 const reports = [
     {
         name: "global",
+        target: "global",
         label: "Global",
         disabled: false,
     },
     {
         name: "commandes",
+        target: "commandes",
         label: "Commandes",
         disabled: false,
     },
     {
         name: "meal-hot",
+        target: "meal-hot",
         label: "Plats chauds",
         disabled: false,
     },
     {
         name: "meal-cold",
+        target: "meal-cold",
         label: "Plats froids",
         disabled: false,
     },
     {
         name: "meal-special",
+        target: "meal-special",
         label: "Plats PL1 à PL5",
         disabled: false,
     },
     {
         name: "meal-huitres",
+        target: "meal-huitres",
         label: "Plats d'huîtres ouvertes",
         disabled: false,
     },
     {
         name: "meal-custom",
+        target: "meal-custom",
         label: "Plateaux spéciaux",
         disabled: false,
     },
     {
+        name: "meal-custom-short",
+        target: "meal-custom",
+        label: "Plateaux spéciaux court",
+        disabled: false,
+    },
+    {
         name: "mayo",
+        target: "mayo",
         label: "Mayonnaise",
         disabled: false,
     },
     {
         name: "vrac-produit",
+        target: "vrac-produit",
         label: "Vrac par produit",
         disabled: false,
     },
     {
         name: "vrac-commande",
+        target: "vrac-commande",
         label: "Vrac par commande",
         disabled: false,
     },
@@ -70,12 +86,13 @@ const DEFAULT_TARGET = "global";
 const ReportsPage = () => {
     /* const router = useRouter(); */
     const [parentDate, setParentDate] = useState<DateRange | undefined>({ from: new Date(), to: new Date() });
+    const [name, setName] = useState<string>(DEFAULT_TARGET);
     const [target, setTarget] = useState<string>(DEFAULT_TARGET);
 
     const { from, to } = parentDate || {};
 
     const handleSubmit = () => {
-        const queryString = `/${target}?target=${target}${from ? `&from=${format(from, "yyyy-MM-dd")}` : ""}${
+        const queryString = `/${name}?target=${target}${from ? `&from=${format(from, "yyyy-MM-dd")}` : ""}${
             to ? `&to=${format(to, "yyyy-MM-dd")}` : ""
         }`;
         window.open(`${REPORTS_API_PATH}${queryString}`, "_ blank");
@@ -89,7 +106,10 @@ const ReportsPage = () => {
                         disabled={report.disabled}
                         value={report.name}
                         id={report.name}
-                        onClick={() => setTarget(report.name)}
+                        onClick={() => {
+                            setTarget(report.target);
+                            setName(report.name);
+                        }}
                     />
                     <Label className={report.disabled && "opacity-50 cursor-not-allowed"} htmlFor={report.name}>
                         {report.label}
