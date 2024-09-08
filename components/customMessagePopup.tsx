@@ -29,8 +29,6 @@ export function CustomMessagePopup() {
     const [isPopupOpen, setPopupOpen] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(true);
 
-    console.log(customMessage);
-
     React.useEffect(() => {
         const fetchData = async () => {
             try {

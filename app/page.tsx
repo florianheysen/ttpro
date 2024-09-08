@@ -1,6 +1,9 @@
 import Appshell from "@/components/appshell";
 import { CustomMessagePopup } from "@/components/customMessagePopup";
+import { ExampleChart } from "@/components/example-chart";
+import StatCard from "@/components/stats/stat-card";
 import { Button as Ok } from "@/components/ui/button";
+import { BarChart } from "lucide-react";
 
 import Link from "next/link";
 
@@ -8,7 +11,18 @@ export const metadata = {
     title: "Tableau de bord | Orderise",
 };
 
-export default function Home() {
+export default async function Home() {
+    let chartData = [];
+    try {
+        const response = await fetch("http://localhost:3000/api/orders/getPastTwoMonths", {
+            cache: "no-cache",
+            next: { revalidate: 60 },
+        });
+        chartData = await response.json();
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+
     return (
         <Appshell>
             <div className="flex justify-between items-end">
@@ -80,6 +94,35 @@ export default function Home() {
                         </li>
                     </ul>
                 </div>
+            </section>
+            <section className="flex flex-col mt-14 gap-4 w-full select-none pointer-events-none opacity-0">
+                <div className="flex flex-row gap-4 w-full">
+                    <StatCard
+                        title="Nombre de commandes"
+                        value="302"
+                        percentageChange="+15.2%"
+                        icon={<BarChart className="h-4 w-4 text-muted-foreground" />}
+                    />
+                    <StatCard
+                        title="Total des commandes"
+                        value="1200.00€"
+                        percentageChange="+15.2%"
+                        icon={<BarChart className="h-4 w-4 text-muted-foreground" />}
+                    />
+                    <StatCard
+                        title="Nouveaux clients"
+                        value="14"
+                        percentageChange="+15.2%"
+                        icon={<BarChart className="h-4 w-4 text-muted-foreground" />}
+                    />
+                    <StatCard
+                        title="Clients revenus"
+                        value="134"
+                        percentageChange="+15.2%"
+                        icon={<BarChart className="h-4 w-4 text-muted-foreground" />}
+                    />
+                </div>
+                <ExampleChart chartData={chartData} />
             </section>
         </Appshell>
     );
