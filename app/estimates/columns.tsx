@@ -5,7 +5,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 import { MoreHorizontal } from "lucide-react";
-import { FileTextIcon, CardStackMinusIcon, PersonIcon, CopyIcon, Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
+import {
+    FileTextIcon,
+    CardStackMinusIcon,
+    PersonIcon,
+    CopyIcon,
+    Pencil1Icon,
+    TrashIcon,
+    CardStackPlusIcon,
+} from "@radix-ui/react-icons";
 
 import moment from "moment";
 
@@ -153,7 +161,13 @@ export const columns: ColumnDef<any>[] = [
                 <div className="flex gap-2 flex-row justify-end pr-3">
                     <a href={`/estimates/${estimate._id}`}>
                         <Button variant="outline" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open actions</span>
+                            <span className="sr-only">Transfer</span>
+                            <CardStackPlusIcon />
+                        </Button>
+                    </a>
+                    <a href={`/estimates/${estimate._id}`}>
+                        <Button variant="outline" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open estimate</span>
                             <Pencil1Icon />
                         </Button>
                     </a>

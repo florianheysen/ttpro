@@ -50,6 +50,8 @@ function processMayoOrders(data: any[]): any {
         },
     };
 
+    /* Algo v2 (apparently not working)
+
     function distributeMayoByPot(totalMayo: any) {
         const potSizes = [800, 550, 300, 100];
         const potCount = [0, 0, 0, 0];
@@ -75,6 +77,35 @@ function processMayoOrders(data: any[]): any {
             mediumPotCount: potCount[2],
             smallPotCount: potCount[3],
             remainingMayo: totalMayo,
+        };
+    } */
+
+    // TODO: Algo v1 (ask if it works)
+    function distributeMayoByPot(totalMayo: any) {
+        const potSizes = [800, 550, 300, 100];
+        let sumMayo = totalMayo;
+        let res: any = {};
+
+        // Traditional for loop to iterate through potSizes
+        for (let index = 0; index < potSizes.length; index++) {
+            const value = potSizes[index];
+            let temp = Math.floor(sumMayo / value);
+            sumMayo = sumMayo % value;
+            res[index] = temp;
+
+            // If there's still remaining mayo, increment the smallest pot count
+            if (sumMayo > 0 && index === potSizes.length - 1) {
+                res[3] += 1;
+            }
+        }
+
+        // Return results in the original format
+        return {
+            veryLargePotCount: res[0] || 0,
+            largePotCount: res[1] || 0,
+            mediumPotCount: res[2] || 0,
+            smallPotCount: res[3] || 0,
+            remainingMayo: sumMayo,
         };
     }
 
