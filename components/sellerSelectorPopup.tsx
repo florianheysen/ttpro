@@ -48,9 +48,9 @@ export function SellerSelectorPopup({ order, handleChange, isDefaultOpen }: ISel
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Prêt à prendre la commande ?</AlertDialogTitle>
+                    <AlertDialogTitle>Qui êtes-vous ?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Veuillez choisir le vendeur associé à cette commande ci-dessous afin de poursuivre la saisie.
+                        Choisir le vendeur associé à cette commande ci-dessous afin de poursuivre la saisie.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 {!sellers ? (

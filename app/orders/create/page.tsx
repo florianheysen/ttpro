@@ -4,9 +4,8 @@ import * as React from "react";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import { setLocal, stringIngredients, formatPrice, fetcher, calculerTotalMayonnaise } from "@/lib/utils";
+import { setLocal, formatPrice, calculerTotalMayonnaise } from "@/lib/utils";
 import Appshell from "@/components/appshell";
-import useSWR from "swr";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +26,7 @@ import { EditSpPopup } from "@/components/editSpPopup";
 import { OrderDatePicker } from "@/components/orderDatePicker";
 
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { PreventNavigation } from "@/components/preventNavigation";
 
 const orderValidation = (order: any) => {
     if (order.seller === null) {
@@ -71,8 +71,11 @@ export default function CreateOrder() {
         delivery_date: null,
         created_at: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSSSSS"),
     });
+    const [isDirty, setIsDirty] = React.useState<boolean>(false); 
 
     const router = useRouter();
+
+    const reset = () => {router.refresh()}
 
     const handleSubmit = async () => {
         if (orderValidation(order) === true) {
@@ -124,6 +127,7 @@ export default function CreateOrder() {
             ...prevState,
             [field]: newValue,
         }));
+        setIsDirty(true)
     };
 
     const handleQty = ({ item, qty }: { item: any; qty: number }) => {
@@ -208,11 +212,13 @@ export default function CreateOrder() {
                         ...prevState,
                         specialMeals: [],
                     }));
+                    setIsDirty(true)
                 } else {
                     setOrder((prevState: any) => ({
                         ...prevState,
                         specialMeals: order.specialMeals.filter((obj: any) => obj.id !== meal.id),
                     }));
+                    setIsDirty(true)
                 }
 
                 toast(
@@ -228,11 +234,13 @@ export default function CreateOrder() {
                         ...prevState,
                         vrac: [],
                     }));
+                    setIsDirty(true)
                 } else {
                     setOrder((prevState: any) => ({
                         ...prevState,
                         vrac: order.vrac.filter((obj: any) => obj._id !== meal._id),
                     }));
+                    setIsDirty(true)
                 }
 
                 toast(
@@ -248,11 +256,13 @@ export default function CreateOrder() {
                         ...prevState,
                         meals: [],
                     }));
+                    setIsDirty(true)
                 } else {
                     setOrder((prevState: any) => ({
                         ...prevState,
                         meals: order.meals.filter((obj: any) => obj.mealId !== meal.mealId),
                     }));
+                    setIsDirty(true)
                 }
 
                 toast(
@@ -287,6 +297,7 @@ export default function CreateOrder() {
 
     return (
         <Appshell>
+            <PreventNavigation isDirty={isDirty} backHref={'/orders/create'} resetData={reset} />
             <div className="flex align-middle justify-between">
                 <h1 className="text-3xl font-semibold">Nouvelle commande</h1>
                 <div className="flex gap-3 mb-4">
