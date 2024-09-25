@@ -119,7 +119,7 @@ export const columns: ColumnDef<any>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                        <AlertDialogTitle>Supprimer l&pos;ingrédient</AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Cette action ne peut pas être annulée. Elle supprimera définitivement
                                             l&apos;ingrédient <b className="text-gray-800">{ingredient.name}</b>. Les

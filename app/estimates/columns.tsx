@@ -12,7 +12,7 @@ import {
     CopyIcon,
     Pencil1Icon,
     TrashIcon,
-    CardStackPlusIcon,
+    Share2Icon,
 } from "@radix-ui/react-icons";
 
 import moment from "moment";
@@ -37,6 +37,16 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogClose,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 
 import { Badge } from "@/components/ui/badge";
 
@@ -159,12 +169,33 @@ export const columns: ColumnDef<any>[] = [
             const estimate = row.original;
             return (
                 <div className="flex gap-2 flex-row justify-end pr-3">
-                    <a href={`/estimates/${estimate._id}`}>
+                    
+                    <Dialog>
+                        <DialogTrigger asChild>
                         <Button variant="outline" className="h-8 w-8 p-0">
                             <span className="sr-only">Transfer</span>
-                            <CardStackPlusIcon />
+                            <Share2Icon />
                         </Button>
-                    </a>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                        <DialogTitle>Transférer le devis en commande ?</DialogTitle>
+                        <DialogDescription>
+                            Cette action ne peut être annulée. Elle remplacera définitivement ce devis par une commande.
+                        </DialogDescription>
+                        </DialogHeader>
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Annuler
+                                    </Button>
+                                </DialogClose>
+                                <Link href={`/estimates/transfer/${estimate._id}`}>
+                                    <Button>Transférer</Button>
+                                </Link>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                     <a href={`/estimates/${estimate._id}`}>
                         <Button variant="outline" className="h-8 w-8 p-0">
                             <span className="sr-only">Open estimate</span>
@@ -207,7 +238,7 @@ export const columns: ColumnDef<any>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                        <AlertDialogTitle>Supprimer le devis</AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Cette action ne peut pas être annulée. Elle supprimera définitivement le
                                             devis{" "}

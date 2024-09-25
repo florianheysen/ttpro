@@ -95,7 +95,7 @@ export const columns: ColumnDef<any>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                        <AlertDialogTitle>Supprimer le client</AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Cette action ne peut pas être annulée. Elle supprimera définitivement le
                                             client <b className="text-gray-800">{client.name}</b>. Les commandes liées ne seront pas supprimées.

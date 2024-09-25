@@ -193,7 +193,7 @@ export const columns: ColumnDef<any>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                        <AlertDialogTitle>Supprimer la commande</AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Cette action ne peut pas être annulée. Elle supprimera définitivement la
                                             commande{" "}
