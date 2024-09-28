@@ -619,7 +619,7 @@ const orderValidation = (order: any) => {
         toast.error("Veuillez sélectionner un client");
     }
     if (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) {
-        toast.error("Veuillez sélectionner au moins un plat/vrac");
+        toast.error("Veuillez ajouter un plat");
     }
     /* if (order.delivery_date === null) {
         toast.error("Veuillez choisir une date de livraison");

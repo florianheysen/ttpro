@@ -33,7 +33,6 @@ function SellersPage() {
                     title="Vendeurs"
                     currentPage="Liste"
                     btnLabel="Nouveau vendeur"
-                    btnLink="/sellers/create"
                     count={0}
                 />
                 <TableLoading columns={columns} data={test} />
@@ -50,7 +49,6 @@ function SellersPage() {
                 title="Vendeurs"
                 currentPage="Liste"
                 btnLabel="Nouveau vendeur"
-                btnLink="/sellers/create"
                 count={data.pagination.count}
             />
             <DataTable columns={columns} data={data.sellers} />

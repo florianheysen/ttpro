@@ -75,8 +75,6 @@ export default function CreateOrder() {
 
     const router = useRouter();
 
-    const reset = () => {router.refresh()}
-
     const handleSubmit = async () => {
         if (orderValidation(order) === true) {
             const finalOrder = {
@@ -297,7 +295,7 @@ export default function CreateOrder() {
 
     return (
         <Appshell>
-            <PreventNavigation isDirty={isDirty} backHref={'/orders/create'} resetData={reset} />
+            <PreventNavigation isDirty={true} backHref={'/orders/create'} resetData={() => router.refresh()} />
             <div className="flex align-middle justify-between">
                 <h1 className="text-3xl font-semibold">Nouvelle commande</h1>
                 <div className="flex gap-3 mb-4">

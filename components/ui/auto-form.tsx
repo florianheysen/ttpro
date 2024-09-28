@@ -573,7 +573,7 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
                         onParsedValuesChange?.(parsedValues.data);
                     }
                 }}
-                className={cn("w-full max-w-2xl space-y-8", className)}
+                className={cn("w-full max-w-2xl space-y-6", className)}
             >
                 <AutoFormObject schema={objectFormSchema} form={form} fieldConfig={fieldConfig} />
 

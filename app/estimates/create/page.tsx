@@ -24,6 +24,7 @@ import { EditSpPopup } from "@/components/editSpPopup";
 import { OrderDatePicker } from "@/components/orderDatePicker";
 
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { PreventNavigation } from "@/components/preventNavigation";
 
 const orderValidation = (order: any) => {
     if (order.seller === null) {
@@ -33,7 +34,7 @@ const orderValidation = (order: any) => {
         toast.error("Veuillez sélectionner un client");
     }
     if (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) {
-        toast.error("Veuillez sélectionner au moins un plat/vrac");
+        toast.error("Veuillez ajouter un plat");
     }
     /* if (order.delivery_date === null) {
         toast.error("Veuillez choisir une date de livraison");
@@ -284,6 +285,7 @@ export default function CreateEstimate() {
 
     return (
         <Appshell>
+            <PreventNavigation isDirty={true} backHref={'/orders/create'} resetData={() => router.refresh()} />
             <div className="flex align-middle justify-between">
                 <h1 className="text-3xl font-semibold">Nouveau devis</h1>
                 <div className="flex gap-3 mb-4">

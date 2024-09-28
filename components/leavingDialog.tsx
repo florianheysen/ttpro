@@ -8,6 +8,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
   } from '@/components/ui/alert-dialog';
+import { Button } from './ui/button';
   
   type LeavingDialogProps = {
     isOpen: boolean;
@@ -27,7 +28,7 @@ import {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => noCallback()}>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={() => yesCallback()}>Quitter</AlertDialogAction>
+            <Button variant="destructive" onClick={() => yesCallback()}>Quitter</Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
