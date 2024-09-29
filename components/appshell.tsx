@@ -45,7 +45,12 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
     const { user } = useUser();
     const pathname = usePathname();
 
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/count`, fetcher);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/count`, fetcher, {
+        refreshInterval: 10000,
+        dedupingInterval: 0,
+        revalidateOnFocus: true,
+        revalidateOnReconnect: true,
+    });
 
     const mainPages = [
         {
