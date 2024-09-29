@@ -46,7 +46,7 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
 
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/count`, fetcher, {
-        refreshInterval: 600000,
+        revalidateOnMount: true,
         dedupingInterval: 0,
         revalidateOnFocus: true,
         revalidateOnReconnect: true,
