@@ -91,12 +91,12 @@ function PrintHotMeal() {
                             </Text>
                         </View>
                         {data.map((item: any) => (
-                            <View wrap={false} key={item.name} style={styles.mb}>
-                                <View style={styles.row}>
+                            <View wrap={true} key={item.name} style={styles.mb}>
+                                <View fixed style={styles.row}>
                                     <Text style={styles.totalQty}>{roundFloat(item.totalQty)} </Text>
                                     <Text style={styles.itemName}>{item.itemName} </Text>
                                 </View>
-                                <View>
+                                <View wrap={true}> {/* here */}
                                     {item.orders.map((order: any) => (
                                         <View key={order.orderNum} style={styles.order}>
                                             <Text style={styles.orderNum}>{order.orderNum} </Text>
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     },
     order: {
         display: "flex",
+        height: "20px",
         flexDirection: "row",
         fontSize: "13px",
         marginBottom: "-1px",
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     vracComment: {
-        fontSize: "13px",
+        fontSize: "11px",
         width: "190px",
         border: "1px solid darkgray",
         color: "red",

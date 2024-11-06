@@ -52,7 +52,7 @@ export function calculerTotalMayonnaise(data: any) {
     // Parcourir les repas normaux
     data.meals.forEach((meal: any) => {
         meal.selectedIngredients.forEach((ingredient: any) => {
-            if (ingredient.name === "Mayonnaise") {
+            if (ingredient.name.toLowerCase() === "mayonnaise") {
                 totalMayonnaise += ingredient.qty * meal.qty; // Multiplier par la quantité de repas
             }
         });
@@ -61,7 +61,7 @@ export function calculerTotalMayonnaise(data: any) {
     // Parcourir les repas spéciaux
     data.specialMeals.forEach((specialMeal: any) => {
         specialMeal.selectedIngredients.forEach((ingredient: any) => {
-            if (ingredient.name === "Mayonnaise") {
+            if (ingredient.name.toLowerCase() === "mayonnaise") {
                 totalMayonnaise += ingredient.qty * specialMeal.qty; // Multiplier par la quantité de repas spéciaux
             }
         });
@@ -69,7 +69,7 @@ export function calculerTotalMayonnaise(data: any) {
 
     // Parcourir les ingrédients en vrac
     data.vrac.forEach((ingredient: any) => {
-        if (ingredient.name === "Mayonnaise") {
+        if (ingredient.name.toLowerCase() === "mayonnaise") {
             totalMayonnaise += ingredient.qty; // Ne pas oublier de multiplier par la quantité de repas en vrac si nécessaire
         }
     });

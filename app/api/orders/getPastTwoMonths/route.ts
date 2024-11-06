@@ -110,8 +110,6 @@ export async function GET() {
             pastYear: result.reduce((a: any, b: any) => a + b.pastYear, 0),
         };
 
-        console.log("totalOrders", totalOrders);
-
         return NextResponse.json(result);
     } catch (e) {
         console.error(e);

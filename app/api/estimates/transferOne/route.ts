@@ -24,39 +24,38 @@ export async function GET(req: NextRequest) {
 
         const formattedEstimate = convertOrder(estimate[0]);
 
-        const updateData =(data: any) => {
+        const updateData = (data: any) => {
             const updatedData = {
-              ...data,
-              num: undefined,
-              created_at: new Date().toISOString(),
-              delivery_date: new Date().toISOString(),
+                ...data,
+                num: undefined,
+                created_at: new Date().toString(),
+                delivery_date: new Date().toString(),
             };
 
             delete updatedData._id;
-          
-            return updatedData;
-          }
 
-          const order = updateData(formattedEstimate);
+            return updatedData;
+        };
+
+        const order = updateData(formattedEstimate);
 
         // Création de la commande à partir du devis
-          try {
+        try {
             const latestOrder = await db.collection("orders").find().limit(1).sort({ created_at: -1 }).toArray();
-    
+
             const lastNum = latestOrder[0].num;
             const nextNum = getNextNum(lastNum);
-    
+
             const result = await db.collection("orders").insertOne({ ...order, num: nextNum });
 
             // Suppression du devis
             try {
                 const res = await db.collection("estimates").deleteOne({ _id: new ObjectId(id) });
-                console.log('deleting estimate:', res)
-                
+                console.log("deleting estimate:", res);
             } catch (e) {
                 console.error(e);
             }
-    
+
             posthog.capture({
                 distinctId: userId as string,
                 event: "Commande - Tranfer Devis",
@@ -65,17 +64,16 @@ export async function GET(req: NextRequest) {
                     mongoRes: result,
                 },
             });
-    
+
             const resClient = {
                 ...order,
                 _id: result.insertedId,
             };
-    
+
             return NextResponse.json(resClient);
         } catch (e) {
             console.error(e);
         }
-
     } catch (e) {
         console.error(e);
     }
