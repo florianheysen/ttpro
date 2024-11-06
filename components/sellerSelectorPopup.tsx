@@ -1,5 +1,4 @@
-import React from "react";
-import useSWR from "swr";
+import React, { useEffect, useState } from "react";
 
 import {
     AlertDialog,
@@ -23,13 +22,31 @@ interface ISellerSelectorPopupProps {
     isDefaultOpen: boolean;
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export function SellerSelectorPopup({ order, handleChange, isDefaultOpen }: ISellerSelectorPopupProps) {
-    const { data: sellers } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/sellers/findMany`, fetcher);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [sellers, setSellers] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
-    React.useEffect(() => {
+    // Fetch sellers data when the component mounts
+    useEffect(() => {
+        const fetchSellers = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/sellers/findMany`);
+                const data = await response.json();
+                setSellers(data);
+            } catch (error) {
+                console.error("Error fetching sellers:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchSellers();
+    }, []);
+
+    // Control initial open state with delay
+    useEffect(() => {
         const timeoutId = setTimeout(() => {
             setIsOpen(isDefaultOpen);
         }, 200);
@@ -37,7 +54,7 @@ export function SellerSelectorPopup({ order, handleChange, isDefaultOpen }: ISel
         return () => {
             clearTimeout(timeoutId);
         };
-    }, []);
+    }, [isDefaultOpen]);
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -53,21 +70,22 @@ export function SellerSelectorPopup({ order, handleChange, isDefaultOpen }: ISel
                         Choisir le vendeur associé à cette commande ci-dessous afin de poursuivre la saisie.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                {!sellers ? (
+                {isLoading ? (
                     <Loading />
                 ) : (
                     <RadioGroup defaultValue={order.seller} onValueChange={(value) => handleChange("seller", value)}>
-                        {sellers.map((vendeur: any) => (
-                            <div
-                                key={vendeur._id}
-                                className="flex items-center bg-gray-100 dark:bg-zinc-900 rounded pl-4"
-                            >
-                                <RadioGroupItem value={vendeur.name} id={vendeur._id} />
-                                <Label className="w-full h-full px-4 py-4 cursor-pointer" htmlFor={vendeur._id}>
-                                    {vendeur.name}
-                                </Label>
-                            </div>
-                        ))}
+                        {sellers &&
+                            sellers.map((vendeur: any) => (
+                                <div
+                                    key={vendeur._id}
+                                    className="flex items-center bg-gray-100 dark:bg-zinc-900 rounded pl-4"
+                                >
+                                    <RadioGroupItem value={vendeur.name} id={vendeur._id} />
+                                    <Label className="w-full h-full px-4 py-4 cursor-pointer" htmlFor={vendeur._id}>
+                                        {vendeur.name}
+                                    </Label>
+                                </div>
+                            ))}
                     </RadioGroup>
                 )}
                 <AlertDialogFooter>
