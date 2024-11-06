@@ -48,8 +48,8 @@ const orderValidation = (order: any) => {
         order.seller === null ||
         order.client === null ||
         (order.meals.length <= 0 && order.specialMeals.length <= 0 && order.vrac.length <= 0) ||
-        order.delivery_date === null ||
-        order.delivery_date === moment(new Date()).format("YYYY-MM-DD")
+        order.delivery_date === null /* ||
+         order.delivery_date === moment(new Date()).format("YYYY-MM-DD") */
     ) {
         return false;
     } else {
