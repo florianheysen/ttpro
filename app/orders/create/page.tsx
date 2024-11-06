@@ -41,9 +41,9 @@ const orderValidation = (order: any) => {
     if (order.delivery_date === null) {
         toast.error("Veuillez choisir une date de livraison");
     }
-    if (order.delivery_date === moment(new Date()).format("YYYY-MM-DD")) {
+    /* if (order.delivery_date === moment(new Date()).format("YYYY-MM-DD")) {
         toast.error("La livraison ne peux pas être le jour actuel");
-    }
+    } */
     if (
         order.seller === null ||
         order.client === null ||
@@ -71,7 +71,7 @@ export default function CreateOrder() {
         delivery_date: null,
         created_at: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSSSSS"),
     });
-    const [isDirty, setIsDirty] = React.useState<boolean>(false); 
+    const [isDirty, setIsDirty] = React.useState<boolean>(false);
 
     const router = useRouter();
 
@@ -125,7 +125,7 @@ export default function CreateOrder() {
             ...prevState,
             [field]: newValue,
         }));
-        setIsDirty(true)
+        setIsDirty(true);
     };
 
     const handleQty = ({ item, qty }: { item: any; qty: number }) => {
@@ -210,13 +210,13 @@ export default function CreateOrder() {
                         ...prevState,
                         specialMeals: [],
                     }));
-                    setIsDirty(true)
+                    setIsDirty(true);
                 } else {
                     setOrder((prevState: any) => ({
                         ...prevState,
                         specialMeals: order.specialMeals.filter((obj: any) => obj.id !== meal.id),
                     }));
-                    setIsDirty(true)
+                    setIsDirty(true);
                 }
 
                 toast(
@@ -232,13 +232,13 @@ export default function CreateOrder() {
                         ...prevState,
                         vrac: [],
                     }));
-                    setIsDirty(true)
+                    setIsDirty(true);
                 } else {
                     setOrder((prevState: any) => ({
                         ...prevState,
                         vrac: order.vrac.filter((obj: any) => obj._id !== meal._id),
                     }));
-                    setIsDirty(true)
+                    setIsDirty(true);
                 }
 
                 toast(
@@ -254,13 +254,13 @@ export default function CreateOrder() {
                         ...prevState,
                         meals: [],
                     }));
-                    setIsDirty(true)
+                    setIsDirty(true);
                 } else {
                     setOrder((prevState: any) => ({
                         ...prevState,
                         meals: order.meals.filter((obj: any) => obj.mealId !== meal.mealId),
                     }));
-                    setIsDirty(true)
+                    setIsDirty(true);
                 }
 
                 toast(
@@ -295,7 +295,7 @@ export default function CreateOrder() {
 
     return (
         <Appshell>
-            <PreventNavigation isDirty={true} backHref={'/orders/create'} resetData={() => router.refresh()} />
+            <PreventNavigation isDirty={true} backHref={"/orders/create"} resetData={() => router.refresh()} />
             <div className="flex align-middle justify-between">
                 <h1 className="text-3xl font-semibold">Nouvelle commande</h1>
                 <div className="flex gap-3 mb-4">
