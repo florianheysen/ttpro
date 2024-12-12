@@ -196,16 +196,14 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
                         <div className="mt-5 h-0 flex-1 overflow-y-auto">
                             <nav className="flex-1 space-y-1 pb-4">
                                 {mainPages.map((page) => (
-                                    <Button
-                                        key={page.href}
-                                        className="w-full justify-start rounded-none"
-                                        variant={page.current ? "default" : "ghost"}
-                                        asChild
-                                    >
-                                        <Link href={page.href}>
+                                    <Link key={page.href} href={page.href}>
+                                        <Button
+                                            className="w-full justify-start rounded-none"
+                                            variant={page.current ? "default" : "ghost"}
+                                        >
                                             {page.icon} {page.name}
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </Link>
                                 ))}
                             </nav>
                             <span className="text-xs ml-4 mb-2 mt-4 uppercase font-medium opacity-70">
@@ -213,14 +211,14 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
                             </span>
                             <nav className="flex-1 space-y-1 pb-4">
                                 {secondaryPages.map((page) => (
-                                    <Button
-                                        key={page.href}
-                                        className="w-full justify-start"
-                                        variant={page.current ? "default" : "ghost"}
-                                        asChild
-                                    >
-                                        <Link href={page.href}>{page.name}</Link>
-                                    </Button>
+                                    <Link key={page.href} href={page.href}>
+                                        <Button
+                                            className="w-full justify-start"
+                                            variant={page.current ? "default" : "ghost"}
+                                        >
+                                            {page.name}
+                                        </Button>
+                                    </Link>
                                 ))}
                             </nav>
                         </div>
@@ -307,13 +305,11 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
                     <div className="mt-5 flex flex-col px-2">
                         <nav className="flex-1 space-y-1 pb-4">
                             {mainPages.map((page) => (
-                                <Button
-                                    key={page.href}
-                                    className="flex w-full justify-between"
-                                    variant={page.current ? "default" : "ghost"}
-                                    asChild
-                                >
-                                    <Link href={page.href}>
+                                <Link key={page.href} href={page.href}>
+                                    <Button
+                                        className="flex w-full justify-between"
+                                        variant={page.current ? "default" : "ghost"}
+                                    >
                                         <div className="flex items-center">
                                             {page.icon} {page.name}
                                         </div>
@@ -329,21 +325,21 @@ const Appshell = ({ children }: { children: React.ReactNode }) => {
                                                 {page.count ?? "—"}
                                             </Badge>
                                         )}
-                                    </Link>
-                                </Button>
+                                    </Button>
+                                </Link>
                             ))}
                         </nav>
                         <span className="text-xs ml-4 mb-2 mt-4 uppercase font-medium opacity-70">Mises à jour</span>
                         <nav className="flex-1 space-y-1 pb-4">
                             {secondaryPages.map((page) => (
-                                <Button
-                                    key={page.href}
-                                    className="w-full justify-start"
-                                    variant={page.current ? "default" : "ghost"}
-                                    asChild
-                                >
-                                    <Link href={page.href}>{page.name}</Link>
-                                </Button>
+                                <Link key={page.href} href={page.href}>
+                                    <Button
+                                        className="w-full justify-start"
+                                        variant={page.current ? "default" : "ghost"}
+                                    >
+                                        {page.name}
+                                    </Button>
+                                </Link>
                             ))}
                         </nav>
                     </div>
