@@ -3,7 +3,6 @@
 import * as React from "react";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
-import moment from "moment";
 import { setLocal, formatPrice, calculerTotalMayonnaise } from "@/lib/utils";
 import Appshell from "@/components/appshell";
 
@@ -69,7 +68,7 @@ export default function CreateOrder() {
         consigne: false,
         accompte,
         delivery_date: null,
-        created_at: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSSSSS"),
+        created_at: null,
     });
     const [isDirty, setIsDirty] = React.useState<boolean>(false);
 

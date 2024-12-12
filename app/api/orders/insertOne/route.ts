@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { auth, clerkClient } from "@clerk/nextjs";
 import posthog from "@/lib/posthog";
-
-export const revalidate = 0;
+import moment from "moment";
 
 export async function POST(req: Request) {
     const { order } = await req.json();
@@ -13,9 +12,14 @@ export async function POST(req: Request) {
     try {
         const mongo = await clientPromise;
         const db = mongo.db(process.env.MONGO_DB_NAME);
-        const nextNum = await getUniqueOrderNum(db);
+        const latestOrder = await db.collection("orders").find().limit(1).sort({ created_at: -1 }).toArray();
 
-        const result = await db.collection("orders").insertOne({ ...order, num: nextNum });
+        const lastNum = latestOrder[0].num;
+        const nextNum = getNextNum(lastNum);
+
+        const result = await db
+            .collection("orders")
+            .insertOne({ ...order, num: nextNum, created_at: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSSSSS") });
 
         posthog.capture({
             distinctId: userId as string,
@@ -34,29 +38,7 @@ export async function POST(req: Request) {
         return NextResponse.json(resClient);
     } catch (e) {
         console.error(e);
-        return NextResponse.json({ error: "Une erreur est survenue" }, { status: 500 });
     }
-}
-
-async function getUniqueOrderNum(db: any) {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    let isUnique = false;
-    let candidateNum;
-
-    while (!isUnique) {
-        const latestOrder = await db.collection("orders").find().limit(1).sort({ created_at: -1 }).toArray();
-
-        const lastNum = latestOrder.length > 0 ? latestOrder[0].num : `0/${currentYear}`;
-        candidateNum = getNextNum(lastNum);
-
-        const existingOrder = await db.collection("orders").findOne({ num: candidateNum });
-        if (!existingOrder) {
-            isUnique = true;
-        }
-    }
-
-    return candidateNum;
 }
 
 function getNextNum(input: string): string {
