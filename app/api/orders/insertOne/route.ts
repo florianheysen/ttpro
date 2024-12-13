@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { auth, clerkClient } from "@clerk/nextjs";
 import posthog from "@/lib/posthog";
-import moment from "moment-timezone"; // Importez moment-timezone
+import moment from "moment-timezone";
+
+export const revalidate = 0;
 
 export async function POST(req: Request) {
     const { order } = await req.json();
@@ -20,7 +22,7 @@ export async function POST(req: Request) {
         const result = await db.collection("orders").insertOne({
             ...order,
             num: nextNum,
-            created_at: moment().tz("Europe/Paris").format("YYYY-MM-DDTHH:mm:ss.SSSSSS"), // Conversion en heure française
+            created_at: moment().tz("Europe/Paris").format("YYYY-MM-DDTHH:mm:ss.SSSSSS"),
         });
 
         posthog.capture({

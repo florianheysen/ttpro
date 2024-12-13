@@ -101,6 +101,8 @@ export default function CreateOrder() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ order: finalOrder }),
+                cache: "no-cache",
+                next: { revalidate: 0 },
             });
 
             const result = await res.json();
