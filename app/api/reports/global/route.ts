@@ -46,7 +46,7 @@ function processOrders(orders: any[]): any[] {
         if (order.meals && Array.isArray(order.meals)) {
             order.meals.forEach((meal: any) => {
                 if (meal.selectedIngredients && Array.isArray(meal.selectedIngredients)) {
-                    processIngredients(idMap, meal.selectedIngredients);
+                    processIngredients(idMap, meal.selectedIngredients, meal.qty || 1);
                 }
             });
         }
@@ -54,24 +54,24 @@ function processOrders(orders: any[]): any[] {
         if (order.specialMeals && Array.isArray(order.specialMeals)) {
             order.specialMeals.forEach((specialMeal: any) => {
                 if (specialMeal.selectedIngredients && Array.isArray(specialMeal.selectedIngredients)) {
-                    processIngredients(idMap, specialMeal.selectedIngredients);
+                    processIngredients(idMap, specialMeal.selectedIngredients, specialMeal.quantity || 1);
                 }
             });
         }
 
         if (order.vrac && Array.isArray(order.vrac)) {
-            processIngredients(idMap, order.vrac);
+            processIngredients(idMap, order.vrac, 1); // Assuming `vrac` doesn't have a `quantity` field.
         }
     });
 
     return Array.from(idMap.values());
 }
 
-function processIngredients(idMap: Map<string, any>, ingredients: any[]): any[] {
+function processIngredients(idMap: Map<string, any>, ingredients: any[], multiplier: number): any[] {
     ingredients.forEach((ingredient: any) => {
         const itemName = ingredient.name.toLowerCase();
         const rawQty = parseFloat(ingredient.qty) || 0;
-        const formattedQty = Math.round(rawQty * 100) / 100;
+        const formattedQty = Math.round(rawQty * multiplier * 100) / 100; // Multiply by the meal quantity
         const unitName = ingredient.unit?.symbol || ingredient.units?.symbol || "×";
 
         const formattedIngredient = {
@@ -82,7 +82,7 @@ function processIngredients(idMap: Map<string, any>, ingredients: any[]): any[] 
 
         const existingIngredient = idMap.get(itemName);
         if (existingIngredient) {
-            existingIngredient.qty = parseFloat((parseFloat(existingIngredient.qty) + formattedQty).toFixed(2)); // Ajouter et formater la quantité
+            existingIngredient.qty = parseFloat((parseFloat(existingIngredient.qty) + formattedQty).toFixed(2)); // Add and format the quantity
         } else {
             idMap.set(itemName, formattedIngredient);
         }
