@@ -91,14 +91,14 @@ function PrintHotMeal() {
                             </Text>
                         </View>
                         {data.map((item: any) => (
-                            <View wrap={true} key={item.name} style={styles.mb}>
+                            <View key={item.name} style={styles.mb}>
                                 <View fixed style={styles.row}>
                                     <Text style={styles.totalQty}>{roundFloat(item.totalQty)} </Text>
                                     <Text style={styles.itemName}>{item.itemName} </Text>
                                 </View>
-                                <View wrap={true}> {/* here */}
+                                <View>
                                     {item.orders.map((order: any) => (
-                                        <View key={order.orderNum} style={styles.order}>
+                                        <View wrap={false} key={order.orderNum} style={styles.order}>
                                             <Text style={styles.orderNum}>{order.orderNum} </Text>
                                             <Text style={styles.date}>
                                                 {format(new Date(order.deliveryDate), "dd LLL", { locale: fr })}{" "}
